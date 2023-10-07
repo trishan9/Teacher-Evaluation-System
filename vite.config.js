@@ -8,6 +8,8 @@ export default defineConfig({
     alias: {
       "@/src": "/src",
       "@/components": "/src/components",
+      "@/config": "/src/config",
+      "@/constants": "/src/constants",
       "@/assets": "/src/assets",
       "@/styles": "/src/styles",
       "@/pages": "/src/pages",

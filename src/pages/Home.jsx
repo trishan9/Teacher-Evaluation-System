@@ -1,8 +1,8 @@
-import NavBar from "@/components/NavBar"
+import { Surveys } from "@/components"
 
 const Home = () => {
     return (
-        <NavBar />
+        <Surveys />
     )
 }
 
