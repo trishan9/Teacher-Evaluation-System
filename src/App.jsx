@@ -1,4 +1,5 @@
-import { NavBar, SideNav } from "@/components"
+import React from "react"
+import { NavBar, SideNav, Footer } from "@/components"
 import Routes from "./Routes"
 
 const App = () => {
@@ -11,6 +12,8 @@ const App = () => {
 
         <Routes />
       </div>
+
+      <Footer />
     </div>
   )
 }
