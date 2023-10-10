@@ -1,8 +1,12 @@
-import { Surveys } from "@/components"
+import { Surveys, SideNav } from "@/components"
 
 const Home = () => {
     return (
-        <Surveys />
+        <div className="flex gap-6 p-8">
+            <SideNav activeMenu={0} />
+
+            <Surveys />
+        </div>
     )
 }
 
