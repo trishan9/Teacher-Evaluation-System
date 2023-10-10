@@ -1,16 +1,13 @@
 
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/solid'
-import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx';
 import menus from '@/constants/menus';
 
-const SideNav = () => {
-    const [activeMenu, setActiveMenu] = useState(0)
+const SideNav = ({ activeMenu }) => {
     const navigate = useNavigate()
 
-    const handleClick = (index, path) => {
-        setActiveMenu(index)
+    const handleClick = (path) => {
         navigate(path)
     }
 
@@ -28,7 +25,7 @@ const SideNav = () => {
                 {menus.map((menu, index) => (
                     <button
                         key={menu.url}
-                        onClick={() => handleClick(index, menu.url)}
+                        onClick={() => handleClick(menu.url)}
                         className={
                             clsx('flex w-full gap-4 p-2 rounded-md',
                                 index == activeMenu && 'cursor-pointer font-bold bg-accent_primary text-accent_secondary'
@@ -42,11 +39,13 @@ const SideNav = () => {
                 ))}
             </div>
 
-            <button className='absolute flex gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer bg-error hover: bottom-10 left-5'>
-                <ArrowLeftOnRectangleIcon className='w-6' />
+            <Link to={"/login"}>
+                <button className='absolute flex gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer bg-error hover: bottom-10 left-5'>
+                    <ArrowLeftOnRectangleIcon className='w-6' />
 
-                <p>Logout</p>
-            </button>
+                    <p>Logout</p>
+                </button>
+            </Link>
         </div>
     )
 }

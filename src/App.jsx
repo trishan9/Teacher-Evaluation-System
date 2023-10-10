@@ -1,5 +1,5 @@
 import React from "react"
-import { NavBar, SideNav, Footer } from "@/components"
+import { NavBar } from "@/components"
 import Routes from "./Routes"
 
 const App = () => {
@@ -7,13 +7,7 @@ const App = () => {
     <div className="min-h-[100vh] font-primary bg-neutral_white">
       <NavBar />
 
-      <div className="flex gap-6 p-8">
-        <SideNav />
-
-        <Routes />
-      </div>
-
-      <Footer />
+      <Routes />
     </div>
   )
 }

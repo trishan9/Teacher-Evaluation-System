@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeftIcon } from '@heroicons/react/24/solid'
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/config/firebase';
+import { SideNav } from "@/components";
 
 
 const Survey = () => {
@@ -29,24 +30,28 @@ const Survey = () => {
     }, [])
 
     return (
-        <div>
-            <Link to="/">
-                <ArrowLeftIcon className='w-6 cursor-pointer' />
-            </Link>
+        <div className="flex gap-6 p-8">
+            <SideNav activeMenu={0} />
 
-            <p className='text-xl'>Survey Details</p>
+            <div>
+                <Link to="/">
+                    <ArrowLeftIcon className='w-6 cursor-pointer' />
+                </Link>
 
-            {isLoading && <p>Loading...</p>}
+                <p className='text-xl'>Survey Details</p>
 
-            {!isLoading && !survey && isError && <p className='text-red-600'>Some error occurred. Please try again.</p>}
+                {isLoading && <p>Loading...</p>}
 
-            {!isLoading && survey &&
-                <div className='my-8'>
-                    <p>Survey Name: {survey.name}</p>
+                {!isLoading && !survey && isError && <p className='text-red-600'>Some error occurred. Please try again.</p>}
 
-                    <p>Survey Url: {survey.url}</p>
-                </div>
-            }
+                {!isLoading && survey &&
+                    <div className='my-8'>
+                        <p>Survey Name: {survey.name}</p>
+
+                        <p>Survey Url: {survey.url}</p>
+                    </div>
+                }
+            </div>
         </div>
     )
 }
