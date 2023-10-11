@@ -1,6 +1,6 @@
-import React from "react"
-import { NavBar } from "@/components"
-import Routes from "./Routes"
+import React from "react";
+import { NavBar } from "@/components";
+import Routes from "./Routes";
 
 const App = () => {
   return (
@@ -9,7 +9,7 @@ const App = () => {
 
       <Routes />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
