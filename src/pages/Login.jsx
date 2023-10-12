@@ -1,7 +1,12 @@
 import React from "react"
+import { Navigate } from "react-router-dom"
 import { LoginForm } from "@/components"
 
 const Login = () => {
+    if (localStorage.getItem("accessToken")) {
+        return <Navigate to="/" replace />
+    }
+
     return (
         <React.Fragment>
             <div className="flex flex-col justify-center flex-1 min-h-full py-32 sm:px-6 lg:px-8">
