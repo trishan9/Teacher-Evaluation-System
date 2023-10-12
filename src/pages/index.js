@@ -6,5 +6,4 @@ import Settings from "./Settings";
 import Login from "./Login";
 import ErrorPage from "./404";
 import ProtectedRoute from "./ProtectedRoute";
-
 export { Home, Survey, CreateSurvey, History, Settings, Login, ErrorPage, ProtectedRoute };
