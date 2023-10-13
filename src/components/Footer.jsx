@@ -1,25 +1,4 @@
-const socialMedia = [
-    {
-        platform: "facebook",
-        url: "https://linkedin.com/in/trishan9",
-        imageUrl: "https://img.icons8.com/ios-filled/50/ffffff/facebook.png",
-    },
-    {
-        platform: "linkedin",
-        url: "https://www.linkedin.com/company/innovisionx-technologies",
-        imageUrl: "https://img.icons8.com/ios-filled/50/ffffff/linkedin.png",
-    },
-    {
-        platform: "twitter",
-        url: "https://www.linkedin.com/company/innovisionx-technologies",
-        imageUrl: "https://img.icons8.com/ios-filled/50/ffffff/twitterx.png",
-    },
-    {
-        platform: "github",
-        url: "https://github.com/InnoVisionX",
-        imageUrl: "https://img.icons8.com/ios-filled/50/ffffff/github.png",
-    },
-];
+import { socialMedias } from "@/constants"
 
 const Footer = () => {
     return (
@@ -46,7 +25,7 @@ const Footer = () => {
                 <p className="font-semibold text-accent_secondary">Follow Us</p>
 
                 <div className="flex items-center justify-center gap-4">
-                    {socialMedia.map((data) => (
+                    {socialMedias.map((data) => (
                         <a key={data.platform} target="_blank" href={data.url}>
                             <img
                                 width="25"
