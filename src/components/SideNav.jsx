@@ -1,13 +1,14 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom'
 import { getDocs, query, where } from 'firebase/firestore';
 import { signOut } from "firebase/auth";
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx';
-import menus from '@/constants/menus';
+import { menus } from '@/constants';
 import { auth, schoolsRef } from '@/config/firebase';
 import { authState, schoolState } from '@/states';
+import { AvatarSkeleton, TextSkeleton } from '@/components/Skeleton';
 
 const SideNav = ({ activeMenu }) => {
     const [authUser] = useRecoilState(authState)
@@ -43,13 +44,23 @@ const SideNav = ({ activeMenu }) => {
 
     return (
         <div className='bg-white rounded-xl shadow-sm min-h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 relative'>
-            <div className='flex flex-col items-center'>
-                <img src={schoolData && schoolData.logo} className='w-16 rounded-full' alt="" />
+            {schoolData
+                ? <div className='flex flex-col items-center'>
+                    <img src={schoolData.logo} className='w-16 rounded-full' alt={schoolData.name} />
 
-                <p className='pt-2 text-sm text-gray-500'>Super Admin</p>
+                    <p className='pt-2 text-sm text-gray-500'>Super Admin</p>
 
-                <p className='font-semibold text-accent_primary'>{schoolData ? schoolData.name : "Loading..."}</p>
-            </div>
+                    <p className='font-semibold text-accent_primary'>{schoolData.name}</p>
+                </div>
+
+                : <div className='flex flex-col items-center gap-3.5 mb-1'>
+                    <AvatarSkeleton />
+
+                    <TextSkeleton width={24} height={2} />
+
+                    <TextSkeleton width={32} height={3} />
+                </div>
+            }
 
             <div className='flex flex-col items-start w-full gap-6'>
                 {menus.map((menu, index) => (
