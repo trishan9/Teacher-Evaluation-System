@@ -38,7 +38,7 @@ const LoginForm = () => {
                 email: userCredentials.user.email
             }
             setAuthUser(currentUser)
-            navigate("/")
+            navigate("/dashboard/surveys")
         } catch {
             setIsLoginError(true)
         } finally {

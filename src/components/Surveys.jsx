@@ -47,7 +47,7 @@ const Surveys = () => {
 
             <div className="flex flex-col gap-6 my-8">
                 {!isLoading && surveys && surveys.map((data) => (
-                    <Link to={`/survey/${data.id}`} key={data.id} className="flex gap-6">
+                    <Link to={`/dashboard/survey/${data.id}`} key={data.id} className="flex gap-6">
                         <p>{data.name}</p>
 
                         <button className="px-6 rounded-md bg-slate-300">Go</button>

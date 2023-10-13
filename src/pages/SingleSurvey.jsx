@@ -6,7 +6,7 @@ import { db } from '@/config/firebase';
 import { SideNav } from "@/components";
 
 
-const Survey = () => {
+const SingleSurvey = () => {
     const { slug: id } = useParams();
     const [survey, setSurvey] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -34,7 +34,7 @@ const Survey = () => {
             <SideNav activeMenu={0} />
 
             <div>
-                <Link to="/">
+                <Link to="/dashboard/surveys">
                     <ArrowLeftIcon className='w-6 cursor-pointer' />
                 </Link>
 
@@ -56,4 +56,4 @@ const Survey = () => {
     )
 }
 
-export default Survey
+export default SingleSurvey

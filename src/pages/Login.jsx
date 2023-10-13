@@ -1,14 +1,16 @@
 import React from "react"
 import { Navigate } from "react-router-dom"
-import { LoginForm } from "@/components"
+import { LoginForm, NavBar } from "@/components"
 
 const Login = () => {
     if (localStorage.getItem("accessToken")) {
-        return <Navigate to="/" replace />
+        return <Navigate to="/dashboard/surveys" replace />
     }
 
     return (
         <React.Fragment>
+            <NavBar />
+
             <div className="flex flex-col justify-center flex-1 min-h-full py-32 sm:px-6 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md">
                     <img
