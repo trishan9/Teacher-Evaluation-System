@@ -10,25 +10,25 @@ const menus = [
         name: "Surveys",
         icon: ClipboardDocumentListIcon,
         solidIcon: ClipboardDocumentListIconSolid,
-        url: "/"
+        url: "/dashboard/surveys"
     },
     {
         name: "Create Survey",
         icon: PlusCircleIcon,
         solidIcon: PlusCircleIconSolid,
-        url: "/create-survey"
+        url: "/dashboard/create-survey"
     },
     {
         name: "History",
         icon: ClockIcon,
         solidIcon: ClockIconSolid,
-        url: "/history"
+        url: "/dashboard/history"
     },
     {
         name: "Settings",
         icon: Cog6ToothIcon,
         solidIcon: Cog6ToothIconSolid,
-        url: "/settings"
+        url: "/dashboard/settings"
     }
 ]
 
