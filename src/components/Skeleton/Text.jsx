@@ -1,6 +1,6 @@
-const Text = ({ width, height }) => {
+const Text = (props) => {
     return (
-        <div className={`w-${width} h-${height} bg-gray-300 border rounded-full animate-pulse`} />
+        <div className={`bg-gray-300 border rounded-full animate-pulse ${props.styles}`} />
     )
 }
 

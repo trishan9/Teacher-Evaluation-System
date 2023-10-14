@@ -7,13 +7,14 @@ export default defineConfig({
   resolve: {
     alias: {
       "@/src": "/src",
+      "@/assets": "/src/assets",
       "@/components": "/src/components",
       "@/config": "/src/config",
       "@/constants": "/src/constants",
-      "@/assets": "/src/assets",
+      "@/hooks": "/src/hooks",
+      "@/pages": "/src/pages",
       "@/styles": "/src/styles",
       "@/states": "/src/states",
-      "@/pages": "/src/pages",
       "@/utils": "/src/utils"
     },
   }
