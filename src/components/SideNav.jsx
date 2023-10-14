@@ -1,64 +1,36 @@
-import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom'
-import { getDocs, query, where } from 'firebase/firestore';
-import { signOut } from "firebase/auth";
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx';
-import { menus } from '@/constants';
-import { auth, schoolsRef } from '@/config/firebase';
-import { authState, schoolState } from '@/states';
+import { useSchoolData, useLogin } from '@/hooks';
+import { menus, PATHS } from '@/constants';
 import { AvatarSkeleton, TextSkeleton } from '@/components/Skeleton';
 
-const SideNav = ({ activeMenu }) => {
-    const [authUser] = useRecoilState(authState)
-    const [schoolData, setSchoolData] = useRecoilState(schoolState)
+const SideNav = ({ active }) => {
+    const [activeMenu, setActiveMenu] = useState(active)
     const navigate = useNavigate()
-
-    const handleClick = (path) => {
-        navigate(path)
-    }
-
-    const handleLogOut = () => {
-        signOut(auth).then(() => {
-            localStorage.clear()
-            navigate("/login")
-            setSchoolData(null)
-        })
-    }
+    const location = useLocation();
 
     useEffect(() => {
-        const getSchoolDetails = async () => {
-            const currentSchoolRef = query(schoolsRef, where("email", "==", authUser.email))
-            const snapshot = await getDocs(currentSchoolRef);
-            const tempSchools = []
-            snapshot?.docs?.map((doc) => {
-                tempSchools.push({
-                    ...doc.data(), id: doc.id
-                })
-            });
-            setSchoolData(tempSchools[0])
-        }
-        getSchoolDetails()
-    }, [authUser])
+        setActiveMenu(PATHS[location.pathname])
+    }, [])
+
+    const { schoolData, isLoading } = useSchoolData()
+    const { logout } = useLogin()
 
     return (
         <div className='bg-white rounded-xl shadow-sm min-h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 relative'>
-            {schoolData
-                ? <div className='flex flex-col items-center'>
+            {isLoading && <SideNavSkeleton />}
+
+            {!isLoading && !schoolData && <SideNavSkeleton />}
+
+            {!isLoading && schoolData &&
+                <div className='flex flex-col items-center'>
                     <img src={schoolData.logo} className='w-16 rounded-full' alt={schoolData.name} />
 
                     <p className='pt-2 text-sm text-gray-500'>Super Admin</p>
 
                     <p className='font-semibold text-accent_primary'>{schoolData.name}</p>
-                </div>
-
-                : <div className='flex flex-col items-center gap-3.5 mb-1'>
-                    <AvatarSkeleton />
-
-                    <TextSkeleton width={24} height={2} />
-
-                    <TextSkeleton width={32} height={3} />
                 </div>
             }
 
@@ -66,7 +38,10 @@ const SideNav = ({ activeMenu }) => {
                 {menus.map((menu, index) => (
                     <button
                         key={menu.url}
-                        onClick={() => handleClick(menu.url)}
+                        onClick={() => {
+                            setActiveMenu(index)
+                            navigate(menu.url)
+                        }}
                         className={
                             clsx('flex w-full gap-4 p-2 rounded-md',
                                 index == activeMenu && 'cursor-pointer font-bold bg-accent_primary text-accent_secondary'
@@ -80,7 +55,7 @@ const SideNav = ({ activeMenu }) => {
                 ))}
             </div>
 
-            <button onClick={handleLogOut} className='absolute flex gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer bg-error hover: bottom-10 left-5'>
+            <button onClick={logout} className='absolute flex gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer bg-error hover: bottom-10 left-5'>
                 <ArrowLeftOnRectangleIcon className='w-6' />
 
                 <p>Logout</p>
@@ -90,3 +65,16 @@ const SideNav = ({ activeMenu }) => {
 }
 
 export default SideNav
+
+
+const SideNavSkeleton = () => {
+    return (
+        <div className='flex flex-col items-center gap-3.5 mb-1'>
+            <AvatarSkeleton />
+
+            <TextSkeleton styles="w-24 h-2" />
+
+            <TextSkeleton styles="w-32 h-3" />
+        </div>
+    )
+}

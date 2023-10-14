@@ -1,49 +1,23 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useRecoilState } from "recoil"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signInWithEmailAndPassword } from "firebase/auth"
 import clsx from "clsx"
-import { auth } from "@/config/firebase"
 import loader from "@/assets/loading.gif"
-import { authState } from "@/states"
+import { useLogin } from "@/hooks"
 import formSchema from "./formSchema"
 
 const LoginForm = () => {
-    const navigate = useNavigate()
-    const [isLoginError, setIsLoginError] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [, setAuthUser] = useRecoilState(authState)
-
     const { register, formState: { errors }, handleSubmit } = useForm({
         resolver: zodResolver(formSchema),
     })
+
+    const { login, isLoading, isError } = useLogin()
 
     const handleLogin = async (value) => {
         const userDetails = {
             userName: `${value.userName}@trs.com`,
             password: value.password
         }
-
-        try {
-            setIsLoginError(false)
-            setIsLoading(true)
-
-            const userCredentials = await signInWithEmailAndPassword(auth, userDetails.userName, userDetails.password)
-            localStorage.setItem("accessToken", userCredentials.user.accessToken)
-
-            const currentUser = {
-                id: userCredentials.user.uid,
-                email: userCredentials.user.email
-            }
-            setAuthUser(currentUser)
-            navigate("/dashboard/surveys")
-        } catch {
-            setIsLoginError(true)
-        } finally {
-            setIsLoading(false)
-        }
+        await login(userDetails.userName, userDetails.password)
     }
 
     return (
@@ -53,12 +27,11 @@ const LoginForm = () => {
                     Username
                 </label>
 
-
                 <div className="mt-2">
                     <input
+                        type="text"
                         id="userName"
                         {...register("userName")}
-                        type="text"
                         className={clsx(
                             "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6",
                             errors.userName ? "focus:ring-error ring-error" : "ring-gray-300 focus:ring-indigo-600"
@@ -76,9 +49,9 @@ const LoginForm = () => {
 
                 <div className="mt-2">
                     <input
+                        type="password"
                         id="password"
                         {...register("password")}
-                        type="password"
                         className={clsx(
                             "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6",
                             errors.password ? "focus:ring-error ring-error" : "ring-gray-300 focus:ring-indigo-600"
@@ -90,7 +63,7 @@ const LoginForm = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-                {isLoginError && <p className="text-sm text-error">Username and password didn't match.</p>}
+                {isError && <p className="text-sm text-error">Username and password didn't match.</p>}
 
                 <button
                     type="submit"

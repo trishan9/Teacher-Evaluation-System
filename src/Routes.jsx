@@ -37,7 +37,6 @@ const AppRoutes = () => {
             <Dashboard />
           </ProtectedRoute>
         }
-
       >
         <Route path="surveys"
           element={
@@ -62,7 +61,6 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
-
 
         <Route path="history"
           element={
