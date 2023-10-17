@@ -36,7 +36,7 @@ const useLogin = () => {
     const logout = () => {
         signOut(auth).then(() => {
             localStorage.clear()
-            navigate("/login")
+            navigate("/")
             setSchoolData(null)
         })
     }
