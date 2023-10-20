@@ -1,6 +1,7 @@
-import { useSurveysData } from "@/hooks";
+import { Link } from "react-router-dom";
 import { ArrowDownOnSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import CopyIcon from "./Icons/CopyIcon";
+import { useSurveysData } from "@/hooks";
+import { CopyIcon } from "@/components/Icons";
 
 const Surveys = () => {
   const { surveys, isLoading } = useSurveysData();
@@ -22,7 +23,7 @@ const Surveys = () => {
                     {!isLoading &&
                       surveys &&
                       surveys.map((data) => (
-                        <tr key={data.name} className="flex justify-between">
+                        <tr key={data.id} className="flex justify-between">
                           <td className="flex flex-col gap-2 py-[22px] pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-0">
                             <p className="text-base font-semibold">
                               {data.name}
@@ -54,11 +55,11 @@ const Surveys = () => {
                           </td>
 
                           <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
-                            <a href="/my-campaigns/7846d41d-1b9f-4c39-8d50-4042a3f3db7f">
+                            <Link to={`/dashboard/survey/${data.id}`}>
                               <button className="flex items-center justify-center h-12 gap-2 px-4 font-semibold bg-white border rounded-md btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
                                 Dashboard
                               </button>
-                            </a>
+                            </Link>
 
                             <button className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-gray-600 !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border">
                               <CopyIcon />

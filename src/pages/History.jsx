@@ -1,6 +1,5 @@
-import { clsx } from "clsx";
-import { history } from "@/constants";
 import { History } from "@/components";
+import { history } from "@/constants";
 
 const HistoryPage = () => {
   const activeSurveys = history.filter((data) => {
@@ -16,6 +15,7 @@ const HistoryPage = () => {
       <p className="text-xl font-bold">History</p>
 
       <History surveys={activeSurveys} status="Active" />
+
       <History surveys={expiredSurveys} status="Expired" />
     </div>
   );
