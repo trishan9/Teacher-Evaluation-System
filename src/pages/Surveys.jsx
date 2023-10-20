@@ -1,9 +1,7 @@
-import { Surveys } from "@/components"
+import { Surveys } from "@/components";
 
 const SurveysPage = () => {
-    return (
-        <Surveys />
-    )
-}
+  return <Surveys />;
+};
 
-export default SurveysPage
+export default SurveysPage;
