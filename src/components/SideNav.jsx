@@ -43,8 +43,8 @@ const SideNav = ({ active }) => {
                             navigate(menu.url)
                         }}
                         className={
-                            clsx('flex w-full gap-4 p-2 rounded-md',
-                                index == activeMenu && 'cursor-pointer font-bold bg-accent_primary text-accent_secondary'
+                            clsx('flex w-full gap-4 p-2 rounded-md hover:bg-neutral_white',
+                                index == activeMenu && 'cursor-pointer font-bold bg-accent_primary text-accent_secondary hover:bg-accent_primary transition-all ease-in-out'
                             )
                         }
                     >

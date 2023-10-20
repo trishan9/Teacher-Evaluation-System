@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { onAuthStateChanged } from "firebase/auth";
-import { ProtectedRoute, Home, Login, ErrorPage, Dashboard, SurveysPage, SingleSurvey, CreateSurvey, HistoryPage, Settings } from "@/pages";
+import { ProtectedRoute, Home, Login, ErrorPage, Dashboard, Surveys, SingleSurvey, CreateSurvey, HistoryPage, Settings } from "@/pages";
 import { authState } from "@/states";
 import { auth } from "@/config/firebase";
 
@@ -41,7 +41,7 @@ const AppRoutes = () => {
         <Route path="surveys"
           element={
             <ProtectedRoute>
-              <SurveysPage />
+              <Surveys />
             </ProtectedRoute>
           }
         />
