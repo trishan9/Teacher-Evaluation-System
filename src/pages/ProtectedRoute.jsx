@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
@@ -5,7 +6,7 @@ const ProtectedRoute = ({ children }) => {
         return <Navigate to="/login" replace />;
     }
 
-    return children;
+    return (<Suspense fallback={<p>Loading...</p>}>{children}</Suspense>);
 };
 
 export default ProtectedRoute
