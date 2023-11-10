@@ -21,7 +21,7 @@ export default function AddTeacherModal() {
     const handleChangeName = async (values) => {
         setIsAddTeacherModalOpen(false)
 
-        const teachers = [...schoolData.teachers]
+        const teachers = schoolData.teachers ? [...schoolData.teachers] : []
         teachers.push({
             id: uuidv4(),
             name: values.name,

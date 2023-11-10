@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil"
-import { PlusCircleIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline"
+import { TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline"
 import ChangeNameModal from "@/components/Modals/ChangeName"
 import ChangePasswordModal from "@/components/Modals/ChangePassword"
 import { changeNameModal, changePasswordModal, addTeacherModal, schoolState } from "@/states"
@@ -61,7 +61,7 @@ const Settings = () => {
                                         <tbody className="divide-y divide-gray-200">
                                             {
                                                 schoolData &&
-                                                schoolData.teachers.map((data) => (
+                                                schoolData.teachers?.map((data) => (
                                                     <tr key={data.id} className="flex justify-between">
                                                         <td className="flex flex-col gap-2 py-[22px] pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-0">
                                                             <p className="text-accent_primary w-[242px] font-medium">

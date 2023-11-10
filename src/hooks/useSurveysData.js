@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
-import { getDocs, query, where } from "firebase/firestore"
+import { doc, getDocs, query, updateDoc, where } from "firebase/firestore"
 import { surveysRef } from "@/config/firebase"
 import { useRecoilState } from "recoil";
+import { db } from '@/config/firebase';
 import { authState } from "@/states";
+import moment from "moment";
 
 const useSurveysData = () => {
     const [authUser] = useRecoilState(authState)
@@ -16,16 +18,41 @@ const useSurveysData = () => {
                 setIsError(false)
                 setIsLoading(true)
 
-                const currentUserSurveysRef = query(surveysRef, where("user.id", "==", authUser.id))
+                const currentUserSurveysRef = query(surveysRef, where("user.id", "==", authUser.id), where("status", "==", "ACTIVE"))
                 const snapshot = await getDocs(currentUserSurveysRef);
                 const tempSurveys = []
                 snapshot?.docs?.map((doc) => {
                     tempSurveys.push({
                         ...doc.data(), id: doc.id
                     })
-                });
+                })
+
+                const expiredSurveys = tempSurveys.filter((survey) => {
+                    const expiryDate = survey.expiry
+                    if (expiryDate != "NEVER") {
+                        const today = new Date(moment().format("YYYY-MM-DD"))
+                        const expiry = new Date(expiryDate)
+                        const diff = expiry - today
+                        return diff <= 0
+                    }
+                })
+
                 setSurveys(tempSurveys)
 
+                if (expiredSurveys.length > 0) {
+                    console.log(expiredSurveys)
+                    expiredSurveys.map((survey) => {
+                        const docRef = doc(db, "surveys", survey.id)
+                        updateDoc(docRef, {
+                            status: "EXPIRED"
+                        }).then(() => {
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    })
+
+                    window.location.reload()
+                }
             } catch {
                 setIsError(true)
             } finally {

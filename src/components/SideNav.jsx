@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx';
@@ -11,9 +11,9 @@ const SideNav = ({ active }) => {
     const navigate = useNavigate()
     const location = useLocation();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setActiveMenu(PATHS[location.pathname])
-    }, [])
+    }, [location])
 
     const { schoolData, isLoading } = useSchoolData()
     const { logout } = useLogin()

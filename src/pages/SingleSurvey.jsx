@@ -1,10 +1,12 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeftIcon } from '@heroicons/react/24/solid'
 import { useSingleSurveyData } from '@/hooks';
+import { useBaseUrl } from '@/hooks';
 
 const SingleSurvey = () => {
     const { slug: id } = useParams();
     const { survey, isLoading, isError } = useSingleSurveyData(id)
+    const baseUrl = useBaseUrl()
 
     return (
         <div>
@@ -22,7 +24,7 @@ const SingleSurvey = () => {
                 <div className='my-8'>
                     <p>Survey Name: {survey.name}</p>
 
-                    <p>Survey Url: {survey.url}</p>
+                    <p>Survey Url: {baseUrl}{survey.uri}</p>
                 </div>
             }
         </div>
