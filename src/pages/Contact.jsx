@@ -12,6 +12,8 @@
   }
   ```
 */
+import React, { useRef } from "react";
+import emailjs from "@emailjs/browser";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import {
@@ -21,6 +23,30 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function Contact() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault(e);
+
+    emailjs
+      .sendForm(
+        "service_j9mtmh3",
+        "template_ysb7w35",
+        form.current,
+        "eHS5mvFX1r50CHDP1"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          console.log("message sent");
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    const formValue = document.querySelector("form");
+    formValue.reset();
+  };
   return (
     <div className="relative isolate bg-gray-900 overflow-y-hidden">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2 overflow-hidden">
@@ -134,6 +160,8 @@ export default function Contact() {
           </div>
         </div>
         <form
+          ref={form}
+          onSubmit={sendEmail}
           action="#"
           method="POST"
           className="px-6 pt-20 sm:pb-20 lg:px-8 lg:py-32"
@@ -150,8 +178,8 @@ export default function Contact() {
                 <div className="mt-2.5">
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
+                    name="firstName"
+                    id="firstName"
                     autoComplete="given-name"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
@@ -167,8 +195,8 @@ export default function Contact() {
                 <div className="mt-2.5">
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
+                    name="lastName"
+                    id="lastName"
                     autoComplete="family-name"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
@@ -201,8 +229,8 @@ export default function Contact() {
                 <div className="mt-2.5">
                   <input
                     type="tel"
-                    name="phone-number"
-                    id="phone-number"
+                    name="phoneNumber"
+                    id="phoneNumber"
                     autoComplete="tel"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
