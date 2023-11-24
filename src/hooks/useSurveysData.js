@@ -46,12 +46,11 @@ const useSurveysData = () => {
                         updateDoc(docRef, {
                             status: "EXPIRED"
                         }).then(() => {
+                            window.location.reload()
                         }).catch(err => {
                             console.log(err)
                         })
                     })
-
-                    window.location.reload()
                 }
             } catch {
                 setIsError(true)

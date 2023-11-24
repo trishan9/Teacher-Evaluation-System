@@ -19,6 +19,7 @@ const Surveys = () => {
 
     useEffect(() => {
         setActiveSurveys(surveys)
+        console.log("Hello World")
     }, [surveys])
 
     const handleCopy = (url, id) => {
