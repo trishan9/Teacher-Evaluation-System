@@ -12,14 +12,18 @@ const SideNav = ({ active }) => {
     const location = useLocation();
 
     useLayoutEffect(() => {
-        setActiveMenu(PATHS[location.pathname])
+        if (PATHS[location.pathname]) {
+            setActiveMenu(PATHS[location.pathname])
+        } else {
+            setActiveMenu(0)
+        }
     }, [location])
 
     const { schoolData, isLoading } = useSchoolData()
     const { logout } = useLogin()
 
     return (
-        <div className='bg-white rounded-xl shadow-sm min-h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 relative'>
+        <div className='bg-white rounded-xl shadow-sm h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 relative'>
             {isLoading && <SideNavSkeleton />}
 
             {!isLoading && !schoolData && <SideNavSkeleton />}

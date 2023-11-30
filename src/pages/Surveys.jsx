@@ -1,18 +1,17 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
 import {
   ArrowDownOnSquareIcon,
   CheckCircleIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useSurveysData, useBaseUrl } from "@/hooks";
-import { CopyIcon } from "@/components/Icons";
-import { useState } from "react";
 import clsx from "clsx";
+import { utils, writeFile } from "xlsx";
 import { Tooltip } from "@mui/material";
 import { db } from "@/config/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
-import { useEffect } from "react";
-import { utils, writeFile } from "xlsx";
+import { useSurveysData, useBaseUrl } from "@/hooks";
+import { CopyIcon } from "@/components/Icons";
 
 const Surveys = () => {
   const { surveys, isLoading } = useSurveysData();
@@ -22,9 +21,8 @@ const Surveys = () => {
   const baseUrl = useBaseUrl();
 
   useEffect(() => {
-    setActiveSurveys(surveys);
-    console.log("Hello World");
-  }, [surveys]);
+    setActiveSurveys(surveys)
+  }, [surveys])
 
   const handleCopy = (url, id) => {
     navigator.clipboard.writeText(url);
@@ -81,14 +79,13 @@ const Surveys = () => {
                               {data.name}
                             </p>
 
-                            <a
-                              href={`${baseUrl}${data.uri}`}
-                              target="_blank"
+                            <Link
+                              to={`${baseUrl}${data.uri}`}
                               className=" text-light-text-secondary hover:underline"
                             >
                               {baseUrl}
                               {data.uri}
-                            </a>
+                            </Link>
                           </td>
 
                           <td className=" font-semibold flex flex-col items-center justify-center gap-2 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">

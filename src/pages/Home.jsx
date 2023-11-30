@@ -8,7 +8,7 @@ import {
   PlusSmallIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Footer from "../components/Footer";
+import Footer from "@/components/Footer";
 
 const navigation = [
   { name: "About Us", href: "#about-us" },
@@ -86,7 +86,7 @@ export default function Home() {
           <div className="flex lg:flex-1">
             <div className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img className="h-11 w-auto rounded" src="/logo.png" alt="" />
+              <img className="w-auto rounded h-11" src="/logo.png" alt="" />
             </div>
           </div>
           <div className="flex lg:hidden">
@@ -96,7 +96,7 @@ export default function Home() {
               onClick={() => setMobileMenuOpen(true)}
             >
               <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              <Bars3Icon className="w-6 h-6" aria-hidden="true" />
             </button>
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
@@ -105,7 +105,7 @@ export default function Home() {
                 key={item.name}
                 href={item.href}
                 target={item.target}
-                className="text-m font-semibold leading-6 text-white"
+                className="font-semibold leading-6 text-white text-m"
               >
                 {item.name}
               </a>
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Link to="/login">
-              <button className="text-m font-semibold leading-6 text-white">
+              <button className="font-semibold leading-6 text-white text-m">
                 Log in <span aria-hidden="true">&rarr;</span>
               </button>
             </Link>
@@ -126,12 +126,12 @@ export default function Home() {
           onClose={setMobileMenuOpen}
         >
           <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full px-6 py-6 overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">InnoVisionX</span>
                 <img
-                  className="h-8 w-auto"
+                  className="w-auto h-8"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt=""
                 />
@@ -142,17 +142,17 @@ export default function Home() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                <XMarkIcon className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
-            <div className="mt-6 flow-root">
+            <div className="flow-root mt-6">
               <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-2 py-6">
+                <div className="py-6 space-y-2">
                   {navigation.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      className="block px-3 py-2 -mx-3 text-base font-semibold leading-7 text-gray-900 rounded-lg hover:bg-gray-50"
                     >
                       {item.name}
                     </a>
@@ -173,14 +173,14 @@ export default function Home() {
 
       <main>
         {/* Hero section */}
-        <div className="relative isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
+        <div className="relative pb-16 overflow-hidden bg-gray-900 isolate pt-14 sm:pb-20">
           <img
             src="https://images.pexels.com/photos/5212338/pexels-photo-5212338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1&blend=111827&sat=-100&exp=15&blend-mode=multiply&fbclid=IwAR0jhVoCfQtm5wzeMB-3FQXDWhxFY_w6UYwq9hJ1FHn-aH2DTiicmMXTREE"
             alt=""
-            className="absolute inset-0 -z-10 h-full w-full object-cover"
+            className="absolute inset-0 object-cover w-full h-full -z-10"
           />
           <div
-            className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+            className="absolute inset-x-0 overflow-hidden -top-40 -z-10 transform-gpu blur-3xl sm:-top-80"
             aria-hidden="true"
           >
             <div
@@ -191,8 +191,8 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-4xl py-32 sm:py-48 lg:py-56">
+          <div className="px-6 mx-auto max-w-7xl lg:px-8">
+            <div className="max-w-4xl py-32 mx-auto sm:py-48 lg:py-56">
               <div className="text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                   Transforming Education Through Student Voices
@@ -204,7 +204,7 @@ export default function Home() {
                   facilitating insightful teacher evaluations through the
                   valuable perspectives of students.
                 </p>
-                <div className="mt-10 flex items-center justify-center gap-x-6">
+                <div className="flex items-center justify-center mt-10 gap-x-6">
                   {/* <a
                     href="#"
                     className="rounded-md bg-accent_primary px-3.5 py-2.5 text-sm font-semibold text-accent_secondary shadow-sm border focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
@@ -216,23 +216,23 @@ export default function Home() {
             </div>
 
             {/* Logo cloud */}
-            {/* <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+            {/* <div className="grid items-center max-w-lg grid-cols-4 mx-auto gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
               <img
-                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                className="object-contain w-full col-span-2 max-h-12 lg:col-span-1"
                 src="https://directorykathmandu.com/media/com_mtree/images/listings/o/747.png"
                 alt="Prime College"
                 width={158}
                 height={48}
               />
               <img
-                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                className="object-contain w-full col-span-2 max-h-12 lg:col-span-1"
                 src="https://www.coventry.ac.uk/globalassets/media/global/.apu/j244-partner-logos-72dpi/j244-19_webamends-logo-resizing_767px-wide_v1_softwarica.jpg"
                 alt="Softwarica"
                 width={158}
                 height={48}
               />
               <img
-                className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
+                className="object-contain w-full col-span-2 max-h-12 lg:col-span-1"
                 src="https://www.trinity.edu.np/assets/backend/uploads/Logo/trinity%20college%20logo.jpg"
                 alt="Trinity"
                 width={158}
@@ -259,8 +259,8 @@ export default function Home() {
         <div className="mt-20">
           {/* Feature section */}
           <div className="mt-20 sm:mt-38">
-            <div className="mx-auto max-w-8xl px-6 lg:px-8">
-              <div className="mx-auto max-w-3xl sm:text-center">
+            <div className="px-6 mx-auto max-w-8xl lg:px-8">
+              <div className="max-w-3xl mx-auto sm:text-center">
                 <h1 className="text-4xl font-semibold leading-8 text-accent_primary">
                   How our website works for you!
                 </h1>
@@ -274,8 +274,8 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="relative overflow-hidden pt-16">
-              <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="relative pt-16 overflow-hidden">
+              <div className="px-6 mx-auto max-w-7xl lg:px-8">
                 <img
                   src={demoImage}
                   alt="App screenshot"
@@ -291,13 +291,13 @@ export default function Home() {
           </div>
 
           {/* Testimonial section */}
-          <div className="bg-gray-900 py-20 sm:py-30 mt-20 sm:mt-38">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="mx-auto  lg:mx-0 flex justify-center items-center flex-col">
+          <div className="py-20 mt-20 bg-gray-900 sm:py-30 sm:mt-38">
+            <div className="px-6 mx-auto max-w-7xl lg:px-8">
+              <div className="flex flex-col items-center justify-center mx-auto lg:mx-0">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                   Our team
                 </h2>
-                <p className="mt-6 text-lg leading-8 text-gray-300 m-auto max-w-2xl text-center">
+                <p className="max-w-2xl m-auto mt-6 text-lg leading-8 text-center text-gray-300">
                   We’re a dynamic group of individuals who are passionate about
                   what we do and dedicated to delivering the best results for
                   our clients.
@@ -305,7 +305,7 @@ export default function Home() {
               </div>
               <ul
                 role="list"
-                className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4"
+                className="grid max-w-2xl grid-cols-1 mx-auto mt-20 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4"
               >
                 {people.map((person) => (
                   <li key={person.name}>
@@ -331,8 +331,8 @@ export default function Home() {
         </div>
 
         {/* FAQ section */}
-        <div className="mx-auto mt-20 max-w-7xl px-6 sm:mt-38 lg:px-8" id="faq">
-          <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
+        <div className="px-6 mx-auto mt-20 max-w-7xl sm:mt-38 lg:px-8" id="faq">
+          <div className="max-w-4xl mx-auto divide-y divide-gray-900/10">
             <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
               Frequently asked questions
             </h2>
@@ -342,26 +342,26 @@ export default function Home() {
                   {({ open }) => (
                     <>
                       <dt>
-                        <Disclosure.Button className="flex w-full items-start justify-between text-left text-gray-900">
+                        <Disclosure.Button className="flex items-start justify-between w-full text-left text-gray-900">
                           <span className="text-base font-semibold leading-7">
                             {faq.question}
                           </span>
-                          <span className="ml-6 flex h-7 items-center">
+                          <span className="flex items-center ml-6 h-7">
                             {open ? (
                               <MinusSmallIcon
-                                className="h-6 w-6"
+                                className="w-6 h-6"
                                 aria-hidden="true"
                               />
                             ) : (
                               <PlusSmallIcon
-                                className="h-6 w-6"
+                                className="w-6 h-6"
                                 aria-hidden="true"
                               />
                             )}
                           </span>
                         </Disclosure.Button>
                       </dt>
-                      <Disclosure.Panel as="dd" className="mt-2 pr-12">
+                      <Disclosure.Panel as="dd" className="pr-12 mt-2">
                         <p className="text-base leading-7 text-gray-600">
                           {faq.answer}
                         </p>

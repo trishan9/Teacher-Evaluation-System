@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore, collection } from "firebase/firestore";
 
 const app = initializeApp({
-    apiKey: "AIzaSyCpX7SITA305GjbPr-f-pREcJ25NOX2t3c",
-    authDomain: "teacher-review-system.firebaseapp.com",
-    projectId: "teacher-review-system",
-    storageBucket: "teacher-review-system.appspot.com",
-    messagingSenderId: "963678129608",
-    appId: "1:963678129608:web:33cea4b7752c45907404fd"
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_APP_ID
 });
 
 export default app;

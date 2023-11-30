@@ -5,7 +5,7 @@ const Routes = React.lazy(() => import('./Routes'));
 const App = () => {
   return (
     <div className="min-h-[100vh] font-primary bg-neutral_white">
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<p className="p-6">Loading...</p>}>
         <Routes />
       </Suspense>
     </div>
