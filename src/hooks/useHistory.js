@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { getDocs, query, where } from "firebase/firestore";
 import { surveysRef } from "@/config/firebase";
 import { useRecoilState } from "recoil";
-import { db } from "@/config/firebase";
 import { authState } from "@/states";
-import moment from "moment";
 
 const useHistory = () => {
   const [authUser] = useRecoilState(authState);
@@ -23,6 +21,7 @@ const useHistory = () => {
           where("user.id", "==", authUser.id)
         );
         const snapshot = await getDocs(currentUserSurveysRef);
+
         const tempSurveys = [];
         snapshot?.docs?.map((doc) => {
           tempSurveys.push({

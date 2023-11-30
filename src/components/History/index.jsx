@@ -1,6 +1,4 @@
 import React from "react";
-import clsx from "clsx";
-import { Link } from "react-router-dom";
 import ActiveSurveys from "./ActiveSurveys";
 import ExpiredSurveys from "./ExpiredSurveys";
 

@@ -1,12 +1,9 @@
-import { clsx } from "clsx";
 import { History } from "@/components";
 import { useHistory } from "@/hooks";
-import { Link } from "react-router-dom";
-import { useSurveysData } from "@/hooks";
 import { useState, useEffect } from "react";
 
 const HistoryPage = () => {
-  const { surveys, isLoading } = useHistory();
+  const { surveys } = useHistory();
 
   const [allSurveys, setAllSurveys] = useState([]);
 
@@ -46,7 +43,7 @@ const HistoryPage = () => {
           name="selectSurveys"
           onChange={onFilterChange}
         >
-          <option value="allSurveys">AllSurveys</option>
+          <option value="allSurveys">All Surveys</option>
 
           <option value="active">Active</option>
 

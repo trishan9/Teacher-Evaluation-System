@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-const ExpiredSurveys = ({ surveys, status, message, date }) => {
+
+const ExpiredSurveys = ({ surveys, status, message }) => {
   return (
     <div>
       <p className="pt-4 font-semibold">{status}</p>
