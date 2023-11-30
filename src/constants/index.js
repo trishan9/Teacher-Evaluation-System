@@ -3,4 +3,4 @@ import socialMedias from "./socialMedias";
 import PATHS from "./paths";
 import history from "./history";
 
-export { menus, socialMedias, PATHS, history }
+export { menus, socialMedias, PATHS, history };

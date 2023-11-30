@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 import ActiveSurveys from "./ActiveSurveys";
 import ExpiredSurveys from "./ExpiredSurveys";
+
 const History = ({ surveys, status, message, date, type }) => {
   return (
     <div className="mt-2">
@@ -14,6 +15,7 @@ const History = ({ surveys, status, message, date, type }) => {
           date={date}
         />
       )}
+
       {status == "Expired" && (type == "default" || type == "expired") && (
         <ExpiredSurveys
           surveys={surveys}

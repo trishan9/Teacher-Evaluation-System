@@ -4,11 +4,13 @@ import { useHistory } from "@/hooks";
 import { Link } from "react-router-dom";
 import { useSurveysData } from "@/hooks";
 import { useState, useEffect } from "react";
+
 const HistoryPage = () => {
   const { surveys, isLoading } = useHistory();
 
   const [allSurveys, setAllSurveys] = useState([]);
-  const [typeOf, setTypeOf] = useState("default");
+
+  const [typeOfSurveys, setTypeOfSurveys] = useState("default");
 
   useEffect(() => {
     setAllSurveys(surveys);
@@ -21,17 +23,18 @@ const HistoryPage = () => {
   const expiredSurveys = allSurveys.filter((data) => {
     return data.status == "EXPIRED";
   });
-  const OnFilterChange = (e) => {
+
+  const onFilterChange = (e) => {
     e.preventDefault();
-    let value = e.target.value;
-    {
-      value == "active" && setTypeOf("active");
-    }
-    {
-      value == "expired" && setTypeOf("expired");
-    }
-    {
-      value == "allSurveys" && setTypeOf("default");
+
+    const value = e.target.value;
+
+    if (value == "active") {
+      setTypeOfSurveys("active");
+    } else if (value == "expired") {
+      setTypeOfSurveys("expired");
+    } else {
+      setTypeOfSurveys("default");
     }
   };
   return (
@@ -41,28 +44,32 @@ const HistoryPage = () => {
         <select
           className="rounded-lg"
           name="selectSurveys"
-          onChange={OnFilterChange}
+          onChange={onFilterChange}
         >
           <option value="allSurveys">AllSurveys</option>
+
           <option value="active">Active</option>
+
           <option value="expired">Expired</option>
         </select>
       </div>
+
       {activeSurveys.length > 0 && (
         <History
           surveys={activeSurveys}
           status="Active"
           message="You created a survey"
           date="2023-11-16"
-          type={typeOf}
+          type={typeOfSurveys}
         />
       )}
+
       {expiredSurveys.length > 0 && (
         <History
           surveys={expiredSurveys}
           status="Expired"
           message="Survey has been expired"
-          type={typeOf}
+          type={typeOfSurveys}
         />
       )}
     </div>

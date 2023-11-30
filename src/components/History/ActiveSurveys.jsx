@@ -16,6 +16,7 @@ const ActiveSurveys = ({ surveys, status, message, date }) => {
               >
                 <div className="flex justify-between">
                   <p>{message}</p>
+
                   <p>{date}</p>
                 </div>
 
