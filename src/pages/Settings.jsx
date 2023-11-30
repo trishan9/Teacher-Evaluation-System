@@ -1,10 +1,10 @@
 import { useRecoilState } from "recoil"
 import { TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline"
+import { doc, updateDoc } from "firebase/firestore"
 import ChangeNameModal from "@/components/Modals/ChangeName"
 import ChangePasswordModal from "@/components/Modals/ChangePassword"
 import { changeNameModal, changePasswordModal, addTeacherModal, schoolState } from "@/states"
 import { db } from '@/config/firebase';
-import { doc, updateDoc } from "firebase/firestore"
 import AddTeacherModal from "@/components/Modals/AddTeacher"
 
 const Settings = () => {
@@ -50,9 +50,20 @@ const Settings = () => {
             </div>
 
             <div className="relative flex flex-col w-full">
-                <p className="text-lg">Teachers</p>
+                <div className="flex items-center justify-between w-full">
+                    <p className="text-lg font-semibold">Teachers</p>
 
-                <div className="flex flex-col w-full gap-6">
+                    <button
+                        onClick={() => setIsAddTeacherModalOpen(true)}
+                        className="flex items-center justify-center gap-3 px-6 py-3 mr-8 font-semibold transition-all ease-in-out border-2 rounded-md bg-accent_primary text-accent_secondary hover:bg-white hover:text-black"
+                    >
+                        <UserPlusIcon className="w-5" />
+
+                        Add Teacher
+                    </button>
+                </div>
+
+                <div className="flex flex-col w-full gap-6 mb-8">
                     <div className="pr-4 sm:pr-6 lg:pr-8">
                         <div className="flow-root">
                             <div className="overflow-x-auto ">
@@ -101,15 +112,6 @@ const Settings = () => {
                         </div>
                     </div>
                 </div>
-
-                <button
-                    onClick={() => setIsAddTeacherModalOpen(true)}
-                    className="absolute bottom-[-5rem] right-[2.5rem] flex items-center justify-center gap-3 py-3 px-6 bg-white hover:bg-accent_primary hover:text-accent_secondary font-semibold  transition-all ease-in-out border-2 rounded-md"
-                >
-                    <UserPlusIcon className="w-5" />
-
-                    Add Teacher
-                </button>
             </div>
 
             <ChangeNameModal />

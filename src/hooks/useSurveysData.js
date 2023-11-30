@@ -40,7 +40,6 @@ const useSurveysData = () => {
                 setSurveys(tempSurveys)
 
                 if (expiredSurveys.length > 0) {
-                    console.log(expiredSurveys)
                     expiredSurveys.map((survey) => {
                         const docRef = doc(db, "surveys", survey.id)
                         updateDoc(docRef, {

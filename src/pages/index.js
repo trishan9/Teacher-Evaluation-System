@@ -10,6 +10,7 @@ const CreateSurvey = React.lazy(() => import("./CreateSurvey"));
 const HistoryPage = React.lazy(() => import("./History"));
 const Settings = React.lazy(() => import("./Settings"));
 const Contact = React.lazy(() => import("./Contact"));
+const Participate = React.lazy(() => import("./Participate"));
 import ProtectedRoute from "./ProtectedRoute";
 
 export {
@@ -23,5 +24,6 @@ export {
   HistoryPage,
   Settings,
   Contact,
+  Participate,
   ProtectedRoute,
 };

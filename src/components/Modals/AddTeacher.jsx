@@ -94,11 +94,16 @@ export default function AddTeacherModal() {
                                                         Subject
                                                     </label>
 
-                                                    <input
+                                                    <select
                                                         {...register("subject")}
-                                                        type="text"
                                                         className='w-full bg-white border border-gray-300 rounded-md outline-none'
-                                                    />
+                                                    >
+                                                        <option value="" selected={true}>Select Subject</option>
+
+                                                        {schoolData && schoolData.subjects.map((subject) => (
+                                                            <option value={subject}>{subject}</option>
+                                                        ))}
+                                                    </select>
                                                     {errors.subject && <p className="text-sm text-error">{errors.subject.message}</p>}
                                                 </div>
                                             </div>

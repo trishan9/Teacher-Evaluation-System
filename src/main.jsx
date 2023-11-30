@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import '@/styles/globals.css'
-import App from '@/src/App.jsx'
+import App from '@/App.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

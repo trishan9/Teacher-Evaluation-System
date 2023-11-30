@@ -14,6 +14,7 @@ import {
   HistoryPage,
   Settings,
   Contact,
+  Participate
 } from "@/pages";
 import { authState } from "@/states";
 import { auth } from "@/config/firebase";
@@ -44,6 +45,8 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
 
       <Route path="*" element={<ErrorPage />} />
+
+      <Route path="/participate/:slug" element={<Participate />} />
 
       <Route
         path="/dashboard"
