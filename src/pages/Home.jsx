@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Dialog, Disclosure } from "@headlessui/react";
-import demoImage from "@/assets/Demo.png";
 import {
   Bars3Icon,
   MinusSmallIcon,
@@ -9,70 +8,14 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Footer from "@/components/Footer";
+import { navigations, team, faqs } from "@/constants";
+import demoImage from "@/assets/Demo.png";
 
-const navigation = [
-  { name: "About Us", href: "#about-us" },
-  { name: "FAQs", href: "#faq" },
-  {
-    name: "Community",
-    href: "https://www.facebook.com/groups/846181496988189/",
-    target: "_blank",
-  },
-  {
-    name: "Contact Us",
-    href: "/contact",
-  },
-];
-
-const people = [
-  {
-    name: "Leslie Alexander",
-    role: "Co-Founder / CEO",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-    location: "Toronto, Canada",
-  },
-  {
-    name: "Leslie Alexander",
-    role: "Co-Founder / CEO",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-    location: "Toronto, Canada",
-  },
-  {
-    name: "Leslie Alexander",
-    role: "Co-Founder / CEO",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-    location: "Toronto, Canada",
-  },
-  {
-    name: "Leslie Alexander",
-    role: "Co-Founder / CEO",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-    location: "Toronto, Canada",
-  },
-  // More people...
-];
-
-const faqs = [
-  {
-    question: "Is the transparency and fairness maintained?",
-    answer:
-      "Committed to transparency and fairness, we ensure that the evaluation process is guided by clear criteria, promoting an atmosphere of growth and accountability.",
-  },
-  // More questions...
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-export default function Home() {
+const Home = () => {
   if (localStorage.getItem("accessToken")) {
     return <Navigate to="/dashboard/surveys" replace />;
   }
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -100,7 +43,7 @@ export default function Home() {
             </button>
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
+            {navigations.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
@@ -148,7 +91,7 @@ export default function Home() {
             <div className="flow-root mt-6">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="py-6 space-y-2">
-                  {navigation.map((item) => (
+                  {navigations.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -307,7 +250,7 @@ export default function Home() {
                 role="list"
                 className="grid max-w-2xl grid-cols-1 mx-auto mt-20 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4"
               >
-                {people.map((person) => (
+                {team.map((person) => (
                   <li key={person.name}>
                     <img
                       className="aspect-[14/13] w-full rounded-2xl object-cover"
@@ -336,6 +279,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
               Frequently asked questions
             </h2>
+
             <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
               {faqs.map((faq) => (
                 <Disclosure as="div" key={faq.question} className="pt-6">
@@ -346,6 +290,7 @@ export default function Home() {
                           <span className="text-base font-semibold leading-7">
                             {faq.question}
                           </span>
+
                           <span className="flex items-center ml-6 h-7">
                             {open ? (
                               <MinusSmallIcon
@@ -385,3 +330,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;

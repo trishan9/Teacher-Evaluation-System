@@ -1,12 +1,10 @@
+import { useState, useEffect } from "react";
 import { History } from "@/components";
 import { useHistory } from "@/hooks";
-import { useState, useEffect } from "react";
 
 const HistoryPage = () => {
   const { surveys } = useHistory();
-
   const [allSurveys, setAllSurveys] = useState([]);
-
   const [typeOfSurveys, setTypeOfSurveys] = useState("default");
 
   useEffect(() => {
@@ -38,6 +36,7 @@ const HistoryPage = () => {
     <div className="w-full">
       <div className="flex justify-between">
         <p className="text-xl font-bold">History</p>
+
         <select
           className="rounded-lg"
           name="selectSurveys"

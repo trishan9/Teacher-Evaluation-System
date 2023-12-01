@@ -1,21 +1,7 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-import React, { useRef } from "react";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
 import {
   BuildingOffice2Icon,
   EnvelopeIcon,
@@ -26,7 +12,7 @@ export default function Contact() {
   const form = useRef();
 
   const sendEmail = (e) => {
-    e.preventDefault(e);
+    e.preventDefault();
 
     emailjs
       .sendForm(
@@ -47,12 +33,13 @@ export default function Contact() {
     const formValue = document.querySelector("form");
     formValue.reset();
   };
+
   return (
-    <div className="relative isolate bg-gray-900 overflow-y-hidden">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2 overflow-hidden">
+    <div className="relative overflow-y-hidden bg-gray-900 isolate">
+      <div className="grid grid-cols-1 mx-auto overflow-hidden max-w-7xl lg:grid-cols-2">
         <div className="relative px-6 pt-8 sm:pt-18 lg:static lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
-            <div className="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden ring-1 ring-white/5 lg:w-1/2">
+          <div className="max-w-xl mx-auto lg:mx-0 lg:max-w-lg">
+            <div className="absolute inset-y-0 left-0 w-full overflow-hidden -z-10 ring-1 ring-white/5 lg:w-1/2">
               <svg
                 className="absolute inset-0 h-full w-full stroke-gray-700 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
                 aria-hidden="true"
@@ -69,6 +56,7 @@ export default function Contact() {
                     <path d="M130 200V.5M.5 .5H200" fill="none" />
                   </pattern>
                 </defs>
+
                 <svg
                   x="100%"
                   y={-1}
@@ -76,6 +64,7 @@ export default function Contact() {
                 >
                   <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
                 </svg>
+
                 <rect
                   width="100%"
                   height="100%"
@@ -83,6 +72,7 @@ export default function Contact() {
                   fill="url(#54f88622-e7f8-4f1d-aaf9-c2f5e46dd1f2)"
                 />
               </svg>
+
               <div
                 className="absolute -left-56 top-[calc(100%-13rem)] transform-gpu blur-3xl lg:left-[max(-14rem,calc(100%-59rem))] lg:top-[calc(50%-7rem)]"
                 aria-hidden="true"
@@ -96,13 +86,15 @@ export default function Contact() {
                 />
               </div>
             </div>
+
             <Link to="/">
-              <ArrowLeftIcon className="w-7 cursor-pointer pb-6 text-white" />
+              <ArrowLeftIcon className="pb-6 text-white cursor-pointer w-7" />
             </Link>
 
             <h2 className="text-3xl font-bold tracking-tight text-white">
               Get in touch
             </h2>
+
             <p className="mt-6 text-[15px] leading-8 text-gray-300">
               Welcome to InnoVisionX, your premier destination for cutting-edge
               IT services and client-centric application design. At InnoVisionX,
@@ -110,43 +102,52 @@ export default function Contact() {
               solutions that go beyond mere functionality — we craft
               applications that clients love.
             </p>
+
             <dl className="mt-10 space-y-4 text-base leading-7 text-gray-300">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Address</span>
+
                   <BuildingOffice2Icon
-                    className="h-7 w-6 text-gray-400"
+                    className="w-6 text-gray-400 h-7"
                     aria-hidden="true"
                   />
                 </dt>
+
                 <dd>
                   Kathmandu, Bagmati
                   <br />
                   Nepal
                 </dd>
               </div>
+
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Telephone</span>
+
                   <PhoneIcon
-                    className="h-7 w-6 text-gray-400"
+                    className="w-6 text-gray-400 h-7"
                     aria-hidden="true"
                   />
                 </dt>
+
                 <dd>
                   <a className="hover:text-white" href="tel:+1 (555) 234-5678">
                     +014696969
                   </a>
                 </dd>
               </div>
+
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Email</span>
+
                   <EnvelopeIcon
-                    className="h-7 w-6 text-gray-400"
+                    className="w-6 text-gray-400 h-7"
                     aria-hidden="true"
                   />
                 </dt>
+
                 <dd>
                   <a
                     className="hover:text-white"
@@ -159,6 +160,7 @@ export default function Contact() {
             </dl>
           </div>
         </div>
+
         <form
           ref={form}
           onSubmit={sendEmail}
@@ -166,7 +168,7 @@ export default function Contact() {
           method="POST"
           className="px-6 pt-20 sm:pb-20 lg:px-8 lg:py-32"
         >
-          <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
+          <div className="max-w-xl mx-auto lg:mr-0 lg:max-w-lg">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
               <div>
                 <label
@@ -175,6 +177,7 @@ export default function Contact() {
                 >
                   First name
                 </label>
+
                 <div className="mt-2.5">
                   <input
                     type="text"
@@ -185,6 +188,7 @@ export default function Contact() {
                   />
                 </div>
               </div>
+
               <div>
                 <label
                   htmlFor="last-name"
@@ -192,6 +196,7 @@ export default function Contact() {
                 >
                   Last name
                 </label>
+
                 <div className="mt-2.5">
                   <input
                     type="text"
@@ -202,6 +207,7 @@ export default function Contact() {
                   />
                 </div>
               </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="email"
@@ -209,6 +215,7 @@ export default function Contact() {
                 >
                   Email
                 </label>
+
                 <div className="mt-2.5">
                   <input
                     type="email"
@@ -219,6 +226,7 @@ export default function Contact() {
                   />
                 </div>
               </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="phone-number"
@@ -226,6 +234,7 @@ export default function Contact() {
                 >
                   Phone number
                 </label>
+
                 <div className="mt-2.5">
                   <input
                     type="tel"
@@ -236,6 +245,7 @@ export default function Contact() {
                   />
                 </div>
               </div>
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="message"
@@ -243,6 +253,7 @@ export default function Contact() {
                 >
                   Message
                 </label>
+
                 <div className="mt-2.5">
                   <textarea
                     name="message"
@@ -254,7 +265,8 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-            <div className="mt-8 flex justify-end">
+
+            <div className="flex justify-end mt-8">
               <button
                 type="submit"
                 className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"

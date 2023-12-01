@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 
 const StepTwo = ({ handlePreviousStep, handleNextStep, survey, schoolData }) => {
     const defaultValues = localStorage.getItem("step2") ? JSON.parse(localStorage.getItem("step2")) : {}
-
     const {
         register,
         handleSubmit,
@@ -13,8 +12,8 @@ const StepTwo = ({ handlePreviousStep, handleNextStep, survey, schoolData }) => 
     });
 
     return (
-        <div className='sm:w-1/2 w-full min-h-[60vh] p-6 bg-neutral_white rounded-lg'>
-            <p className='w-full my-2 text-xl text-center'>Step 2 of 4</p>
+        <div className='lg:w-1/2 w-full min-h-[60vh] p-6 bg-neutral_white rounded-lg'>
+            <p className='w-full my-2 text-xl text-center'>Step <span className='font-semibold'>2</span> of <span className='font-semibold'>4</span></p>
 
             <form onSubmit={handleSubmit(handleNextStep)} className='flex flex-col items-end gap-8 mt-6'>
                 {survey.subjects.map((subject) => (

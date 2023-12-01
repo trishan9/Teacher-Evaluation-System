@@ -1,6 +1,8 @@
+import PATHS from "./paths";
 import menus from "./menus";
 import socialMedias from "./socialMedias";
-import PATHS from "./paths";
-import history from "./history";
+import navigations from "./navigations";
+import team from "./team";
+import faqs from "./faqs";
 
-export { menus, socialMedias, PATHS, history };
+export { PATHS, menus, socialMedias, navigations, team, faqs };

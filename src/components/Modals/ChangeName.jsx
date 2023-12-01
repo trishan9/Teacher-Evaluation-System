@@ -1,13 +1,13 @@
 import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useRecoilState } from 'recoil'
-import { changeNameModal } from '@/states'
+import { doc, updateDoc } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { changeNameModal } from '@/states'
 import { changeNameFormSchema } from './formSchema'
 import { schoolState } from '@/states'
-import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/config/firebase';
 
 export default function ChangeNameModal() {

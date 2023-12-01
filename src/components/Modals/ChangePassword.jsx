@@ -1,13 +1,12 @@
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useState, useRef } from 'react'
+import { getAuth, signInWithEmailAndPassword, updatePassword } from "firebase/auth";
 import { useRecoilState } from 'recoil'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { changePasswordModal } from '@/states'
 import { changePasswordFormSchema } from './formSchema'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { getAuth, signInWithEmailAndPassword, updatePassword } from "firebase/auth";
-import { useState, useRef } from 'react'
 import { auth as firebaseAuth } from "@/config/firebase"
 
 export default function ChangePasswordModal() {
