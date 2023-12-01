@@ -1,7 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeftIcon } from '@heroicons/react/24/solid'
-import { useSingleSurveyData } from '@/hooks';
-import { useBaseUrl } from '@/hooks';
+import { useSingleSurveyData, useBaseUrl } from '@/hooks';
 
 const SingleSurvey = () => {
     const { slug: id } = useParams();

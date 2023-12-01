@@ -23,7 +23,7 @@ const SideNav = ({ active }) => {
     const { logout } = useLogin()
 
     return (
-        <div className='bg-white rounded-xl shadow-sm h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 relative'>
+        <div className='bg-white rounded-xl shadow-sm h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 sticky top-[7rem] left-0'>
             {isLoading && <SideNavSkeleton />}
 
             {!isLoading && !schoolData && <SideNavSkeleton />}
@@ -59,7 +59,7 @@ const SideNav = ({ active }) => {
                 ))}
             </div>
 
-            <button onClick={logout} className='absolute flex gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer bg-error hover: bottom-10 left-5'>
+            <button onClick={logout} className='absolute flex gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer bg-error hover:bg-error/90 bottom-10 left-5'>
                 <ArrowLeftOnRectangleIcon className='w-6' />
 
                 <p>Logout</p>

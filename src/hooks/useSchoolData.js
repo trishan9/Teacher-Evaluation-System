@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { getDocs, query, where } from "firebase/firestore"
-import { schoolsRef } from "@/config/firebase"
 import { useRecoilState } from "recoil";
+import { schoolsRef } from "@/config/firebase"
 import { authState, schoolState } from "@/states";
 
 const useSchoolData = () => {

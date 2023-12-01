@@ -1,5 +1,4 @@
-import React from "react";
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 const Routes = React.lazy(() => import('./Routes'));
 
 const App = () => {

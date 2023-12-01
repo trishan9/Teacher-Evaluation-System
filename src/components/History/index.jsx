@@ -1,4 +1,3 @@
-import React from "react";
 import ActiveSurveys from "./ActiveSurveys";
 import ExpiredSurveys from "./ExpiredSurveys";
 

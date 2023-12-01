@@ -7,7 +7,7 @@ const Dashboard = () => {
         <React.Fragment>
             <NavBar />
 
-            <div className="flex gap-6 p-8">
+            <div className="relative flex gap-6 p-8">
                 <SideNav active={0} />
 
                 <Outlet />

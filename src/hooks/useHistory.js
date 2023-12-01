@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getDocs, query, where } from "firebase/firestore";
-import { surveysRef } from "@/config/firebase";
 import { useRecoilState } from "recoil";
+import { surveysRef } from "@/config/firebase";
 import { authState } from "@/states";
 
 const useHistory = () => {

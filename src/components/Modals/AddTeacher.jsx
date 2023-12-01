@@ -1,15 +1,15 @@
 import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { doc, updateDoc } from 'firebase/firestore'
 import { useRecoilState } from 'recoil'
+import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import { addTeacherFormSchema } from './formSchema'
 import { schoolState } from '@/states'
-import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/config/firebase';
 import { addTeacherModal } from '@/states'
-import { v4 as uuidv4 } from 'uuid';
 
 export default function AddTeacherModal() {
     const [isAddTeacherModalOpen, setIsAddTeacherModalOpen] = useRecoilState(addTeacherModal)

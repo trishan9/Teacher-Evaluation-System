@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const NavBar = React.lazy(() => import("./NavBar"));
 const SideNav = React.lazy(() => import("./SideNav"));

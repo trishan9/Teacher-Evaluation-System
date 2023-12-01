@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -129,7 +129,7 @@ const CreateSurvey = () => {
         <Fragment>
           <p className="text-xl font-bold">Create Survey</p>
 
-          <div className="bg-white rounded-xl shadow-sm min-h-[60vh] w-full p-6  my-6 flex flex-col relative">
+          <div className="bg-white rounded-xl shadow-sm h-[37rem] w-full p-6  my-6 flex flex-col relative">
             <form onSubmit={handleSubmit(handleCreateSurvey)} className="grid grid-cols-1 gap-8">
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="font-semibold">
@@ -158,7 +158,7 @@ const CreateSurvey = () => {
                 <p className="text-gray-600">When does the Campaign End?</p>
 
                 {isSurveyExpiring && (
-                  <React.Fragment>
+                  <Fragment>
                     <label htmlFor="expiryDate" className="relative flex items-center justify-center">
                       <input
                         type="date"
@@ -174,7 +174,7 @@ const CreateSurvey = () => {
                     {errors.expiryDate && (
                       <p className="text-sm text-error">{errors.expiryDate.message}</p>
                     )}
-                  </React.Fragment>
+                  </Fragment>
                 )}
 
                 <div className="flex items-center gap-2 mb-6">
@@ -228,7 +228,7 @@ const CreateSurvey = () => {
                 </div>
               </div>
 
-              <div className="absolute my-2 bottom-5 right-5">
+              <div className="absolute my-2 bottom-[1rem] right-5">
                 <button
                   type="submit"
                   className="flex items-center gap-2 justify-center rounded-md bg-accent_primary px-10 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1e2f49] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition ease-in-out mt-10"
