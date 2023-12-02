@@ -15,7 +15,7 @@ const Participate = () => {
     const { schoolData, survey, isLoading } = useSurveyAndSchool(id)
 
     const handleNextStep = (values) => {
-        localStorage.setItem(`step${step}`, JSON.stringify(values))
+        localStorage.setItem(`step${step ? step : 1}`, JSON.stringify(values))
         navigate(`/participate/${id}?step=${step ? step + 1 : 2}`)
     }
 
@@ -53,7 +53,7 @@ const Participate = () => {
                         }
 
                         {step == 4 &&
-                            <StepFour handlePreviousStep={handlePreviousStep} />
+                            <StepFour handlePreviousStep={handlePreviousStep} survey={survey} id={id} />
                         }
                     </div>
                 </div>
