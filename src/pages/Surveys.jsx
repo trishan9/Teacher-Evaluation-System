@@ -21,8 +21,8 @@ const Surveys = () => {
   const baseUrl = useBaseUrl();
 
   useEffect(() => {
-    setActiveSurveys(surveys)
-  }, [surveys])
+    setActiveSurveys(surveys);
+  }, [surveys]);
 
   const handleCopy = (url, id) => {
     navigator.clipboard.writeText(url);
