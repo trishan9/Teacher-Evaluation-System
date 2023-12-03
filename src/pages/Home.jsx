@@ -253,7 +253,7 @@ const Home = () => {
                 {team.map((person) => (
                   <li key={person.name}>
                     <img
-                      className="aspect-[14/13] w-full rounded-2xl object-cover"
+                      className="aspect-[1/1] w-full rounded-2xl object-contain"
                       src={person.imageUrl}
                       alt=""
                     />
@@ -329,6 +329,6 @@ const Home = () => {
       </footer>
     </div>
   );
-}
+};
 
 export default Home;

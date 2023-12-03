@@ -1,32 +1,29 @@
 const team = [
-    {
-        name: "Leslie Alexander",
-        role: "Co-Founder / CEO",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-        location: "Toronto, Canada",
-    },
-    {
-        name: "Leslie Alexander",
-        role: "Co-Founder / CEO",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-        location: "Toronto, Canada",
-    },
-    {
-        name: "Leslie Alexander",
-        role: "Co-Founder / CEO",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-        location: "Toronto, Canada",
-    },
-    {
-        name: "Leslie Alexander",
-        role: "Co-Founder / CEO",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-        location: "Toronto, Canada",
-    },
+  {
+    name: "Trishan Wagle",
+    role: "Co-Founder / CEO",
+    imageUrl:
+      "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701590069/picofme_xlyvt2.png",
+  },
+  {
+    name: "Nischay Maharjan",
+    role: "Co-Founder / CEO",
+    imageUrl:
+      "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701591333/Nischaymahrjan_1_ofljlo.jpg",
+  },
+  {
+    name: "Sambridhi Guragain",
+    role: "Co-Founder / CEO",
+    imageUrl:
+      "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701591898/sambridhi_1_vo3zag.jpg",
+  },
+
+  {
+    name: "Abiral Shrestha",
+    role: "Co-Founder / CEO",
+    imageUrl:
+      "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701591333/abiral_phyabe.jpg",
+  },
 ];
 
-export default team
+export default team;
