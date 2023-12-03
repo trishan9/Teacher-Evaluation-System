@@ -31,7 +31,7 @@ const Settings = () => {
 
     return (
         <div className="flex flex-col w-full gap-8">
-            <p className="text-xl">Settings</p>
+            <p className="text-xl font-bold text-accent_primary">Settings</p>
 
             <div className="flex flex-col w-full gap-6">
                 <div className="grid w-full grid-cols-2 gap-12">

@@ -23,7 +23,7 @@ const SideNav = ({ active }) => {
     const { logout } = useLogin()
 
     return (
-        <div className='bg-white rounded-xl shadow-sm h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 sticky top-[7rem] left-0'>
+        <div className='bg-white rounded-xl shadow-sm h-[80vh] min-w-[16rem] p-6 py-8 flex flex-col items-center gap-16 sticky top-[7rem] left-0 border'>
             {isLoading && <SideNavSkeleton />}
 
             {!isLoading && !schoolData && <SideNavSkeleton />}
@@ -52,9 +52,9 @@ const SideNav = ({ active }) => {
                             )
                         }
                     >
-                        {index == activeMenu ? <menu.solidIcon className='w-6 text-accent_secondary' /> : <menu.icon className='w-6' />}
+                        {index == activeMenu ? <menu.solidIcon className='w-6 text-accent_secondary' /> : <menu.icon className='w-6 text-accent_primary' />}
 
-                        <p>{menu.name}</p>
+                        <p className={clsx(index == activeMenu ? "text-accent_secondary" : "text-accent_primary")}>{menu.name}</p>
                     </button>
                 ))}
             </div>

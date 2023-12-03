@@ -1,8 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans&family=Work+Sans&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../assets/DMSans.ttf");
+  font-display: swap;
+}
 
 * {
   scroll-behavior: smooth;

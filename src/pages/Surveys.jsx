@@ -1,39 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
-import {
-  ArrowDownOnSquareIcon,
-  CheckCircleIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
-import clsx from "clsx";
-import { utils, writeFile } from "xlsx";
-import { Tooltip } from "@mui/material";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { db } from "@/config/firebase";
-import { useSurveysData, useBaseUrl } from "@/hooks";
-import { CopyIcon } from "@/components/Icons";
+import { useSurveysData } from "@/hooks";
 
 const Surveys = () => {
   const { surveys, isLoading } = useSurveysData();
   const [activeSurveys, setActiveSurveys] = useState([]);
-  const [copied, setCopied] = useState(false);
-  const [copiedId, setCopiedId] = useState(0);
-  const baseUrl = useBaseUrl();
 
   useEffect(() => {
     setActiveSurveys(surveys);
   }, [surveys]);
-
-  const handleCopy = (url, id) => {
-    navigator.clipboard.writeText(url);
-    setCopied(true);
-    setCopiedId(id);
-
-    setTimeout(() => {
-      setCopied(false);
-      setCopiedId(0);
-    }, 1000);
-  };
 
   const handleDeleteSurvey = (id) => {
     const filteredSurveys = activeSurveys.filter((survey) => survey.id != id);
@@ -48,16 +26,9 @@ const Surveys = () => {
       });
   };
 
-  const handleDownload = (name, data) => {
-    const worksheet = utils.json_to_sheet(data);
-    const workbook = utils.book_new();
-    utils.book_append_sheet(workbook, worksheet, "Data");
-    writeFile(workbook, `${name}.xlsx`);
-  };
-
   return (
     <div className="w-full">
-      <p className="text-xl font-bold">Surveys</p>
+      <p className="text-xl font-bold text-accent_primary">Surveys</p>
 
       {isLoading && <p> Loading...</p>}
 
@@ -74,21 +45,17 @@ const Surveys = () => {
                       activeSurveys &&
                       activeSurveys.map((data) => (
                         <tr key={data.id} className="flex justify-between">
-                          <td className="flex flex-col gap-2 py-[22px] pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-0">
+                          <td className="flex flex-col gap-2 py-[22px] pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-0 w-[25%]">
+                            <p className="text-light-text-secondary">
+                              Survey Name
+                            </p>
+
                             <p className="text-base font-semibold">
                               {data.name}
                             </p>
-
-                            <Link
-                              to={`${baseUrl}${data.uri}`}
-                              className=" text-light-text-secondary hover:underline"
-                            >
-                              {baseUrl}
-                              {data.uri}
-                            </Link>
                           </td>
 
-                          <td className=" font-semibold flex flex-col items-center justify-center gap-2 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
+                          <td className=" font-semibold flex flex-col items-center justify-center gap-2 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap w-[25%]">
                             <p className="text-light-text-secondary">
                               Total Participants
                             </p>
@@ -98,7 +65,7 @@ const Surveys = () => {
                             </p>
                           </td>
 
-                          <td className="flex flex-col items-center justify-center gap-2 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
+                          <td className="flex flex-col items-center justify-center gap-2 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap w-[25%]">
                             <p className="font-semibold text-light-text-secondary">
                               Expire on
                             </p>
@@ -109,59 +76,22 @@ const Surveys = () => {
                           </td>
 
                           <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
-                            <Tooltip title="Dashboard" placement="bottom">
+                            <div className="tooltip tooltip-bottom" data-tip={data && `${data.name} Dashboard`}>
                               <Link to={`/dashboard/survey/${data.id}`}>
                                 <button className="flex items-center justify-center h-12 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
                                   Dashboard
                                 </button>
                               </Link>
-                            </Tooltip>
+                            </div>
 
-                            <Tooltip
-                              title="Copy Survey Link"
-                              placement="bottom"
-                            >
-                              <button
-                                onClick={() =>
-                                  handleCopy(`${baseUrl}${data.uri}`, data.id)
-                                }
-                                className={clsx(
-                                  "w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-gray-600 !font-normal rounded-md border",
-                                  copied && copiedId == data.id
-                                    ? "bg-gray-100"
-                                    : "bg-white"
-                                )}
-                              >
-                                {copied && copiedId == data.id ? (
-                                  <CheckCircleIcon className="w-6" />
-                                ) : (
-                                  <CopyIcon />
-                                )}
-                              </button>
-                            </Tooltip>
-
-                            <Tooltip
-                              title="Download Survey Data"
-                              placement="bottom"
-                            >
-                              <button
-                                onClick={() =>
-                                  handleDownload(data.name, data.participants)
-                                }
-                                className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-gray-600 !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
-                              >
-                                <ArrowDownOnSquareIcon className="w-6" />
-                              </button>
-                            </Tooltip>
-
-                            <Tooltip title="Delete Survey" placement="bottom">
+                            <div className="tooltip tooltip-bottom" data-tip="Delete Survey">
                               <button
                                 onClick={() => handleDeleteSurvey(data.id)}
                                 className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
                               >
                                 <TrashIcon className="w-5 text-error" />
                               </button>
-                            </Tooltip>
+                            </div>
                           </td>
                         </tr>
                       ))}

@@ -7,8 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        primary: ['Work Sans'],
-        secondary: ['DM Sans']
+        primary: ['DM Sans']
       },
       colors: {
         // Primary Color
