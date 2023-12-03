@@ -17,7 +17,7 @@ const HistoryPage = () => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between font-bold">History</div>
+      <p className="text-xl font-bold text-accent_primary">History</p>
 
       {expiredSurveys.length > 0 && (
         <History

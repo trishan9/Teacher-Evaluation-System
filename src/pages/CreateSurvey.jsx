@@ -47,6 +47,7 @@ function getStyles(name, subjects, theme) {
 // Zod Schema
 const formSchema = z.object({
   surveyName: z.string().min(1, "Survey name can't be empty").min(3, "Survey name can't be less than 3 characters"),
+  totalStudents: z.string().min(1, "Total Students can't be empty"),
   expiryDate: z.string().min(1, "Survey date can't be empty"),
   neverExpires: z.boolean()
 })
@@ -98,6 +99,7 @@ const CreateSurvey = () => {
 
     const payload = {
       name: data.surveyName,
+      totalStudents: data.totalStudents,
       participants: [],
       subjects,
       surveyId,
@@ -127,9 +129,9 @@ const CreateSurvey = () => {
 
       {!isLoading && schoolData ?
         <Fragment>
-          <p className="text-xl font-bold">Create Survey</p>
+          <p className="text-xl font-bold text-accent_primary">Create Survey</p>
 
-          <div className="bg-white rounded-xl shadow-sm h-[37rem] w-full p-6  my-6 flex flex-col relative">
+          <div className="bg-white rounded-xl shadow-sm h-[47rem] w-full p-6  my-6 flex flex-col relative">
             <form onSubmit={handleSubmit(handleCreateSurvey)} className="grid grid-cols-1 gap-8">
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="font-semibold">
@@ -147,6 +149,25 @@ const CreateSurvey = () => {
 
                 {errors.surveyName && (
                   <p className="text-sm text-error">{errors.surveyName.message}</p>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="" className="font-semibold">
+                  Total Expected Students (around)
+                </label>
+
+                <p className="text-gray-600">How many students are expected in this survey? (around)</p>
+
+                <input
+                  type="text"
+                  id="totalStudents"
+                  {...register("totalStudents")}
+                  className="border-gray-300 border-2 h-[45px] w-full rounded-md focus:border"
+                />
+
+                {errors.totalStudents && (
+                  <p className="text-sm text-error">{errors.totalStudents.message}</p>
                 )}
               </div>
 
