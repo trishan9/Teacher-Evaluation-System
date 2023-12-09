@@ -1,38 +1,54 @@
 import { Link } from "react-router-dom";
-const History = ({ surveys, status, message, date }) => {
+import getTimeAgo from "@/utils/getTimeAgo";
+const History = ({ surveys }) => {
   return (
-    <div className="mt-1">
+    <div className="mt-0">
       <div>
-        {/* <p className="pt-4 font-bold ">{status}</p> */}
-
         <div className="grid w-full grid-cols-1 mt-1 lg:grid-cols-2 xl:grid-cols-1 text-base">
           {surveys.map((data) => (
-            <div key={data.id}>
-              <div key={data.id} className="pb-4 mb-2 px-4 bg-white rounded-md">
+            <div key={data.id} className="mt-4">
+              <p className="text-xs pb-[2px] font-semibold">
+                Expired {data.days}
+              </p>
+              <div
+                key={data.id}
+                className="pb-4 mb-2 px-2 pt-2 mt-2 bg-white rounded-md"
+              >
                 <Link to={`/dashboard/survey/${data.id}`}>
-                  <div className="flex justify-between mt-5 pt-5 text-sm">
-                    <td className="w-[25%]">
-                      <tr>Survey Name</tr>
-                      <tr className="font-bold text-base">{data.name}</tr>
-                    </td>
-                    <td className="w-[25%]">
-                      <tr>Participants</tr>
-                      <tr className="font-bold text-base">
-                        <p className="pl-8">{data.participants.length}</p>
-                      </tr>
-                    </td>
-                    <td className="w-[25%]">
-                      <tr>Expired Date</tr>
-                      <tr className="font-bold text-base">{data.expiry}</tr>
-                    </td>
-                    <td>
-                      <tr>
-                        <p className="pl-5">Status</p>
-                      </tr>
-                      <tr className="text-error font-bold text-base">
-                        {data.status}
-                      </tr>
-                    </td>
+                  <div className="flex justify-between pt-1 px-2 text-base">
+                    <table className="min-w-full divide-y divide-gray-300">
+                      <tbody className="divide-y divide-gray-200">
+                        <tr className="flex justify-between">
+                          <td className="w-[33.2%]">
+                            <p>Survey Name</p>
+
+                            <p className="font-bold text-base">{data.name}</p>
+                          </td>
+
+                          <td className="w-[23.3%]">
+                            <p>Participants</p>
+
+                            <p className="pl-8 font-bold text-base">
+                              {data.participants.length}
+                            </p>
+                          </td>
+
+                          <td className="w-[23.3%]">
+                            <p>Expired Date</p>
+
+                            <p className="font-bold text-base">{data.expiry}</p>
+                          </td>
+
+                          <td>
+                            <p className="pl-5">Status</p>
+
+                            <p className="text-error font-bold text-base">
+                              {data.status}
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </Link>
               </div>
