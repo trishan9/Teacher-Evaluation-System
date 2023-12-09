@@ -28,7 +28,7 @@ const Home = () => {
         >
           <div className="flex lg:flex-1">
             <div className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+              <span className="sr-only ">Your Company</span>
               <img className="w-auto rounded h-11" src="/logo.png" alt="" />
             </div>
           </div>
@@ -73,11 +73,6 @@ const Home = () => {
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">InnoVisionX</span>
-                <img
-                  className="w-auto h-8"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
               </a>
               <button
                 type="button"
@@ -137,15 +132,14 @@ const Home = () => {
           <div className="px-6 mx-auto max-w-7xl lg:px-8">
             <div className="max-w-4xl py-32 mx-auto sm:py-48 lg:py-56">
               <div className="text-center">
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+                <h1 className="text-3xl font-bold tracking-tight text-white sm:text-6xl">
                   Transforming Education Through Student Voices
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-300">
-                  Welcome to Teacher Review System, where we believe in
-                  fostering a collaborative learning environment by bridging the
-                  gap between educators and students.We specialize in
-                  facilitating insightful teacher evaluations through the
-                  valuable perspectives of students.
+                  Welcome to SCOL, where we believe in fostering a collaborative
+                  learning environment by bridging the gap between educators and
+                  students, specializing in insightful teacher evaluations using
+                  students' valuable perspectives.
                 </p>
                 <div className="flex items-center justify-center mt-10 gap-x-6">
                   {/* <a
@@ -205,15 +199,14 @@ const Home = () => {
             <div className="px-6 mx-auto max-w-8xl lg:px-8">
               <div className="max-w-3xl mx-auto sm:text-center">
                 <h1 className="text-4xl font-semibold leading-8 text-accent_primary">
-                  How our website works for you!
+                  How our platform works for you!
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Our platform provides a secure and anonymous space for
-                  students to share their experiences, offering constructive
-                  feedback that empowers teachers to continually refine their
-                  teaching methods. Join us in our mission to create a positive
-                  and collaborative educational ecosystem where feedback is a
-                  catalyst for continuous improvement.
+                  Our platform provides a secure, anonymous space for students
+                  offering constructive feedback, empowering teachers in
+                  refining their methods for a positive, collaborative
+                  educational environment fueled by continuous improvement
+                  through feedback.
                 </p>
               </div>
             </div>
@@ -241,9 +234,9 @@ const Home = () => {
                   Our team
                 </h2>
                 <p className="max-w-2xl m-auto mt-6 text-lg leading-8 text-center text-gray-300">
-                  We’re a dynamic group of individuals who are passionate about
-                  what we do and dedicated to delivering the best results for
-                  our clients.
+                  We are a vibrant team of people who are committed to giving
+                  our clients the greatest outcomes possible and passionate
+                  about what we do.
                 </p>
               </div>
               <ul
