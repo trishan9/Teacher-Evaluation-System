@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import getTimeAgo from "@/utils/getTimeAgo";
+
 const History = ({ surveys }) => {
   return (
     <div className="mt-0">
