@@ -1,4 +1,3 @@
-import { filter } from "lodash";
 import React from "react";
 
 const getExpiredDaysAgo = (expiredSurveysData, days) => {
@@ -12,4 +11,5 @@ const getExpiredDaysAgo = (expiredSurveysData, days) => {
   });
   return filterValue;
 };
+
 export default getExpiredDaysAgo;
