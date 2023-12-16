@@ -1,5 +1,3 @@
-import React from "react";
-
 const getExpiredDaysAgo = (expiredSurveysData, days) => {
   const filterValue = expiredSurveysData.filter((data) => {
     const date = new Date(data.expiry);
