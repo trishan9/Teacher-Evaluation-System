@@ -4,7 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { X } from 'lucide-react'
 import { changeNameModal } from '@/states'
 import { changeNameFormSchema } from './formSchema'
 import { schoolState } from '@/states'
@@ -69,7 +69,7 @@ export default function ChangeNameModal() {
                                                 </p>
 
                                                 <button type='button' onClick={() => setIsChangeNameModalOpen(false)}>
-                                                    <XMarkIcon className='w-6 p-1 bg-gray-300 rounded-md cursor-pointer hover:bg-gray-200' />
+                                                    <X className='w-6 p-1 bg-gray-300 rounded-md cursor-pointer hover:bg-gray-200' />
                                                 </button>
                                             </Dialog.Title>
 

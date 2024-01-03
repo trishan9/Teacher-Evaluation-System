@@ -10,7 +10,9 @@ const Dashboard = () => {
             <div className="relative flex gap-6 p-8">
                 <SideNav active={0} />
 
-                <Outlet />
+                <div className="w-full ml-[17rem]">
+                    <Outlet />
+                </div>
             </div>
         </React.Fragment>
     )

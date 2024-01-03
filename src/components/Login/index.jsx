@@ -67,7 +67,7 @@ const LoginForm = () => {
             id="password"
             {...register("password")}
             className={clsx(
-              "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6",
+              "block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset   placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6",
               errors.password
                 ? "focus:ring-error ring-error"
                 : "ring-gray-300 focus:ring-indigo-600"
@@ -80,13 +80,7 @@ const LoginForm = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        {isError && (
-          <p className="text-sm text-error">
-            Username and password didn't match.
-          </p>
-        )}
-
+      <div className="flex flex-col gap-1">
         <button
           type="submit"
           className="flex w-full items-center gap-2 justify-center rounded-md bg-accent_primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1e2f49] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition ease-in-out"
@@ -100,6 +94,12 @@ const LoginForm = () => {
             />
           )}
         </button>
+
+        {isError && (
+          <p className="text-sm text-error">
+            Username and password didn't match.
+          </p>
+        )}
       </div>
     </form>
   );

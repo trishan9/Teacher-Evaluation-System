@@ -21,6 +21,9 @@ import Chip from '@mui/material/Chip';
 import { authState } from "@/states"
 import { surveysRef } from "@/config/firebase";
 import useSchoolData from '@/hooks/useSchoolData';
+import { FilePlus } from "lucide-react";
+import { FilePlus2 } from "lucide-react";
+import clsx from "clsx";
 
 // -------------------------MUI CONFIGS AND FUNCTIONS-------------------------
 const ITEM_HEIGHT = 48;
@@ -131,44 +134,46 @@ const CreateSurvey = () => {
         <Fragment>
           <p className="text-xl font-bold text-accent_primary">Create Survey</p>
 
-          <div className="bg-white rounded-xl shadow-sm h-[47rem] w-full p-6  my-6 flex flex-col relative">
-            <form onSubmit={handleSubmit(handleCreateSurvey)} className="grid grid-cols-1 gap-8">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
-                  Survey Name
-                </label>
+          <div className="bg-transparent rounded-xl h-[30rem] w-full mt-4 mb-14 flex flex-col relative">
+            <form onSubmit={handleSubmit(handleCreateSurvey)} className="grid grid-cols-1 gap-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className="font-semibold">
+                    Survey Name
+                  </label>
 
-                <p className="text-gray-600">What is the name of your Survey?</p>
+                  <p className="text-gray-600">What is the name of your Survey?</p>
 
-                <input
-                  type="text"
-                  id="surveyName"
-                  {...register("surveyName")}
-                  className="border-gray-300 border-2 h-[45px] w-full rounded-md focus:border"
-                />
+                  <input
+                    type="text"
+                    id="surveyName"
+                    {...register("surveyName")}
+                    className="border-[#EBEBEB] bg-white border-2 h-[40px] w-full rounded-md focus:border-0 text-sm"
+                  />
 
-                {errors.surveyName && (
-                  <p className="text-sm text-error">{errors.surveyName.message}</p>
-                )}
-              </div>
+                  {errors.surveyName && (
+                    <p className="text-sm text-error">{errors.surveyName.message}</p>
+                  )}
+                </div>
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
-                  Total Expected Students (around)
-                </label>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className="font-semibold">
+                    Total Expected Students (around)
+                  </label>
 
-                <p className="text-gray-600">How many students are expected in this survey? (around)</p>
+                  <p className="text-gray-600">How many students are expected in this survey? (around)</p>
 
-                <input
-                  type="text"
-                  id="totalStudents"
-                  {...register("totalStudents")}
-                  className="border-gray-300 border-2 h-[45px] w-full rounded-md focus:border"
-                />
+                  <input
+                    type="text"
+                    id="totalStudents"
+                    {...register("totalStudents")}
+                    className="border-[#EBEBEB] bg-white border-2 h-[40px] w-full rounded-md focus:border-0 text-sm"
+                  />
 
-                {errors.totalStudents && (
-                  <p className="text-sm text-error">{errors.totalStudents.message}</p>
-                )}
+                  {errors.totalStudents && (
+                    <p className="text-sm text-error">{errors.totalStudents.message}</p>
+                  )}
+                </div>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -186,7 +191,7 @@ const CreateSurvey = () => {
                         id="expiryDate"
                         {...register("expiryDate")}
                         min={moment().format("YYYY-MM-DD")}
-                        className="border-gray-300 border-2 h-[45px] w-full rounded-md focus:border relative overflow-hidden"
+                        className="border-[#EBEBEB] bg-white border-2 h-[40px] w-full rounded-md focus:border-0 text-sm"
                       />
 
                       <CalendarIcon className="absolute right-0 w-5 mr-3" />
@@ -215,20 +220,21 @@ const CreateSurvey = () => {
 
                   <div>
                     <FormControl className="w-full" >
-                      <InputLabel id="demo-multiple-chip-label">Subjects</InputLabel>
+                      <InputLabel id="multiple-subjects-label">Subjects</InputLabel>
 
                       <Select
-                        labelId="demo-multiple-chip-label"
-                        id="demo-multiple-chip"
+                        labelId="multiple-subjects-label"
+                        id="multiple-subjects"
+                        color="primary"
                         multiple
                         required
                         value={subjects}
                         onChange={handleChange}
-                        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                        input={<OutlinedInput id="select-multiple-chip" label="Subjects" />}
                         renderValue={(selected) => (
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                             {selected.map((value) => (
-                              <Chip key={value} label={value} />
+                              <Chip key={value} label={value} sx={{ background: "white", border: "1px solid #ebebeb" }} />
                             ))}
                           </Box>
                         )}
@@ -249,13 +255,25 @@ const CreateSurvey = () => {
                 </div>
               </div>
 
-              <div className="absolute my-2 bottom-[1rem] right-5">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 justify-center rounded-md bg-accent_primary px-10 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1e2f49] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition ease-in-out mt-10"
-                >
-                  Create Survey
-                </button>
+              <div className={clsx("absolute mb-4 right-0", !isSurveyExpiring ? "-bottom-[3rem]" : "-bottom-[6rem]")}>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => reset()}
+                    type="button"
+                    className="px-6 py-2 text-sm font-semibold transition rounded-md hover:bg-slate-200"
+                  >
+                    Reset
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="flex items-center justify-center rounded-md bg-accent_primary px-6 py-2 text-sm font-semibold leading-6 text-accent_secondary shadow-md hover:bg-[#1e2f49] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition ease-in-out"
+                  >
+                    Create Survey
+
+                    <FilePlus2 className="w-5 h-5 ml-3" />
+                  </button>
+                </div>
               </div>
             </form>
           </div>

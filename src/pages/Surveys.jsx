@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { Trash2 } from "lucide-react";
 import { db } from "@/config/firebase";
 import { useSurveysData } from "@/hooks";
 
@@ -78,7 +78,7 @@ const Surveys = () => {
                           <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
                             <div className="tooltip tooltip-bottom" data-tip={data && `${data.name} Dashboard`}>
                               <Link to={`/dashboard/survey/${data.id}`}>
-                                <button className="flex items-center justify-center h-12 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
+                                <button className="flex items-center justify-center h-10 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
                                   Dashboard
                                 </button>
                               </Link>
@@ -87,9 +87,9 @@ const Surveys = () => {
                             <div className="tooltip tooltip-bottom" data-tip="Delete Survey">
                               <button
                                 onClick={() => handleDeleteSurvey(data.id)}
-                                className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
+                                className="bg-white w-10 h-10 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
                               >
-                                <TrashIcon className="w-5 text-error" />
+                                <Trash2 className="w-5 text-error" />
                               </button>
                             </div>
                           </td>

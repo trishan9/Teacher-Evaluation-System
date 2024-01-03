@@ -122,7 +122,7 @@ const Home = () => {
 
       <main>
         {/* Hero section */}
-        <div className="h-full relative pb-16 overflow-hidden bg-gray-900 isolate pt-14 sm:pb-20">
+        <div className="relative h-full pb-16 overflow-hidden bg-gray-900 isolate pt-14 sm:pb-20">
           <img
             src="https://images.pexels.com/photos/5212338/pexels-photo-5212338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1&blend=111827&sat=-100&exp=15&blend-mode=multiply&fbclid=IwAR0jhVoCfQtm5wzeMB-3FQXDWhxFY_w6UYwq9hJ1FHn-aH2DTiicmMXTREE"
             alt=""
@@ -150,7 +150,7 @@ const Home = () => {
                 </h1>
 
                 <p className="mt-6 text-lg leading-8 text-gray-300">
-                  Welcome to SCOL, where we believe in fostering a collaborative
+                  Welcome to SCOOL, where we believe in fostering a collaborative
                   learning environment by bridging the gap between educators and
                   students, specializing in insightful teacher evaluations using
                   students' valuable perspectives.

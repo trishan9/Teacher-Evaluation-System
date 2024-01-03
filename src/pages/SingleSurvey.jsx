@@ -1,14 +1,11 @@
-import { useState, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import clsx from "clsx";
 import { utils, writeFile } from "xlsx";
-import { ArrowLeftIcon, NoSymbolIcon, QuestionMarkCircleIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
-import { ArrowDownOnSquareIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { ArrowLeft, Copy, CheckCircle2, Ban, BadgeInfo, Download, Search } from 'lucide-react';
 import { useSingleSurveyData, useBaseUrl } from '@/hooks';
-import { CopyIcon } from "@/components/Icons";
-import { useEffect } from 'react';
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -63,7 +60,7 @@ const SingleSurvey = () => {
     return (
         <div className='w-full text-accent_primary'>
             <button onClick={() => navigate(-1)}>
-                <ArrowLeftIcon className='w-6 cursor-pointer' />
+                <ArrowLeft className='w-6 cursor-pointer' />
             </button>
 
             {isLoading && <p>Loading...</p>}
@@ -71,17 +68,17 @@ const SingleSurvey = () => {
             {!isLoading && !survey && isError && <p className='text-red-600'>Some error occurred. Please try again.</p>}
 
             {!isLoading && survey &&
-                <div className='flex flex-col w-full gap-6 my-6'>
+                <div className='flex flex-col w-full gap-6 my-2'>
                     <p className='text-2xl font-semibold'>{survey.name}</p>
 
-                    <div className='flex gap-4'>
+                    <div className='flex items-center gap-4'>
                         <button
                             disabled={survey.status === "EXPIRED"}
                             onClick={() =>
                                 handleCopy(`${baseUrl}${survey.uri}`, survey.id)
                             }
                             className={clsx(
-                                'flex items-center gap-3 px-6 py-3 transition-all ease-in-out disabled:bg-gray-200 disabled:cursor-not-allowed border-2 rounded-md ',
+                                'flex items-center gap-3 px-4 py-2 transition-all ease-in-out disabled:bg-gray-200 disabled:cursor-not-allowed border-2 rounded-md ',
                                 copied && copiedId == survey.id
                                     ? "bg-gray-100"
                                     : "bg-white hover:bg-gray-100"
@@ -90,43 +87,43 @@ const SingleSurvey = () => {
                             {copied && copiedId == survey.id ? "Survey Link Copied" : "Copy Survey Link"}
 
                             {copied && copiedId == survey.id ? (
-                                <CheckCircleIcon className="w-6" />
+                                <CheckCircle2 className="w-5 h-5" />
                             ) : (
-                                <CopyIcon />
+                                <Copy className='w-5 h-5' />
                             )}
                         </button>
 
-                        <button disabled={survey.status === "EXPIRED"} className='flex items-center gap-3 px-6 py-3 font-semibold text-white transition-all ease-in-out border-2 rounded-md disabled:bg-error/60 disabled:cursor-not-allowed bg-error hover:bg-error/75'>
+                        <button disabled={survey.status === "EXPIRED"} className='flex items-center gap-3 px-4 py-2 font-semibold text-white transition-all ease-in-out border-2 rounded-md disabled:bg-error/60 disabled:cursor-not-allowed bg-error hover:bg-error/75'>
                             End Survey
 
-                            <NoSymbolIcon className='w-6' />
+                            <Ban className='w-5 h-5' />
                         </button>
                     </div>
 
-                    <div className="flex flex-col w-full gap-6 p-6 bg-white border-2 rounded-lg">
-                        <p className='text-xl'>Totals</p>
+                    <div className="flex flex-col w-full gap-4 p-4 bg-white border-2 rounded-lg">
+                        <p className='text-lg font-semibold'>Totals</p>
 
-                        <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-3">
-                            <div className="bg-brand-white py-[34px] flex flex-col gap-4 justify-between items-center border border-light-border rounded-lg">
-                                <p className="text-5xl font-medium">{survey && survey.participants ? survey.participants.length : 0}</p>
+                        <div className="grid items-center w-full grid-cols-1 gap-6 sm:grid-cols-3">
+                            <div className="bg-brand-white py-[24px] flex flex-col gap-2 justify-center items-center border border-light-border rounded-lg">
+                                <p className="text-4xl font-medium">{survey && survey.participants ? survey.participants.length : 0}</p>
 
-                                <p className="text-lg text-gray-400">Participants</p>
+                                <p className="text-base text-gray-400">Participants</p>
                             </div>
 
-                            <div className="bg-brand-white py-[34px] flex flex-col gap-4 justify-between items-center border border-light-border rounded-lg">
-                                <p className="text-5xl font-medium">{survey ? survey.totalStudents : 0}</p>
+                            <div className="bg-brand-white py-[24px] flex flex-col gap-2 justify-center items-center border border-light-border rounded-lg">
+                                <p className="text-4xl font-medium">{survey ? survey.totalStudents : 0}</p>
 
-                                <p className="text-lg text-gray-400">Students</p>
+                                <p className="text-base text-gray-400">Students</p>
                             </div>
 
-                            <div className="bg-brand-white py-[34px] flex flex-col gap-4 justify-between items-center border border-light-border rounded-lg">
-                                <p className="text-5xl font-medium">{survey && survey.subjects ? survey.subjects.length : 0}</p>
+                            <div className="bg-brand-white py-[24px] flex flex-col gap-2 justify-center items-center border border-light-border rounded-lg">
+                                <p className="text-4xl font-medium">{survey && survey.subjects ? survey.subjects.length : 0}</p>
 
                                 <div className='flex items-center gap-3'>
-                                    <p className="text-lg text-gray-400">Included Subjects</p>
+                                    <p className="text-base text-gray-400">Included Subjects</p>
 
                                     <div className="tooltip tooltip-bottom" data-tip={survey && survey.subjects && survey.subjects.join(", ")}>
-                                        <QuestionMarkCircleIcon className='w-5 cursor-pointer' />
+                                        <BadgeInfo className='w-5 cursor-pointer' />
                                     </div>
                                 </div>
                             </div>
@@ -134,27 +131,30 @@ const SingleSurvey = () => {
                     </div>
 
                     <div className='grid items-stretch w-full grid-cols-1 gap-6 lg:grid-cols-2'>
-                        <div className='w-full p-6 bg-white border-2 rounded-lg'>
+                        <div className='w-full p-4 bg-white border-2 rounded-lg'>
                             <div className='flex items-center justify-between w-full'>
-                                <p className='text-xl font-semibold'>Survey Analytics</p>
+                                <p className='text-lg font-semibold'>Survey Analytics</p>
 
                                 <div className='flex items-center gap-4'>
                                     <div className='flex items-center gap-2'>
-                                        <div className='bg-[#0FADCF] w-4 h-4 rounded-full' />
+                                        <div className='bg-[#0FADCF] w-3 h-3 rounded-full' />
 
-                                        <p>Total Students</p>
+                                        <p className='text-sm'>Total Students</p>
                                     </div>
 
                                     <div className='flex items-center gap-2'>
-                                        <div className='bg-[#6577F3] w-4 h-4 rounded-full' />
+                                        <div className='bg-[#6577F3] w-3 h-3 rounded-full' />
 
-                                        <p>Total Participants</p>
+                                        <p className='text-sm'>Total Participants</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex flex-col gap-2 my-6">
+                            <div className="flex items-center justify-center gap-2 my-6">
                                 <Doughnut datasetIdKey='id'
+                                    width={100}
+                                    height={180}
+                                    className='w-[10rem] justify-center items-center flex'
                                     data={{
                                         datasets: [{
                                             data: [survey && survey.participants ? survey.participants.length : 0, survey && survey.totalStudents ? survey.totalStudents : 0],
@@ -168,14 +168,13 @@ const SingleSurvey = () => {
                                     options={{
                                         responsive: true,
                                         maintainAspectRatio: false,
-                                        cutout: 125
                                     }}
                                 />
                             </div>
                         </div>
 
-                        <div className='flex flex-col w-full gap-6 p-6 bg-white border-2 rounded-lg'>
-                            <p className='text-xl font-semibold'>Survey Details</p>
+                        <div className='flex flex-col w-full gap-3 p-4 bg-white border-2 rounded-lg'>
+                            <p className='text-lg font-semibold'>Survey Details</p>
 
                             <div className='flex items-end justify-between w-full'>
                                 <div className='flex flex-col gap-6 text-base font-medium'>
@@ -215,7 +214,7 @@ const SingleSurvey = () => {
                                                 <p>{survey.subjects.length}</p>
 
                                                 <div className="tooltip tooltip-left" data-tip={survey.subjects.join(", ")}>
-                                                    <QuestionMarkCircleIcon className='w-5 cursor-pointer' />
+                                                    <BadgeInfo className='w-5 cursor-pointer' />
                                                 </div>
                                             </div>
 
@@ -231,7 +230,7 @@ const SingleSurvey = () => {
 
                     <div className='w-full'>
                         <div className="flex flex-col items-center justify-between w-full gap-4 px-4 py-6 bg-white border-2 rounded-t-lg sm:flex-row sm:items-center sm:px-8 border-light-border ">
-                            <p className="text-xl font-semibold">Participants</p>
+                            <p className="text-lg font-semibold">Participants</p>
 
                             {survey && survey.participants && survey.participants.length > 0 &&
                                 <div className="flex items-center gap-4">
@@ -239,17 +238,19 @@ const SingleSurvey = () => {
                                         onClick={() =>
                                             handleDownload(survey.name, survey.participants)
                                         }
-                                        className="flex items-center gap-3 px-6 py-3 transition-all ease-in-out bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed "
+                                        className="flex items-center gap-2 px-4 py-2 transition-all ease-in-out bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed "
                                     >
-                                        Export
+                                        Download
 
-                                        <ArrowDownOnSquareIcon className="w-6" />
+                                        <Download className="w-5 h-5 ml-2" />
                                     </button>
 
-                                    <div className="relative flex items-center w-full">
-                                        <input onChange={(e) => handleSearch(e.target.value)} id="email" placeholder="Search Participants" className="w-full py-3 pl-6 pr-10 border border-gray-300 rounded-md outline-none placeholder" type="email" />
+                                    <div className="relative flex items-center justify-center">
+                                        <input onChange={(e) => handleSearch(e.target.value)} type="text" className="border-gray-300 bg-[white] border h-[42px] w-[20rem] rounded-md focus:border-none pr-[2.8rem] ring-0 outline-none" placeholder="Search Participants" />
 
-                                        <MagnifyingGlassIcon className='absolute right-[16px] ml-4 w-6' />
+                                        <div className="absolute right-0 p-1 mr-2 bg-white border-2 border-gray-300 rounded-md">
+                                            <Search className="w-4 h-4 " />
+                                        </div>
                                     </div>
                                 </div>
                             }
