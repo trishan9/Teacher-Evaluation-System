@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil"
-import { TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline"
 import { doc, updateDoc } from "firebase/firestore"
+import { Trash2Icon, Search, UserRoundPlus } from "lucide-react"
 import ChangeNameModal from "@/components/Modals/ChangeName"
 import ChangePasswordModal from "@/components/Modals/ChangePassword"
 import { changeNameModal, changePasswordModal, addTeacherModal, schoolState } from "@/states"
@@ -37,13 +37,13 @@ const Settings = () => {
                 <div className="grid w-full grid-cols-2 gap-12">
                     <button
                         onClick={() => setIsChangeNameModalOpen(true)}
-                        className="p-3 transition-all ease-in-out bg-white border-2 rounded-lg cursor-pointer text-accent_primary hover:bg-gray-100">
+                        className="p-2 text-sm transition-all ease-in-out bg-white border-2 rounded-lg cursor-pointer text-accent_primary hover:bg-gray-100">
                         Change Institution's Name
                     </button>
 
                     <button
                         onClick={() => setIsChangePasswordModalOpen(true)}
-                        className="p-3 transition-all ease-in-out bg-white border-2 rounded-lg text-accent_primary hover:bg-gray-100">
+                        className="p-2 text-sm transition-all ease-in-out bg-white border-2 rounded-lg text-accent_primary hover:bg-gray-100">
                         Change Institution's Password
                     </button>
                 </div>
@@ -53,14 +53,24 @@ const Settings = () => {
                 <div className="flex items-center justify-between w-full">
                     <p className="text-lg font-semibold">Teachers</p>
 
-                    <button
-                        onClick={() => setIsAddTeacherModalOpen(true)}
-                        className="flex items-center justify-center gap-3 px-6 py-3 mr-8 font-semibold transition-all ease-in-out border-2 rounded-md bg-accent_primary text-accent_secondary hover:bg-white hover:text-black"
-                    >
-                        <UserPlusIcon className="w-5" />
+                    <div className="flex items-center gap-4">
+                        <div className="relative flex items-center justify-center">
+                            <input onChange={(e) => console.log(e.target.value)} type="text" className="border-gray-300 bg-[white] border h-[42px] w-[20rem] rounded-md focus:border-none pr-[2.8rem] ring-0 outline-none" placeholder="Search Teachers" />
 
-                        Add Teacher
-                    </button>
+                            <div className="absolute right-0 p-1 mr-2 bg-white border-2 border-gray-300 rounded-md">
+                                <Search className="w-4 h-4 " />
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => setIsAddTeacherModalOpen(true)}
+                            className="flex items-center justify-center gap-3 px-4 py-2 mr-8 font-semibold transition-all ease-in-out border-2 rounded-md bg-accent_primary text-accent_secondary hover:bg-white hover:text-black"
+                        >
+                            <UserRoundPlus className="w-5" />
+
+                            Add Teacher
+                        </button>
+                    </div>
                 </div>
 
                 <div className="flex flex-col w-full gap-6 mb-8">
@@ -100,7 +110,7 @@ const Settings = () => {
                                                                 onClick={() => handleDeleteTeacher(data.id)}
                                                                 className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
                                                             >
-                                                                <TrashIcon className="w-5 text-error" />
+                                                                <Trash2Icon className="w-5 text-error" />
                                                             </button>
                                                         </td>
                                                     </tr>

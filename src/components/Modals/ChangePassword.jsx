@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { X } from 'lucide-react';
 import { changePasswordModal } from '@/states'
 import { changePasswordFormSchema } from './formSchema'
 import { auth as firebaseAuth } from "@/config/firebase"
@@ -75,7 +75,7 @@ export default function ChangePasswordModal() {
                                                 </p>
 
                                                 <button type='button' onClick={() => setIsChangePasswordModalOpen(false)}>
-                                                    <XMarkIcon className='w-6 p-1 bg-gray-300 rounded-md cursor-pointer hover:bg-gray-200' />
+                                                    <X className='w-6 p-1 bg-gray-300 rounded-md cursor-pointer hover:bg-gray-200' />
                                                 </button>
                                             </Dialog.Title>
 

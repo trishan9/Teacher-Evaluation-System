@@ -1,33 +1,29 @@
-import {
-    ClipboardDocumentListIcon as ClipboardDocumentListIconSolid,
-    ClockIcon as ClockIconSolid, Cog6ToothIcon as Cog6ToothIconSolid,
-    PlusCircleIcon as PlusCircleIconSolid
-} from '@heroicons/react/24/solid'
-import { ClipboardDocumentListIcon, ClockIcon, Cog6ToothIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
+import { FilePlus2 } from 'lucide-react'
+import { History, ClipboardList, PlusCircle, Settings } from 'lucide-react'
 
 const menus = [
     {
         name: "Surveys",
-        icon: ClipboardDocumentListIcon,
-        solidIcon: ClipboardDocumentListIconSolid,
+        icon: ClipboardList,
+        solidIcon: ClipboardList,
         url: "/dashboard/surveys"
     },
     {
         name: "Create Survey",
-        icon: PlusCircleIcon,
-        solidIcon: PlusCircleIconSolid,
+        icon: FilePlus2,
+        solidIcon: FilePlus2,
         url: "/dashboard/create-survey"
     },
     {
         name: "History",
-        icon: ClockIcon,
-        solidIcon: ClockIconSolid,
+        icon: History,
+        solidIcon: History,
         url: "/dashboard/history"
     },
     {
         name: "Settings",
-        icon: Cog6ToothIcon,
-        solidIcon: Cog6ToothIconSolid,
+        icon: Settings,
+        solidIcon: Settings,
         url: "/dashboard/settings"
     }
 ]

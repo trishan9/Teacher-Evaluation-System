@@ -41,21 +41,21 @@ const HistoryPage = () => {
         <div className="flex gap-4">
           <button
             onClick={() => onFilterChange(7 + 1)}
-            className="flex items-center justify-center h-11 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50"
+            className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
-            7 days
+            Last 7 days
           </button>
 
           <button
             onClick={() => onFilterChange(30 + 1)}
-            className="flex items-center justify-center h-11 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50"
+            className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
-            30 days
+            Last 30 days
           </button>
 
           <button
             onClick={() => setFilteredSurveys(rawExpiredSurveys)}
-            className="flex items-center justify-center h-11 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50"
+            className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"
           >
             All
           </button>
