@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod"
-import { CalendarIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
-import { FilePlus2 } from "lucide-react";
+import { FilePlus2, Loader2 } from "lucide-react";
 import { v4 as uuidv4 } from 'uuid';
 import { addDoc } from "firebase/firestore";
 import { format } from "date-fns"
@@ -38,8 +37,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader } from "lucide-react";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
+
 
 // -------------------------MUI CONFIGS AND FUNCTIONS-------------------------
 const ITEM_HEIGHT = 48;
