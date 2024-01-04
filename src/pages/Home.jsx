@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Dialog, Disclosure } from "@headlessui/react";
-import {
-  Bars3Icon,
-  MinusSmallIcon,
-  PlusSmallIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
 import Footer from "@/components/Footer";
 import { navigations, team, faqs } from "@/constants";
 import demoImage from "@/assets/Demo.png";
+import { AlignJustify, Minus, Plus, X } from "lucide-react";
 
 const Home = () => {
   if (localStorage.getItem("accessToken")) {
@@ -42,7 +37,7 @@ const Home = () => {
             >
               <span className="sr-only">Open main menu</span>
 
-              <Bars3Icon className="w-6 h-6" aria-hidden="true" />
+              <AlignJustify className="w-6 h-6" aria-hidden="true" />
             </button>
           </div>
 
@@ -89,7 +84,7 @@ const Home = () => {
               >
                 <span className="sr-only">Close menu</span>
 
-                <XMarkIcon className="w-6 h-6" aria-hidden="true" />
+                <X className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
 
@@ -235,7 +230,7 @@ const Home = () => {
           </div>
 
           {/* Testimonial section */}
-          <div className="py-20 mt-20 bg-gray-900 sm:py-30 sm:mt-38">
+          <div className="py-20 mt-20 bg-gray-900 sm:py-30 sm:mt-38">Merge
             <div className="px-6 mx-auto max-w-7xl lg:px-8">
               <div className="flex flex-col items-center justify-center mx-auto lg:mx-0">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -299,12 +294,12 @@ const Home = () => {
 
                           <span className="flex items-center ml-6 h-7">
                             {open ? (
-                              <MinusSmallIcon
+                              <Minus
                                 className="w-6 h-6"
                                 aria-hidden="true"
                               />
                             ) : (
-                              <PlusSmallIcon
+                              <Plus
                                 className="w-6 h-6"
                                 aria-hidden="true"
                               />
