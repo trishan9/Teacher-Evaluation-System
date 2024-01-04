@@ -1,12 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import {
-  BuildingOffice2Icon,
-  EnvelopeIcon,
-  PhoneIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeft, Building, Phone, Mail } from "lucide-react";
 
 export default function Contact() {
   const form = useRef();
@@ -88,7 +83,7 @@ export default function Contact() {
             </div>
 
             <Link to="/">
-              <ArrowLeftIcon className="pb-6 text-white cursor-pointer w-7" />
+              <ArrowLeft className="mb-6 text-white cursor-pointer w-7 h-7" />
             </Link>
 
             <h2 className="text-3xl font-bold tracking-tight text-white">
@@ -108,7 +103,7 @@ export default function Contact() {
                 <dt className="flex-none">
                   <span className="sr-only">Address</span>
 
-                  <BuildingOffice2Icon
+                  <Building
                     className="w-6 text-gray-400 h-7"
                     aria-hidden="true"
                   />
@@ -125,7 +120,7 @@ export default function Contact() {
                 <dt className="flex-none">
                   <span className="sr-only">Telephone</span>
 
-                  <PhoneIcon
+                  <Phone
                     className="w-6 text-gray-400 h-7"
                     aria-hidden="true"
                   />
@@ -142,7 +137,7 @@ export default function Contact() {
                 <dt className="flex-none">
                   <span className="sr-only">Email</span>
 
-                  <EnvelopeIcon
+                  <Mail
                     className="w-6 text-gray-400 h-7"
                     aria-hidden="true"
                   />
