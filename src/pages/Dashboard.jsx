@@ -7,10 +7,12 @@ const Dashboard = () => {
         <React.Fragment>
             <NavBar />
 
-            <div className="relative flex gap-6 p-8">
-                <SideNav active={0} />
+            <div className="relative flex gap-6 p-6 lg:p-8">
+                <div className="hidden lg:block fixed top-[108px] left-0 ml-[2rem] bg-white rounded-xl border shadow-sm">
+                    <SideNav active={0} />
+                </div>
 
-                <div className="w-full ml-[17rem]">
+                <div className="w-full lg:ml-[17rem]">
                     <Outlet />
                 </div>
             </div>

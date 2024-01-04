@@ -5,6 +5,10 @@ import ChangeNameModal from "@/components/Modals/ChangeName"
 import ChangePasswordModal from "@/components/Modals/ChangePassword"
 import { changeNameModal, changePasswordModal, addTeacherModal, schoolState } from "@/states"
 import { db } from '@/config/firebase';
+import { Input } from "@/components/ui/input"
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import AddTeacherModal from "@/components/Modals/AddTeacher"
 
 const Settings = () => {
@@ -12,6 +16,8 @@ const Settings = () => {
     const [, setIsChangePasswordModalOpen] = useRecoilState(changePasswordModal)
     const [, setIsAddTeacherModalOpen] = useRecoilState(addTeacherModal)
     const [schoolData, setSchoolData] = useRecoilState(schoolState)
+
+    const { toast } = useToast()
 
     const handleDeleteTeacher = (id) => {
         const teachers = schoolData.teachers
@@ -23,9 +29,17 @@ const Settings = () => {
         updateDoc(docRef, {
             teachers: filteredTeachers
         }).then(() => {
-            console.log("Done")
+            toast({
+                title: "Teacher Deleted!",
+                description: "Teacher has been deleted successfully!"
+            })
         }).catch(() => {
             setSchoolData(prevData => { return { ...prevData, teachers: teachers } })
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your request.",
+            })
         })
     }
 
@@ -34,7 +48,7 @@ const Settings = () => {
             <p className="text-xl font-bold text-accent_primary">Settings</p>
 
             <div className="flex flex-col w-full gap-6">
-                <div className="grid w-full grid-cols-2 gap-12">
+                <div className="grid w-full grid-cols-1 gap-x-12 gap-y-6 lg:grid-cols-2">
                     <button
                         onClick={() => setIsChangeNameModalOpen(true)}
                         className="p-2 text-sm transition-all ease-in-out bg-white border-2 rounded-lg cursor-pointer text-accent_primary hover:bg-gray-100">
@@ -50,12 +64,12 @@ const Settings = () => {
             </div>
 
             <div className="relative flex flex-col w-full">
-                <div className="flex items-center justify-between w-full">
+                <div className="flex flex-col w-full lg:justify-between lg:items-center lg:flex-row">
                     <p className="text-lg font-semibold">Teachers</p>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-stretch justify-between mt-2 sm:gap-4 lg:mt-0">
                         <div className="relative flex items-center justify-center">
-                            <input onChange={(e) => console.log(e.target.value)} type="text" className="border-gray-300 bg-[white] border h-[42px] w-[20rem] rounded-md focus:border-none pr-[2.8rem] ring-0 outline-none" placeholder="Search Teachers" />
+                            <Input onChange={(e) => console.log(e.target.value)} type="text" className="border-gray-300 bg-[white] border w-[18rem] sm:w-[20rem] rounded-md pr-[2.8rem]" placeholder="Search Teachers" />
 
                             <div className="absolute right-0 p-1 mr-2 bg-white border-2 border-gray-300 rounded-md">
                                 <Search className="w-4 h-4 " />
@@ -63,20 +77,21 @@ const Settings = () => {
                         </div>
 
                         <button
+                            disabled={!schoolData}
                             onClick={() => setIsAddTeacherModalOpen(true)}
-                            className="flex items-center justify-center gap-3 px-4 py-2 mr-8 font-semibold transition-all ease-in-out border-2 rounded-md bg-accent_primary text-accent_secondary hover:bg-white hover:text-black"
+                            className="flex items-center justify-center gap-2 px-4 py-1.5 font-semibold transition hover:bg-[#1e2f49] border-2 rounded-md bg-accent_primary text-accent_secondary disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-accent_primary disabled:hover:text-accent_secondary"
                         >
-                            <UserRoundPlus className="w-5" />
+                            <UserRoundPlus className="w-4 h-4" />
 
-                            Add Teacher
+                            <p className="hidden text-sm sm:block">Add Teacher</p>
                         </button>
                     </div>
                 </div>
 
                 <div className="flex flex-col w-full gap-6 mb-8">
-                    <div className="pr-4 sm:pr-6 lg:pr-8">
+                    <div className="pr-0">
                         <div className="flow-root">
-                            <div className="overflow-x-auto ">
+                            <div className="overflow-x-auto">
                                 <div className="inline-block min-w-full py-2 align-middle">
                                     <table className="min-w-full divide-y divide-gray-300">
                                         <tbody className="divide-y divide-gray-200">
@@ -99,19 +114,42 @@ const Settings = () => {
                                                                 Faculty
                                                             </p>
 
-                                                            <p className="text-base text-brand-black">
+                                                            <p className="text-base">
                                                                 {data.subject}
                                                             </p>
                                                         </td>
 
 
                                                         <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
-                                                            <button
-                                                                onClick={() => handleDeleteTeacher(data.id)}
-                                                                className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
-                                                            >
-                                                                <Trash2Icon className="w-5 text-error" />
-                                                            </button>
+                                                            <AlertDialog>
+                                                                <AlertDialogTrigger asChild>
+                                                                    <button
+                                                                        className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
+                                                                    >
+                                                                        <Trash2Icon className="w-5 text-error" />
+                                                                    </button>
+                                                                </AlertDialogTrigger>
+
+                                                                <AlertDialogContent className="font-primary">
+                                                                    <AlertDialogHeader>
+                                                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                                        <AlertDialogDescription>
+                                                                            This action cannot be undone. This will permanently delete teacher and will be removed from our servers.
+                                                                        </AlertDialogDescription>
+                                                                    </AlertDialogHeader>
+
+                                                                    <AlertDialogFooter>
+                                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                                                                        <Button
+                                                                            variant="destructive"
+                                                                            onClick={() => handleDeleteTeacher(data.id)}
+                                                                        >
+                                                                            Delete
+                                                                        </Button>
+                                                                    </AlertDialogFooter>
+                                                                </AlertDialogContent>
+                                                            </AlertDialog>
                                                         </td>
                                                     </tr>
                                                 ))}

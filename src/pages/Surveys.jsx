@@ -4,6 +4,10 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { Trash2 } from "lucide-react";
 import { db } from "@/config/firebase";
 import { useSurveysData } from "@/hooks";
+import { Tooltip as ReactTooltip } from "react-tooltip"
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const Surveys = () => {
   const { surveys, isLoading } = useSurveysData();
@@ -13,16 +17,26 @@ const Surveys = () => {
     setActiveSurveys(surveys);
   }, [surveys]);
 
+  const { toast } = useToast()
+
   const handleDeleteSurvey = (id) => {
     const filteredSurveys = activeSurveys.filter((survey) => survey.id != id);
     setActiveSurveys(filteredSurveys);
     const docRef = doc(db, "surveys", id);
     deleteDoc(docRef)
       .then(() => {
-        console.log("Deleted!");
+        toast({
+          title: "Survey Deleted!",
+          description: "Survey has been deleted successfully!"
+        })
       })
       .catch(() => {
         setActiveSurveys(surveys);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        })
       });
   };
 
@@ -35,9 +49,9 @@ const Surveys = () => {
       {activeSurveys.length == 0 && !isLoading && <p>No any Surveys</p>}
 
       <div className="flex flex-col gap-6 my-2">
-        <div className="px-4 sm:px-6">
+        <div className="px-6">
           <div className="flow-root mt-4">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="-mx-8 -my-2 overflow-x-auto">
               <div className="inline-block min-w-full py-2 pl-2 align-middle sm:pr-6 lg:pr-8">
                 <table className="min-w-full divide-y divide-gray-300">
                   <tbody className="divide-y divide-gray-200">
@@ -76,22 +90,48 @@ const Surveys = () => {
                           </td>
 
                           <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
-                            <div className="tooltip tooltip-bottom" data-tip={data && `${data.name} Dashboard`}>
-                              <Link to={`/dashboard/survey/${data.id}`}>
-                                <button className="flex items-center justify-center h-10 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
-                                  Dashboard
-                                </button>
-                              </Link>
-                            </div>
-
-                            <div className="tooltip tooltip-bottom" data-tip="Delete Survey">
-                              <button
-                                onClick={() => handleDeleteSurvey(data.id)}
-                                className="bg-white w-10 h-10 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
-                              >
-                                <Trash2 className="w-5 text-error" />
+                            <Link id={data.id} to={`/dashboard/survey/${data.id}`}>
+                              <button className="flex items-center justify-center h-10 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
+                                Dashboard
                               </button>
-                            </div>
+                            </Link>
+
+                            <ReactTooltip className='!max-w-[22rem] !bg-black !py-2 !px-3' anchorSelect={`#${data.id}`} place="bottom">
+                              <p className='text-xs'>
+                                {data && data.name && `${data.name} Dashboard`}
+                              </p>
+                            </ReactTooltip>
+
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <button
+                                  className="bg-white w-10 h-10 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
+                                >
+                                  <Trash2 className="w-5 text-error" />
+                                </button>
+                              </AlertDialogTrigger>
+
+                              <AlertDialogContent className="font-primary">
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will permanently delete your
+                                    survey and remove your data from our servers.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                                  <Button
+                                    variant="destructive"
+                                    onClick={() => handleDeleteSurvey(data.id)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </td>
                         </tr>
                       ))}

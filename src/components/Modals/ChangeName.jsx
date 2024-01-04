@@ -9,6 +9,8 @@ import { changeNameModal } from '@/states'
 import { changeNameFormSchema } from './formSchema'
 import { schoolState } from '@/states'
 import { db } from '@/config/firebase';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function ChangeNameModal() {
     const [isChangeNameModalOpen, setIsChangeNameModalOpen] = useRecoilState(changeNameModal)
@@ -16,6 +18,8 @@ export default function ChangeNameModal() {
     const { register, formState: { errors }, handleSubmit } = useForm({
         resolver: zodResolver(changeNameFormSchema)
     })
+
+    const { toast } = useToast()
 
     const handleChangeName = async (values) => {
         setIsChangeNameModalOpen(false)
@@ -27,9 +31,17 @@ export default function ChangeNameModal() {
         updateDoc(docRef, {
             name: values.newName
         }).then(() => {
-            console.log("Done")
+            toast({
+                title: "Name Changed!",
+                description: "Institution's Name has been changed successfully!"
+            })
         }).catch(() => {
             setSchoolData(prevData => { return { ...prevData, name: currentName } })
+            toast({
+                variant: "destructive",
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your request.",
+            })
         })
     }
 
@@ -59,7 +71,7 @@ export default function ChangeNameModal() {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded-lg shadow-xl bg-neutral_white sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                            <Dialog.Panel className="relative w-full max-w-sm p-6 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded-lg shadow-xl bg-neutral_white sm:my-8">
                                 <form onSubmit={handleSubmit(handleChangeName)}>
                                     <div>
                                         <div>
@@ -79,7 +91,7 @@ export default function ChangeNameModal() {
                                                         New Name
                                                     </label>
 
-                                                    <input
+                                                    <Input
                                                         {...register("newName")}
                                                         type="text"
                                                         className='w-full bg-white border border-gray-300 rounded-md outline-none'
@@ -92,7 +104,7 @@ export default function ChangeNameModal() {
                                                         Confirm New Name
                                                     </label>
 
-                                                    <input
+                                                    <Input
                                                         {...register("confirmNewName")}
                                                         type="text"
                                                         className='w-full bg-white border border-gray-300 rounded-md outline-none'
@@ -106,7 +118,7 @@ export default function ChangeNameModal() {
                                     <div className="mt-8">
                                         <button
                                             type="submit"
-                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
                                         >
                                             Save Changes
                                         </button>
