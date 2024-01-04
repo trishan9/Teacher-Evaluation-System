@@ -35,10 +35,10 @@ const HistoryPage = () => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between">
+      <div className="flex flex-col justify-between lg:flex-row">
         <p className="text-xl font-bold text-accent_primary">History</p>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-4 lg:mt-0">
           <button
             onClick={() => onFilterChange(7 + 1)}
             className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"

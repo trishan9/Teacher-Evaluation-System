@@ -8,6 +8,8 @@ import { X } from 'lucide-react';
 import { changePasswordModal } from '@/states'
 import { changePasswordFormSchema } from './formSchema'
 import { auth as firebaseAuth } from "@/config/firebase"
+import { Input } from '@/components/ui/input';
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ChangePasswordModal() {
     const auth = getAuth();
@@ -18,10 +20,15 @@ export default function ChangePasswordModal() {
         resolver: zodResolver(changePasswordFormSchema)
     })
 
+    const { toast } = useToast()
+
     const handleChangePassword = async (values) => {
         const user = auth.currentUser
         updatePassword(user, values.newPassword).then(() => {
-            console.log("Succesful")
+            toast({
+                title: "Password Changed!",
+                description: "Password has been changed successfully!"
+            })
             setIsChangePasswordModalOpen(false)
         }).catch(async () => {
             setShouldNeedCurrentPassword(true)
@@ -30,11 +37,18 @@ export default function ChangePasswordModal() {
             const newAuth = getAuth()
             const newUser = newAuth.currentUser
             updatePassword(newUser, newPassword).then(() => {
-                console.log("Succesful")
+                toast({
+                    title: "Password Changed!",
+                    description: "Password has been changed successfully!"
+                })
                 setIsChangePasswordModalOpen(false)
                 setShouldNeedCurrentPassword(false)
             }).catch((error) => {
-                console.log(error, "Failed")
+                toast({
+                    variant: "destructive",
+                    title: "Uh oh! Something went wrong.",
+                    description: "There was a problem with your request.",
+                })
             });
         });
     }
@@ -65,7 +79,7 @@ export default function ChangePasswordModal() {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded-lg shadow-xl bg-neutral_white sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                            <Dialog.Panel className="relative w-full max-w-sm p-6 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded-lg shadow-xl bg-neutral_white sm:my-8">
                                 <form onSubmit={handleSubmit(handleChangePassword)}>
                                     <div>
                                         <div>
@@ -86,7 +100,7 @@ export default function ChangePasswordModal() {
                                                             Current Password
                                                         </label>
 
-                                                        <input
+                                                        <Input
                                                             required
                                                             ref={currentPasswordRef}
                                                             type="password"
@@ -101,7 +115,7 @@ export default function ChangePasswordModal() {
                                                         New Password
                                                     </label>
 
-                                                    <input
+                                                    <Input
                                                         {...register("newPassword")}
                                                         type="password"
                                                         className='w-full bg-white border border-gray-300 rounded-md outline-none'
@@ -114,7 +128,7 @@ export default function ChangePasswordModal() {
                                                         Confirm Password
                                                     </label>
 
-                                                    <input
+                                                    <Input
                                                         {...register("confirmNewPassword")}
                                                         type="password"
                                                         className='w-full bg-white border border-gray-300 rounded-md outline-none'
@@ -128,7 +142,7 @@ export default function ChangePasswordModal() {
                                     <div className="mt-8">
                                         <button
                                             type="submit"
-                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
                                         >
                                             Save Changes
                                         </button>

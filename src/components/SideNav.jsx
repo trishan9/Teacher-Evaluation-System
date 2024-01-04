@@ -1,10 +1,12 @@
 import { useState, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
-import clsx from 'clsx';
 import { LogOut } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { useSchoolData, useLogin } from '@/hooks';
 import { menus, PATHS } from '@/constants';
 import { AvatarSkeleton, TextSkeleton } from '@/components/Skeleton';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button } from './ui/button';
 
 const SideNav = ({ active }) => {
     const [activeMenu, setActiveMenu] = useState(active)
@@ -23,7 +25,7 @@ const SideNav = ({ active }) => {
     const { logout } = useLogin()
 
     return (
-        <div className='bg-white rounded-xl text-sm shadow-sm h-[80vh] w-[15rem] p-6 py-8 flex flex-col items-center gap-16 fixed top-[108px] left-0 ml-[2rem] border'>
+        <div className='text-sm h-[80vh] w-full lg:w-[15rem] lg:p-6 lg:py-8 flex flex-col items-center gap-16 relative'>
             {isLoading && <SideNavSkeleton />}
 
             {!isLoading && !schoolData && <SideNavSkeleton />}
@@ -47,23 +49,47 @@ const SideNav = ({ active }) => {
                             navigate(menu.url)
                         }}
                         className={
-                            clsx('flex w-full items-center gap-2 p-2 rounded-md',
+                            cn('flex w-full items-center gap-2 p-2 rounded-md',
                                 index == activeMenu ? 'cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out' : "hover:bg-neutral_white"
                             )
                         }
                     >
                         {index == activeMenu ? <menu.solidIcon className='w-5 text-accent_secondary' /> : <menu.icon className='w-5 text-accent_primary' />}
 
-                        <p className={clsx(index == activeMenu ? "text-accent_secondary" : "text-accent_primary")}>{menu.name}</p>
+                        <p className={cn(index == activeMenu ? "text-accent_secondary" : "text-accent_primary")}>{menu.name}</p>
                     </button>
                 ))}
             </div>
 
-            <button onClick={logout} className='absolute flex items-center gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer left-6 bottom-10 bg-error hover:bg-error/90'>
-                <LogOut className='w-5' />
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <button className='absolute left-0 flex items-center gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer lg:left-6 bottom-10 bg-error hover:bg-error/90'>
+                        <LogOut className='w-5' />
 
-                <p>Logout</p>
-            </button>
+                        <p>Logout</p>
+                    </button>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent className="font-primary">
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure you want to logout?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            You'll be logged out from Scool.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                        <Button
+                            variant="destructive"
+                            onClick={logout}
+                        >
+                            Logout
+                        </Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

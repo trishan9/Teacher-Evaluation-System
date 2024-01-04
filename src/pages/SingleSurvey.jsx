@@ -1,11 +1,13 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import clsx from "clsx";
 import { utils, writeFile } from "xlsx";
 import { ArrowLeft, Copy, CheckCircle2, Ban, BadgeInfo, Download, Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { useSingleSurveyData, useBaseUrl } from '@/hooks';
+import { Input } from '@/components/ui/input';
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -59,17 +61,19 @@ const SingleSurvey = () => {
 
     return (
         <div className='w-full text-accent_primary'>
-            <button onClick={() => navigate(-1)}>
-                <ArrowLeft className='w-6 cursor-pointer' />
-            </button>
-
             {isLoading && <p>Loading...</p>}
 
             {!isLoading && !survey && isError && <p className='text-red-600'>Some error occurred. Please try again.</p>}
 
             {!isLoading && survey &&
                 <div className='flex flex-col w-full gap-6 my-2'>
-                    <p className='text-2xl font-semibold'>{survey.name}</p>
+                    <div className='flex items-center gap-3'>
+                        <button onClick={() => navigate(-1)}>
+                            <ArrowLeft className='w-6 cursor-pointer' />
+                        </button>
+
+                        <p className='text-2xl font-semibold'>{survey.name}</p>
+                    </div>
 
                     <div className='flex items-center gap-4'>
                         <button
@@ -77,7 +81,7 @@ const SingleSurvey = () => {
                             onClick={() =>
                                 handleCopy(`${baseUrl}${survey.uri}`, survey.id)
                             }
-                            className={clsx(
+                            className={cn(
                                 'flex items-center gap-3 px-4 py-2 transition-all ease-in-out disabled:bg-gray-200 disabled:cursor-not-allowed border-2 rounded-md ',
                                 copied && copiedId == survey.id
                                     ? "bg-gray-100"
@@ -122,9 +126,13 @@ const SingleSurvey = () => {
                                 <div className='flex items-center gap-3'>
                                     <p className="text-base text-gray-400">Included Subjects</p>
 
-                                    <div className="tooltip tooltip-bottom" data-tip={survey && survey.subjects && survey.subjects.join(", ")}>
-                                        <BadgeInfo className='w-5 cursor-pointer' />
-                                    </div>
+                                    <BadgeInfo id="subjectsInfoTotal" className='w-5 cursor-pointer' />
+
+                                    <ReactTooltip className='!max-w-[22rem] !py-2 !px-3' anchorSelect="#subjectsInfoTotal" place="bottom" style={{ wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
+                                        <p className='text-xs'>
+                                            {survey && survey.subjects && survey.subjects.join(", ")}
+                                        </p>
+                                    </ReactTooltip>
                                 </div>
                             </div>
                         </div>
@@ -203,7 +211,7 @@ const SingleSurvey = () => {
                                             <p>{survey.expiry}</p>
 
                                             <p className={
-                                                clsx('px-6 py-1 font-medium  rounded-md',
+                                                cn('px-6 py-1 font-medium  rounded-md',
                                                     survey.status === "ACTIVE" ? "text-green-700 bg-green-100" : "text-red-700 bg-red-100"
                                                 )}
                                             >
@@ -213,9 +221,13 @@ const SingleSurvey = () => {
                                             <div className='flex items-center gap-3'>
                                                 <p>{survey.subjects.length}</p>
 
-                                                <div className="tooltip tooltip-left" data-tip={survey.subjects.join(", ")}>
-                                                    <BadgeInfo className='w-5 cursor-pointer' />
-                                                </div>
+                                                <BadgeInfo id="subjectsInfo" className='w-5 cursor-pointer' />
+
+                                                <ReactTooltip className='!max-w-[22rem] !py-2 !px-3' anchorSelect="#subjectsInfo" place="top" style={{ wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
+                                                    <p className='text-xs'>
+                                                        {survey && survey.subjects && survey.subjects.join(", ")}
+                                                    </p>
+                                                </ReactTooltip>
                                             </div>
 
                                             <p>{survey.participants.length}</p>
@@ -229,24 +241,24 @@ const SingleSurvey = () => {
                     </div>
 
                     <div className='w-full'>
-                        <div className="flex flex-col items-center justify-between w-full gap-4 px-4 py-6 bg-white border-2 rounded-t-lg sm:flex-row sm:items-center sm:px-8 border-light-border ">
+                        <div className="flex flex-col items-start justify-between w-full gap-4 px-4 py-6 bg-white border-2 rounded-t-lg lg:items-center lg:flex-row lg:justify-between lg:px-8 border-light-border ">
                             <p className="text-lg font-semibold">Participants</p>
 
                             {survey && survey.participants && survey.participants.length > 0 &&
-                                <div className="flex items-center gap-4">
+                                <div className="flex flex-col items-stretch w-full gap-4 lg:w-fit lg:flex-row">
                                     <button
                                         onClick={() =>
                                             handleDownload(survey.name, survey.participants)
                                         }
-                                        className="flex items-center gap-2 px-4 py-2 transition-all ease-in-out bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed "
+                                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm transition-all ease-in-out bg-white border border-gray-300 rounded-md lg:justify-normal hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed "
                                     >
                                         Download
 
-                                        <Download className="w-5 h-5 ml-2" />
+                                        <Download className="w-4 h-4 ml-1.5" />
                                     </button>
 
-                                    <div className="relative flex items-center justify-center">
-                                        <input onChange={(e) => handleSearch(e.target.value)} type="text" className="border-gray-300 bg-[white] border h-[42px] w-[20rem] rounded-md focus:border-none pr-[2.8rem] ring-0 outline-none" placeholder="Search Participants" />
+                                    <div className="relative flex items-center justify-center w-full lg:w-fit">
+                                        <Input onChange={(e) => handleSearch(e.target.value)} type="text" className="border-gray-300 bg-[white] border w-full lg:w-[20rem] rounded-md pr-[2.8rem]" placeholder="Search Participants" />
 
                                         <div className="absolute right-0 p-1 mr-2 bg-white border-2 border-gray-300 rounded-md">
                                             <Search className="w-4 h-4 " />
@@ -256,20 +268,18 @@ const SingleSurvey = () => {
                             }
                         </div>
 
-                        <div className="mb-12 bg-white border rounded-b-lg border-light-border">
+                        <div className="mb-12 overflow-x-auto bg-white border rounded-b-lg lg:overflow-hidden">
                             <div className="flow-root mt-4">
-                                <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
                                     <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                        <table className="min-w-full divide-y divide-gray-300">
+                                        <table className="min-w-full text-xs divide-y divide-gray-300 lg:text-base">
                                             <thead>
                                                 <tr className='font-semibold text-gray-500'>
-                                                    <th align='left' scope="col" className="py-3 pl-16 w-[25%]">Full Name</th>
+                                                    <th align='left' scope="col" className="py-3 pl-7 lg:pl-16 w-[25%]">Full Name</th>
 
                                                     <th scope="col" className="py-3.5 text-center w-[25%]">Class</th>
 
-                                                    <th scope="col" className="py-3.5 text-center w-[25%]">Section</th>
-
-                                                    <th scope="col" className="py-3.5 text-center w-[25%]">Guardian's Name</th>
+                                                    <th scope="col" className="py-3.5 pr-8 lg:pr-0 text-center w-[30%]">Guardian's Name</th>
                                                 </tr>
                                             </thead>
 
@@ -277,13 +287,11 @@ const SingleSurvey = () => {
                                                 {
                                                     survey && survey.participants && participants && participants.map(({ studentDetails }) => (
                                                         <tr>
-                                                            <td className="py-4 text-base pl-16 whitespace-nowrap w-[25%]">{studentDetails.studentName}</td>
+                                                            <td className="py-4 text-sm lg:text-base pl-7 lg:pl-16 whitespace-nowrap w-[25%]">{studentDetails.studentName}</td>
 
-                                                            <td className="py-4 text-base text-center whitespace-nowrap w-[25%]">{studentDetails.class}</td>
+                                                            <td className="py-4 text-sm lg:text-base text-center whitespace-nowrap w-[25%]">{studentDetails.class} '{studentDetails.section}'</td>
 
-                                                            <td className="py-4 text-base whitespace-nowrap w-[25%]" align="center">{studentDetails.section}</td>
-
-                                                            <td align="center" className="py-4 text-base whitespace-nowrap">{studentDetails.guardianName}</td>
+                                                            <td align="center" className="py-4 pr-8 text-sm lg:pr-0 lg:text-base whitespace-nowrap">{studentDetails.guardianName}</td>
                                                         </tr>
                                                     ))
                                                 }{
@@ -310,7 +318,7 @@ const SingleSurvey = () => {
                     </div>
                 </div>
             }
-        </div>
+        </div >
 
     )
 }

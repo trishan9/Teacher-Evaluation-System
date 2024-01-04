@@ -17,6 +17,6 @@ export const changePasswordFormSchema = z.object({
 });
 
 export const addTeacherFormSchema = z.object({
-    name: z.string().min(1, "Teacher's name can't be empty").min(5, "Teacher's name can't be less than 5 characters"),
-    subject: z.string().min(1, "Subject can't be empty")
+    name: z.string({ required_error: "Teacher's name can't be empty" }).min(1, "Teacher's name can't be empty").min(5, "Teacher's name can't be less than 5 characters"),
+    subject: z.string({ required_error: "Subject can't be empty" }).min(1, "Subject can't be empty")
 })

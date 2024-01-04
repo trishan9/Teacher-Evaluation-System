@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
-import loader from "@/assets/loading.gif";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useLogin } from "@/hooks";
 import formSchema from "./formSchema";
+import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 
 const LoginForm = () => {
   const {
@@ -14,6 +16,8 @@ const LoginForm = () => {
     resolver: zodResolver(formSchema),
   });
 
+  const { toast } = useToast()
+
   const { login, isLoading, isError } = useLogin();
 
   const handleLogin = async (value) => {
@@ -21,7 +25,11 @@ const LoginForm = () => {
       userName: `${value.userName}@trs.com`,
       password: value.password,
     };
-    await login(userDetails.userName, userDetails.password);
+    await login(userDetails.userName, userDetails.password)
+    toast({
+      title: "Login Successful!",
+      description: "You are succesfully logged in into Scool!"
+    })
   };
 
   return (
@@ -35,20 +43,18 @@ const LoginForm = () => {
         </label>
 
         <div className="mt-2">
-          <input
+          <Input
             type="text"
+            placeholder="eg. softwarica"
             id="userName"
             {...register("userName")}
-            className={clsx(
-              "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6",
-              errors.userName
-                ? "focus:ring-error ring-error"
-                : "ring-gray-300 focus:ring-indigo-600"
+            className={cn(
+              "block w-full py-1.5 bg-white text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6",
             )}
           />
 
           {errors.userName && (
-            <p className="text-sm text-error">{errors.userName.message}</p>
+            <p className="mt-1 text-sm text-error">{errors.userName.message}</p>
           )}
         </div>
       </div>
@@ -62,20 +68,17 @@ const LoginForm = () => {
         </label>
 
         <div className="mt-2">
-          <input
+          <Input
             type="password"
             id="password"
             {...register("password")}
-            className={clsx(
-              "block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset   placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6",
-              errors.password
-                ? "focus:ring-error ring-error"
-                : "ring-gray-300 focus:ring-indigo-600"
+            className={cn(
+              "block w-full py-1.5 bg-white text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6",
             )}
           />
 
           {errors.password && (
-            <p className="text-sm text-error">{errors.password.message}</p>
+            <p className="mt-1 text-sm text-error">{errors.password.message}</p>
           )}
         </div>
       </div>
@@ -86,12 +89,9 @@ const LoginForm = () => {
           className="flex w-full items-center gap-2 justify-center rounded-md bg-accent_primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1e2f49] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition ease-in-out"
         >
           Sign in
+
           {isLoading && (
-            <img
-              src={loader}
-              alt=""
-              className="w-4 bg-transparent mix-blend-screen"
-            />
+            <Loader2 className="w-4 h-4 animate-spin" />
           )}
         </button>
 
