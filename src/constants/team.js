@@ -7,20 +7,20 @@ const team = [
   },
   {
     name: "Nischay Maharjan",
-    role: "Co-Founder / CEO",
+    role: "Co-Founder / Tech Lead",
     imageUrl:
       "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701591333/Nischaymahrjan_1_ofljlo.jpg",
   },
   {
     name: "Sambridhi Guragain",
-    role: "Co-Founder / CEO",
+    role: "Co-Founder / CMO",
     imageUrl:
       "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701591898/sambridhi_1_vo3zag.jpg",
   },
 
   {
     name: "Abiral Shrestha",
-    role: "Co-Founder / CEO",
+    role: "Co-Founder / Project Manager",
     imageUrl:
       "https://res.cloudinary.com/dnqet3vq1/image/upload/v1701591333/abiral_phyabe.jpg",
   },
