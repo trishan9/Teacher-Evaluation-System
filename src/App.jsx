@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-const Routes = React.lazy(() => import('./Routes'));
-import { Toaster } from "@/components/ui/toaster"
+const Routes = React.lazy(() => import("./Routes"));
+import { Toaster } from "@/components/ui/toaster";
 
 const App = () => {
   return (

@@ -1,110 +1,135 @@
-import { useState, useLayoutEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
-import { LogOut } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useSchoolData, useLogin } from '@/hooks';
-import { menus, PATHS } from '@/constants';
-import { AvatarSkeleton, TextSkeleton } from '@/components/Skeleton';
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { Button } from './ui/button';
+import { useState, useLayoutEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useSchoolData, useLogin } from "@/hooks";
+import { menus, PATHS } from "@/constants";
+import { AvatarSkeleton, TextSkeleton } from "@/components/Skeleton";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "./ui/button";
 
 const SideNav = ({ active }) => {
-    const [activeMenu, setActiveMenu] = useState(active)
-    const navigate = useNavigate()
-    const location = useLocation();
+  const [activeMenu, setActiveMenu] = useState(active);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    useLayoutEffect(() => {
-        if (PATHS[location.pathname]) {
-            setActiveMenu(PATHS[location.pathname])
-        } else {
-            setActiveMenu(0)
-        }
-    }, [location])
+  useLayoutEffect(() => {
+    if (PATHS[location.pathname]) {
+      setActiveMenu(PATHS[location.pathname]);
+    } else {
+      setActiveMenu(0);
+    }
+  }, [location]);
 
-    const { schoolData, isLoading } = useSchoolData()
-    const { logout } = useLogin()
+  const { schoolData, isLoading } = useSchoolData();
+  const { logout } = useLogin();
 
-    return (
-        <div className='text-sm h-[80vh] w-full lg:w-[15rem] lg:p-6 lg:py-8 flex flex-col items-center gap-16 relative'>
-            {isLoading && <SideNavSkeleton />}
+  return (
+    <div className="text-sm h-[80vh] w-full lg:w-[15rem] lg:p-6 lg:py-8 flex flex-col items-center gap-16 relative">
+      {isLoading && <SideNavSkeleton />}
 
-            {!isLoading && !schoolData && <SideNavSkeleton />}
+      {!isLoading && !schoolData && <SideNavSkeleton />}
 
-            {!isLoading && schoolData &&
-                <div className='flex flex-col items-center'>
-                    <img src={schoolData.logo} className='w-16 rounded-full' alt={schoolData.name} />
+      {!isLoading && schoolData && (
+        <div className="flex flex-col items-center">
+          <img
+            src={schoolData.logo}
+            className="w-16 rounded-full"
+            alt={schoolData.name}
+          />
 
-                    <p className='pt-2 text-sm text-gray-500'>Super Admin</p>
+          <p className="pt-2 text-sm text-gray-500">Super Admin</p>
 
-                    <p className='font-semibold text-accent_primary'>{schoolData.name}</p>
-                </div>
-            }
-
-            <div className='flex flex-col items-start w-full gap-6'>
-                {menus.map((menu, index) => (
-                    <button
-                        key={menu.url}
-                        onClick={() => {
-                            setActiveMenu(index)
-                            navigate(menu.url)
-                        }}
-                        className={
-                            cn('flex w-full items-center gap-2 p-2 rounded-md',
-                                index == activeMenu ? 'cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out' : "hover:bg-neutral_white"
-                            )
-                        }
-                    >
-                        {index == activeMenu ? <menu.solidIcon className='w-5 text-accent_secondary' /> : <menu.icon className='w-5 text-accent_primary' />}
-
-                        <p className={cn(index == activeMenu ? "text-accent_secondary" : "text-accent_primary")}>{menu.name}</p>
-                    </button>
-                ))}
-            </div>
-
-            <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <button className='absolute left-0 flex items-center gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer lg:left-6 bottom-10 bg-error hover:bg-error/90'>
-                        <LogOut className='w-5' />
-
-                        <p>Logout</p>
-                    </button>
-                </AlertDialogTrigger>
-
-                <AlertDialogContent className="font-primary">
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Are you sure you want to logout?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            You'll be logged out from Scool.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-
-                        <Button
-                            variant="destructive"
-                            onClick={logout}
-                        >
-                            Logout
-                        </Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+          <p className="font-semibold text-accent_primary">{schoolData.name}</p>
         </div>
-    )
-}
+      )}
 
-export default SideNav
+      <div className="flex flex-col items-start w-full gap-6">
+        {menus.map((menu, index) => (
+          <button
+            key={menu.url}
+            onClick={() => {
+              setActiveMenu(index);
+              navigate(menu.url);
+            }}
+            className={cn(
+              "flex w-full items-center gap-2 p-2 rounded-md",
+              index == activeMenu
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "hover:bg-neutral_white",
+            )}
+          >
+            {index == activeMenu ? (
+              <menu.solidIcon className="w-5 text-accent_secondary" />
+            ) : (
+              <menu.icon className="w-5 text-accent_primary" />
+            )}
 
+            <p
+              className={cn(
+                index == activeMenu
+                  ? "text-accent_secondary"
+                  : "text-accent_primary",
+              )}
+            >
+              {menu.name}
+            </p>
+          </button>
+        ))}
+      </div>
+
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <button className="absolute left-0 flex items-center gap-4 p-2 pr-10 font-semibold text-white underline rounded-md cursor-pointer lg:left-6 bottom-10 bg-error hover:bg-error/90">
+            <LogOut className="w-5" />
+
+            <p>Logout</p>
+          </button>
+        </AlertDialogTrigger>
+
+        <AlertDialogContent className="font-primary">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to logout?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              You'll be logged out from Scool.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+            <Button variant="destructive" onClick={logout}>
+              Logout
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+};
+
+export default SideNav;
 
 const SideNavSkeleton = () => {
-    return (
-        <div className='flex flex-col items-center gap-3.5 mb-1'>
-            <AvatarSkeleton />
+  return (
+    <div className="flex flex-col items-center gap-3.5 mb-1">
+      <AvatarSkeleton />
 
-            <TextSkeleton styles="w-24 h-2" />
+      <TextSkeleton styles="w-24 h-2" />
 
-            <TextSkeleton styles="w-32 h-3" />
-        </div>
-    )
-}
+      <TextSkeleton styles="w-32 h-3" />
+    </div>
+  );
+};
+
