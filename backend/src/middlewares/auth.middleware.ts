@@ -1,14 +1,24 @@
-import token from "../lib/token";
+import { db } from "@/db";
 
-const isAuthenticated = (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   try {
     const tok = req.headers.authorization?.split(" ")[1];
     if (!tok) {
       throw Error("Unauthorized");
     }
 
-    const decodedToken = token.verify({ token: tok, type: "access" });
-    res.locals.user = decodedToken;
+    const decodedToken = await db.school.findFirst({
+      where: {
+        email: tok,
+      },
+      include: {
+        teachers: true,
+      },
+    });
+    if (!decodedToken) {
+      throw Error("Unauthorized");
+    }
+    res.locals.school = decodedToken;
     next();
   } catch {
     res.json({

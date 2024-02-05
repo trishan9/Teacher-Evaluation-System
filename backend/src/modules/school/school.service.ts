@@ -12,7 +12,6 @@ const createSchool = async (
   subjects: any
 ) => {
   if (!email || !name || !classes || !sections || !subjects) {
-    console.log(email, name, classes, sections, subjects, logo);
     throw Error("All the fields are required!");
   }
 

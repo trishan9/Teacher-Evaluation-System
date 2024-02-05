@@ -20,6 +20,7 @@ model School {
   sections String[]
   subjects String[]
   teachers Teacher[]
+  surveys  Survey[]
 }
 
 model Teacher {
@@ -31,4 +32,102 @@ model Teacher {
   School   School? @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 
   @@index([schoolId])
+}
+
+model Survey {
+  id                    String   @id @default(uuid())
+  name                  String
+  expiry                String
+  status                String
+  subjects              String[]
+  surveyId              String
+  totalExpectedStudents String
+  uri                   String
+
+  participantDetails Participant[]
+  subjectDetails     SubjectRatingDetail[]
+  teacherDetails     TeacherRatingDetail[]
+  optional           OptionalField[]
+
+  schoolId String
+  School   School? @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([schoolId])
+}
+
+model Participant {
+  id           String @id @default(uuid())
+  studentName  String
+  class        String
+  guardianName String
+  section      String
+
+  surveyId String
+  Survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@index([surveyId])
+}
+
+model SubjectRatingDetail {
+  id      String          @id @default(uuid())
+  name    String
+  ratings SubjectRating[]
+
+  surveyId String
+  Survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@index([surveyId])
+}
+
+model SubjectRating {
+  id             String @id @default(uuid())
+  questionId     String
+  highlyAgree    Int    @default(0)
+  agree          Int    @default(0)
+  disagree       Int    @default(0)
+  highlyDisagree Int    @default(0)
+
+  subjectId String
+  Subject   SubjectRatingDetail @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId])
+}
+
+model TeacherRatingDetail {
+  id      String          @id @default(uuid())
+  name    String
+  ratings TeacherRating[]
+
+  surveyId String
+  Survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@index([surveyId])
+}
+
+model TeacherRating {
+  id             String @id @default(uuid())
+  questionId     String
+  highlyAgree    Int    @default(0)
+  agree          Int    @default(0)
+  disagree       Int    @default(0)
+  highlyDisagree Int    @default(0)
+
+  teacherRatingDetailId String
+  TeacherRatingDetail   TeacherRatingDetail @relation(fields: [teacherRatingDetailId], references: [id], onDelete: Cascade)
+
+  @@index([teacherRatingDetailId])
+}
+
+model OptionalField {
+  id          String  @id @default(uuid())
+  anonymous   String?
+  abuseReport String?
+
+  surveyId String
+  Survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@index([surveyId])
 }

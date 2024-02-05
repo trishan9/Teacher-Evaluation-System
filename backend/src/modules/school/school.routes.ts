@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import SchoolController from "./school.controller";
 import { upload } from "@/middlewares/multer.middleware";
+import isAuthenticated from "@/middlewares/auth.middleware";
 
 const schoolRouter = Router();
 
@@ -12,6 +13,7 @@ schoolRouter.patch(
   SchoolController.updateSchool
 );
 schoolRouter.get("/", SchoolController.getSchools);
+schoolRouter.get("/me", isAuthenticated, SchoolController.getSchool);
 schoolRouter.delete("/:id", SchoolController.deleteSchool);
 
 export default schoolRouter;

@@ -76,6 +76,22 @@ const getSchoolById = async (req: Request, res: Response) => {
   }
 };
 
+const getSchool = async (req: Request, res: Response) => {
+  try {
+    const schoolId = res.locals.school.id;
+    const school = await SchoolService.getSchoolById(schoolId);
+    res.json({
+      success: true,
+      data: school,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
 const deleteSchool = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -96,6 +112,7 @@ export default {
   createSchool,
   updateSchool,
   getSchools,
+  getSchool,
   getSchoolById,
   deleteSchool,
 };
