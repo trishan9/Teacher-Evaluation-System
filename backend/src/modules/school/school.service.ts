@@ -61,6 +61,14 @@ const getSchools = async () => {
   const schools = await db.school.findMany({
     include: {
       teachers: true,
+      surveys: {
+        include: {
+          participantDetails: true,
+          subjectDetails: true,
+          teacherDetails: true,
+          optional: true,
+        },
+      },
     },
   });
   return schools;
@@ -73,6 +81,7 @@ const getSchoolById = async (id: string) => {
     },
     include: {
       teachers: true,
+      surveys: true,
     },
   });
   return school;
@@ -85,6 +94,7 @@ const deleteSchool = async (id: string) => {
     },
     include: {
       teachers: true,
+      surveys: true,
     },
   });
   return school;
