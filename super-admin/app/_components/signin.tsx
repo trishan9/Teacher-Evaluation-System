@@ -2,7 +2,7 @@
 
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,15 @@ const SignIn = () => {
       username: "",
     },
   });
+  const { control } = form;
+
+  // const { fields, append, remove } = useFieldArray({
+  //   name: "test",
+  //   control,
+  //   rules: {
+  //     required: "Please add at least 1 class",
+  //   },
+  // });
 
   function onSubmit(values: z.infer<typeof formSchema>, event: any) {
     values.logo = event.target.logo.files[0];
@@ -60,10 +69,13 @@ const SignIn = () => {
 
   return (
     <div>
-      <p>Hello This is Super Admin</p>
+      <p className="mb-10">Hello This is Super Admin</p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 w-[50vw] p-[2rem] pr-[5rem]  border"
+        >
           <FormField
             control={form.control}
             name="logo"
