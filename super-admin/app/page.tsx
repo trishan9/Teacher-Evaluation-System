@@ -1,7 +1,8 @@
+import SignIn from "./_components/signin";
 export default function Home() {
   return (
     <div className="p-6">
-      <h1>Super Admin</h1>
+      <SignIn />
     </div>
   );
 }
