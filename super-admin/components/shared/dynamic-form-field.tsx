@@ -22,13 +22,14 @@ const DynamicFormField = ({ form, name, label }: DynamicFormFieldProps) => {
     },
   });
   return (
-    <div className="flex flex-col gap-2">
-      <Label className="font-bold">{label}</Label>
+    <div className="flex flex-col gap-2 mt-2">
+      <p className="font-medium capitalize">{name}</p>
+
       {fields.length > 0 &&
         fields.map((field, index) => (
           <div key={field.id}>
             <div className="w-full">
-              <Label className="text-sm">
+              <Label className="text-sm opacity-85">
                 {label} {index + 1}
               </Label>
 
