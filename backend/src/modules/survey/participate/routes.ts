@@ -5,12 +5,8 @@ import ParticipateSurveyController from "./controller";
 const participateSurveyRouter = Router();
 
 participateSurveyRouter.patch(
-  "/step1/:id",
-  ParticipateSurveyController.participateSurveyStep1
-);
-participateSurveyRouter.patch(
-  "/step1/update/:id",
-  ParticipateSurveyController.participateSurveyStep1Update
+  "/:id",
+  ParticipateSurveyController.participateSurvey
 );
 
 export default participateSurveyRouter;

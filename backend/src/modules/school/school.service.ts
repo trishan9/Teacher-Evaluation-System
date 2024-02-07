@@ -64,8 +64,16 @@ const getSchools = async () => {
       surveys: {
         include: {
           participantDetails: true,
-          subjectDetails: true,
-          teacherDetails: true,
+          subjectDetails: {
+            include: {
+              ratings: true,
+            },
+          },
+          teacherDetails: {
+            include: {
+              ratings: true,
+            },
+          },
           optional: true,
         },
       },
