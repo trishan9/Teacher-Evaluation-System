@@ -73,8 +73,8 @@ const SignIn = () => {
         JSON.stringify(values.sections.map((section: any) => section.name)) ||
         [],
     };
-    console.log(payload);
-    const { data } = await axios.post(`${BASE_URL}/school`, payload, {
+
+    await axios.post(`${BASE_URL}/school`, payload, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
