@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import DynamicFormField from "@/components/shared/dynamic-form-field";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const formSchema = z
   .object({
@@ -50,35 +52,33 @@ const SignIn = () => {
       logo: "",
       password: "",
       confirmPassword: "",
-      subjects: [
-        {
-          name: "",
-        },
-      ],
-      classes: [
-        {
-          name: "",
-        },
-      ],
-      sections: [
-        {
-          name: "",
-        },
-      ],
+      subjects: [{}],
+      classes: [{}],
+      sections: [{}],
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>, event: any) {
-    values.logo = event.target.logo.files[0];
+  async function onSubmit(values: z.infer<typeof formSchema>, event: any) {
     const payload = {
       name: values.collegeName,
       email: `${values.username}@trs.com`,
-      logo: values.logo,
-      classes: values.classes || [],
-      subjects: values.subjects || [],
-      sections: values.sections || [],
+      logo: event.target.logo.files[0],
+      classes:
+        JSON.stringify(values.classes.map((classes: any) => classes.name)) ||
+        [],
+      subjects:
+        JSON.stringify(values.subjects.map((subject: any) => subject.name)) ||
+        [],
+      sections:
+        JSON.stringify(values.sections.map((section: any) => section.name)) ||
+        [],
     };
-    console.log(payload);
+
+    await axios.post(`${BASE_URL}/school`, payload, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     form.reset();
   }
 
