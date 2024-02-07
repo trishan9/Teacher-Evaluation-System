@@ -11,7 +11,7 @@ const createSchool = async (
   sections: any,
   subjects: any
 ) => {
-  if (!email || !name || !classes || !sections || !subjects) {
+  if (!email || !name || !logo || !classes || !sections || !subjects) {
     throw Error("All the fields are required!");
   }
 
