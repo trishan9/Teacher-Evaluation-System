@@ -3,6 +3,7 @@
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,13 +74,17 @@ const SignIn = () => {
         JSON.stringify(values.sections.map((section: any) => section.name)) ||
         [],
     };
-
-    await axios.post(`${BASE_URL}/school`, payload, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    form.reset();
+    try {
+      await axios.post(`${BASE_URL}/school`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast("Your account has been created");
+      form.reset();
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+    }
   }
 
   return (

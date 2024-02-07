@@ -3,7 +3,7 @@ import SignIn from "./_components/signin";
 
 export default function Home() {
   return (
-    <section>
+    <section className="font-primary">
       <Navbar />
 
       <div className="p-6">
