@@ -79,13 +79,8 @@ const SignIn = () => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(data);
+    form.reset();
   }
-
-  //   const { data } = await axios.post(`${BASE_URL}/school`, payload);
-  //   console.log(data);
-  //   // form.reset();
-  // }
 
   return (
     <div className="flex mt-2 flex-col md:px-6 w-full">
