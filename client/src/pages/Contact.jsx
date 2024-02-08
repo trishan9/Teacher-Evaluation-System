@@ -30,7 +30,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative overflow-y-hidden bg-gray-900 isolate">
+    <div className="relative overflow-y-hidden bg-gray-900 isolate min-h-[100vh]">
       <div className="grid grid-cols-1 mx-auto overflow-hidden max-w-7xl lg:grid-cols-2">
         <div className="relative px-6 pt-8 sm:pt-18 lg:static lg:px-8 lg:py-32">
           <div className="max-w-xl mx-auto lg:mx-0 lg:max-w-lg">
@@ -120,15 +120,12 @@ export default function Contact() {
                 <dt className="flex-none">
                   <span className="sr-only">Telephone</span>
 
-                  <Phone
-                    className="w-6 text-gray-400 h-7"
-                    aria-hidden="true"
-                  />
+                  <Phone className="w-6 text-gray-400 h-7" aria-hidden="true" />
                 </dt>
 
                 <dd>
                   <a className="hover:text-white" href="tel:+1 (555) 234-5678">
-                    +014696969
+                    +01 4696969
                   </a>
                 </dd>
               </div>
@@ -137,10 +134,7 @@ export default function Contact() {
                 <dt className="flex-none">
                   <span className="sr-only">Email</span>
 
-                  <Mail
-                    className="w-6 text-gray-400 h-7"
-                    aria-hidden="true"
-                  />
+                  <Mail className="w-6 text-gray-400 h-7" aria-hidden="true" />
                 </dt>
 
                 <dd>
@@ -178,6 +172,7 @@ export default function Contact() {
                     type="text"
                     name="firstName"
                     id="firstName"
+                    required
                     autoComplete="given-name"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
@@ -197,6 +192,7 @@ export default function Contact() {
                     type="text"
                     name="lastName"
                     id="lastName"
+                    required
                     autoComplete="family-name"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
@@ -216,6 +212,7 @@ export default function Contact() {
                     type="email"
                     name="email"
                     id="email"
+                    required
                     autoComplete="email"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
@@ -235,6 +232,8 @@ export default function Contact() {
                     type="tel"
                     name="phoneNumber"
                     id="phoneNumber"
+                    required
+                    minLength="7"
                     autoComplete="tel"
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
@@ -253,6 +252,7 @@ export default function Contact() {
                   <textarea
                     name="message"
                     id="message"
+                    required
                     rows={4}
                     className="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                     defaultValue={""}

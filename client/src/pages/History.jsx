@@ -3,12 +3,22 @@ import { History } from "@/components";
 import { useHistory } from "@/hooks";
 import getTimeAgo from "@/utils/getTimeAgo";
 import getExpiredDaysAgo from "@/utils/getExpiredDaysAgo";
+import { cn } from "@/lib/utils";
+
+const FILTER_OPTIONS = {
+  ALL: "All",
+  LAST_7_DAYS: "Last 7 days",
+  LAST_30_DAYS: "Last 30 days",
+};
 
 const HistoryPage = () => {
   const { surveys } = useHistory();
   const [allSurveys, setAllSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [rawExpiredSurveys, setRawExpiredSurveys] = useState([]);
+  const [activeFilterOption, setActiveFilterOption] = useState(
+    FILTER_OPTIONS.ALL
+  );
 
   useEffect(() => {
     setAllSurveys(surveys);
@@ -30,6 +40,11 @@ const HistoryPage = () => {
 
   const onFilterChange = (days) => {
     const filterValue = getExpiredDaysAgo(rawExpiredSurveys, days);
+    if (days == 8) {
+      setActiveFilterOption(FILTER_OPTIONS.LAST_7_DAYS);
+    } else if (days == 31) {
+      setActiveFilterOption(FILTER_OPTIONS.LAST_30_DAYS);
+    }
     setFilteredSurveys(filterValue);
   };
 
@@ -41,28 +56,48 @@ const HistoryPage = () => {
         <div className="flex gap-4 mt-4 lg:mt-0">
           <button
             onClick={() => onFilterChange(7 + 1)}
-            className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"
+            className={cn(
+              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.LAST_7_DAYS
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "bg-white  hover:bg-gray-100"
+            )}
           >
-            Last 7 days
+            {FILTER_OPTIONS.LAST_7_DAYS}
           </button>
 
           <button
             onClick={() => onFilterChange(30 + 1)}
-            className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"
+            className={cn(
+              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.LAST_30_DAYS
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "bg-white  hover:bg-gray-100"
+            )}
           >
-            Last 30 days
+            {FILTER_OPTIONS.LAST_30_DAYS}
           </button>
 
           <button
-            onClick={() => setFilteredSurveys(rawExpiredSurveys)}
-            className="flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium bg-white border rounded-md hover:bg-gray-100 disabled:opacity-50"
+            onClick={() =>
+              setFilteredSurveys(
+                rawExpiredSurveys,
+                setActiveFilterOption("All")
+              )
+            }
+            className={cn(
+              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.ALL
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "bg-white  hover:bg-gray-100"
+            )}
           >
-            All
+            {FILTER_OPTIONS.ALL}
           </button>
         </div>
       </div>
 
-      {filteredSurveys.length > 0 && <History surveys={filteredSurveys} />}
+      <History surveys={filteredSurveys} />
     </div>
   );
 };
