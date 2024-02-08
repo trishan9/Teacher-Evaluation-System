@@ -5,6 +5,10 @@ const History = ({ surveys }) => {
     <div className="mt-0">
       <div>
         <div className="grid w-full grid-cols-1 mt-1 text-base">
+          {surveys.length == 0 && (
+            <p className="pt-3 text-sm">No any Surveys</p>
+          )}
+
           {surveys.map((data) => (
             <div key={data.id} className="mt-4">
               <p className="text-xs pb-[2px] font-semibold">
