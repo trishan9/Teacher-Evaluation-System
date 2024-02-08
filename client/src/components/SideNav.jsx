@@ -37,19 +37,19 @@ const SideNav = ({ active }) => {
     <div className="text-sm h-[80vh] w-full lg:w-[15rem] lg:p-6 lg:py-8 flex flex-col items-center gap-16 relative">
       {isLoading && <SideNavSkeleton />}
 
-      {!isLoading && !schoolData && <SideNavSkeleton />}
+      {!isLoading && !schoolData?.data?.data && <SideNavSkeleton />}
 
-      {!isLoading && schoolData && (
+      {!isLoading && schoolData?.data?.data && (
         <div className="flex flex-col items-center">
           <img
-            src={schoolData.logo}
-            className="w-16 rounded-full"
-            alt={schoolData.name}
+            src={schoolData?.data?.data.logo}
+            className="object-cover w-16 h-16 border rounded-full"
+            alt={schoolData?.data?.data.name}
           />
 
-          <p className="pt-2 text-sm text-gray-500">Super Admin</p>
+          <p className="pt-2 text-sm text-gray-500">Admin</p>
 
-          <p className="font-semibold text-accent_primary">{schoolData.name}</p>
+          <p className="font-semibold text-accent_primary">{schoolData?.data?.data.name}</p>
         </div>
       )}
 

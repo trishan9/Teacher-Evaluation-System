@@ -19,7 +19,7 @@ const useLogin = () => {
 
             const userCredentials = await signInWithEmailAndPassword(auth, userName, password)
             localStorage.setItem("accessToken", userCredentials.user.accessToken)
-
+            console.log(userCredentials)
             const currentUser = {
                 id: userCredentials.user.uid,
                 email: userCredentials.user.email

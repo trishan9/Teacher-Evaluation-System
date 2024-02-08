@@ -136,7 +136,7 @@ const SingleSurvey = () => {
 
               <div className="bg-brand-white py-[24px] flex flex-col gap-2 justify-center items-center border border-light-border rounded-lg">
                 <p className="text-4xl font-medium">
-                  {survey ? survey.totalStudents : 0}
+                  {survey ? survey.totalExpectedStudents : 0}
                 </p>
 
                 <p className="text-base text-gray-400">Students</p>

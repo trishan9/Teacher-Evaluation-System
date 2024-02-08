@@ -1,20 +1,29 @@
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
+import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { authState } from '@/states';
+import useSchoolData from './useSchoolData';
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 const useSingleSurveyData = (id) => {
     const [survey, setSurvey] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
+    const [authUser] = useRecoilState(authState)
+    const { schoolData } = useSchoolData()
 
     useEffect(() => {
         const getData = async () => {
             try {
                 setIsError(true)
                 setIsLoading(true)
-                const firebaseQuery = doc(db, "surveys", id)
-                const docSnap = await getDoc(firebaseQuery);
-                setSurvey(docSnap.data())
+                const { data } = await axios.get(`${BASE_URL}/survey/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${authUser.email}`
+                    }
+                })
+                setSurvey(data.data)
             } catch (error) {
                 setIsError(true)
             } finally {
@@ -22,7 +31,7 @@ const useSingleSurveyData = (id) => {
             }
         }
         getData()
-    }, [])
+    }, [schoolData])
 
     return { survey, isLoading, isError }
 }

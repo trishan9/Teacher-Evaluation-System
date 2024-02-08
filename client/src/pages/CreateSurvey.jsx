@@ -6,9 +6,7 @@ import { z } from "zod"
 import { useRecoilState } from "recoil";
 import { FilePlus2, Loader2 } from "lucide-react";
 import { v4 as uuidv4 } from 'uuid';
-import { addDoc } from "firebase/firestore";
 import { format } from "date-fns"
-
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -17,11 +15,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
-
 import { cn } from "@/lib/utils";
 import { authState } from "@/states"
-import { surveysRef } from "@/config/firebase";
-import useSchoolData from '@/hooks/useSchoolData';
 import { useToast } from "@/components/ui/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -38,7 +33,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon } from "lucide-react";
+import axios from "axios";
+import { useSchoolData } from "@/hooks";
 
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 // -------------------------MUI CONFIGS AND FUNCTIONS-------------------------
 const ITEM_HEIGHT = 48;
@@ -81,8 +80,8 @@ const CreateSurvey = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    if (schoolData) {
-      setSubjects(schoolData.subjects)
+    if (schoolData?.data?.data.subjects) {
+      setSubjects(schoolData?.data?.data.subjects)
     }
   }, [schoolData])
 
@@ -119,22 +118,21 @@ const CreateSurvey = () => {
 
       const payload = {
         name: data.surveyName,
-        totalStudents: data.totalStudents,
-        participants: [],
+        status: "ACTIVE",
         subjects,
         surveyId,
+        totalExpectedStudents: data.totalStudents,
         uri,
-        user: {
-          email: authUser.email,
-          id: authUser.id
-        },
-        status: "ACTIVE"
       }
       data.neverExpires == true
         ? payload.expiry = "NEVER"
         : payload.expiry = format(data.expiryDate, "PPP")
 
-      await addDoc(surveysRef, payload)
+      await axios.post(`${BASE_URL}/survey`, payload, {
+        headers: {
+          Authorization: `Bearer ${authUser.email}`
+        }
+      })
       toast({
         title: "Survey Created!",
         description: `${payload.name} has been created succesfully!`
@@ -143,7 +141,9 @@ const CreateSurvey = () => {
       reset()
       setIsSurveyExpiring(false)
     } catch (error) {
-      console.log(error)
+      toast.error({
+        title: "Survey failed to be created!",
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -159,7 +159,7 @@ const CreateSurvey = () => {
         </div>
       }
 
-      {!isLoading && schoolData ?
+      {!isLoading && schoolData?.data?.data ?
         <Fragment>
           <p className="text-xl font-bold text-accent_primary">Create Survey</p>
 
@@ -316,7 +316,7 @@ const CreateSurvey = () => {
                           )}
                           MenuProps={MenuProps}
                         >
-                          {schoolData.subjects.map((subject) => (
+                          {schoolData?.data?.data.subjects.map((subject) => (
                             <MenuItem
                               key={subject}
                               value={subject}

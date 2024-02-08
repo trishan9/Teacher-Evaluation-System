@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import { getDocs, query, where } from "firebase/firestore"
 import { useRecoilState } from "recoil";
-import { schoolsRef } from "@/config/firebase"
+import axios from "axios";
 import { authState, schoolState } from "@/states";
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 const useSchoolData = () => {
     const [authUser] = useRecoilState(authState)
@@ -16,15 +17,12 @@ const useSchoolData = () => {
                 setIsError(false)
                 setIsLoading(true)
 
-                const currentSchoolRef = query(schoolsRef, where("email", "==", authUser.email))
-                const snapshot = await getDocs(currentSchoolRef);
-                const tempSchools = []
-                snapshot?.docs?.map((doc) => {
-                    tempSchools.push({
-                        ...doc.data(), id: doc.id
-                    })
-                });
-                setSchoolData(tempSchools[0])
+                const schoolData = await axios.get(`${BASE_URL}/school/me`, {
+                    headers: {
+                        Authorization: `Bearer ${authUser.email}`
+                    }
+                })
+                setSchoolData(schoolData)
             } catch {
                 setIsError(true)
             } finally {

@@ -3,19 +3,19 @@ import { Link } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
 import { Trash2 } from "lucide-react";
 import { db } from "@/config/firebase";
-import { useSurveysData } from "@/hooks";
+import { useSchoolData } from "@/hooks";
 import { Tooltip as ReactTooltip } from "react-tooltip"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 const Surveys = () => {
-  const { surveys, isLoading } = useSurveysData();
+  const { schoolData, isLoading } = useSchoolData();
   const [activeSurveys, setActiveSurveys] = useState([]);
 
   useEffect(() => {
-    setActiveSurveys(surveys);
-  }, [surveys]);
+    setActiveSurveys(schoolData?.data?.data.surveys);
+  }, [schoolData]);
 
   const { toast } = useToast()
 
@@ -46,7 +46,7 @@ const Surveys = () => {
 
       {isLoading && <p> Loading...</p>}
 
-      {activeSurveys.length == 0 && !isLoading && <p>No any Surveys</p>}
+      {activeSurveys?.length == 0 && !isLoading && <p>No any Surveys</p>}
 
       <div className="flex flex-col gap-6 my-2">
         <div className="px-6">
@@ -75,7 +75,7 @@ const Surveys = () => {
                             </p>
 
                             <p className="text-base font-semibold">
-                              {data.participants.length}
+                              {data.participants?.length ?? 0}
                             </p>
                           </td>
 
@@ -90,13 +90,13 @@ const Surveys = () => {
                           </td>
 
                           <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
-                            <Link id={data.id} to={`/dashboard/survey/${data.id}`}>
+                            <Link id={data.surveyId} to={`/dashboard/survey/${data.surveyId}`}>
                               <button className="flex items-center justify-center h-10 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
                                 Dashboard
                               </button>
                             </Link>
 
-                            <ReactTooltip className='!max-w-[22rem] !bg-black !py-2 !px-3' anchorSelect={`#${data.id}`} place="bottom">
+                            <ReactTooltip className='!max-w-[22rem] !bg-black !py-2 !px-3' anchorSelect={`#${data.surveyId}`} place="bottom">
                               <p className='text-xs'>
                                 {data && data.name && `${data.name} Dashboard`}
                               </p>

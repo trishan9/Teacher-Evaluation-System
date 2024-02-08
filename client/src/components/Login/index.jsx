@@ -25,11 +25,16 @@ const LoginForm = () => {
       userName: `${value.userName}@trs.com`,
       password: value.password,
     };
+
     await login(userDetails.userName, userDetails.password)
-    toast({
-      title: "Login Successful!",
-      description: "You are succesfully logged in into Scool!"
+
+    isError ? toast({
+      title: "Login Failed!",
+      description: "Internal Server Error!"
     })
+      : toast({
+        title: "Login Successful!",
+      })
   };
 
   return (
