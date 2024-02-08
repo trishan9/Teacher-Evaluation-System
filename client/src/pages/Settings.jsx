@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { doc, updateDoc } from "firebase/firestore";
 import { Trash2Icon, Search, UserRoundPlus } from "lucide-react";
@@ -24,8 +25,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import AddTeacherModal from "@/components/Modals/AddTeacher";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const Settings = () => {
   const [, setIsChangeNameModalOpen] = useRecoilState(changeNameModal);
