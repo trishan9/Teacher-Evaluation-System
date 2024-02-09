@@ -9,7 +9,9 @@ const Navbar = () => {
 
   return (
     <nav className="p-6 sticky top-0 left-0 w-full bg-slate-200 z-50 flex justify-between font-primary items-center">
-      <h1 className="font-semibold text-lg">Admin Panel</h1>
+      <h1 className="font-semibold text-lg">
+        <Link href="/">Admin Panel</Link>
+      </h1>
 
       <div>
         <Link href="/">
@@ -23,10 +25,15 @@ const Navbar = () => {
 
         <Link href="/manage-school">
           <Button
-            variant={pathname === "/manage-school" ? "outline" : "ghost"}
+            variant={
+              pathname === "/manage-school" ||
+              pathname.startsWith("/manage-school")
+                ? "outline"
+                : "ghost"
+            }
             className="ml-4"
           >
-            Manage School
+            Manage Schools
           </Button>
         </Link>
       </div>

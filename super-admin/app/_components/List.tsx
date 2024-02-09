@@ -35,6 +35,7 @@ export default function List({ school }: { school: any }) {
             <TableHead className="col-span-1 m-2">Institution Name</TableHead>
             <TableHead className="col-span-1 m-2">Total Subjects</TableHead>
             <TableHead className="col-span-1 m-2">Total Teachers</TableHead>
+            <TableHead className="col-span-1 m-2">Total Classes</TableHead>
             <TableHead className="col-span-1 m-2">Total Sections</TableHead>
             <TableHead className="m-2 col-span-1">Actions</TableHead>
           </TableRow>
@@ -60,6 +61,10 @@ export default function List({ school }: { school: any }) {
 
             <TableCell className="col-span-1 m-2">
               {school.teachers.length}
+            </TableCell>
+
+            <TableCell className="col-span-1 m-2">
+              {school.classes.length}
             </TableCell>
 
             <TableCell className="col-span-1 m-2">
