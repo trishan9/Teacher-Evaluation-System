@@ -6,6 +6,7 @@ import isAuthenticated from "@/middlewares/auth.middleware";
 
 const schoolRouter = Router();
 
+schoolRouter.get("/me", isAuthenticated, SchoolController.getSchool);
 schoolRouter.post("/", upload.single("logo"), SchoolController.createSchool);
 schoolRouter.patch(
   "/:id",
@@ -14,7 +15,6 @@ schoolRouter.patch(
 );
 schoolRouter.get("/", SchoolController.getSchools);
 schoolRouter.get("/:id", SchoolController.getSchoolById);
-schoolRouter.get("/me", isAuthenticated, SchoolController.getSchool);
 schoolRouter.delete("/:id", SchoolController.deleteSchool);
 
 export default schoolRouter;

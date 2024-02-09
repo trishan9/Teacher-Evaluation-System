@@ -78,8 +78,7 @@ const getSchoolById = async (req: Request, res: Response) => {
 
 const getSchool = async (req: Request, res: Response) => {
   try {
-    const schoolId = res.locals.school.id;
-    const school = await SchoolService.getSchoolById(schoolId);
+    const school = res.locals.school;
     res.json({
       success: true,
       data: school,

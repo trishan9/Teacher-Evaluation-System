@@ -13,11 +13,29 @@ const isAuthenticated = async (req, res, next) => {
       },
       include: {
         teachers: true,
+        surveys: {
+          include: {
+            participantDetails: true,
+            subjectDetails: {
+              include: {
+                ratings: true,
+              },
+            },
+            teacherDetails: {
+              include: {
+                ratings: true,
+              },
+            },
+            optional: true,
+          },
+        },
       },
     });
+
     if (!decodedToken) {
       throw Error("Unauthorized");
     }
+
     res.locals.school = decodedToken;
     next();
   } catch {
