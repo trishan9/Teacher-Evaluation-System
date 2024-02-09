@@ -1,4 +1,5 @@
 "use client"
+import Cookies from 'js-cookie'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -12,6 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+
+
  
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -29,6 +32,7 @@ export default function LoginForm({admin}:{admin:any}) {
 
       function onSubmit(values: z.infer<typeof formSchema>){
         if(values.username === admin.username && values.password === admin.password){
+          Cookies.set('login', 'true', { expires: 1, path: '/'})
           form.reset()
           console.log('login success')
         } else {
