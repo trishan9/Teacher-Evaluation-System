@@ -13,6 +13,7 @@ schoolRouter.patch(
   SchoolController.updateSchool
 );
 schoolRouter.get("/", SchoolController.getSchools);
+schoolRouter.get("/:id", SchoolController.getSchoolById);
 schoolRouter.get("/me", isAuthenticated, SchoolController.getSchool);
 schoolRouter.delete("/:id", SchoolController.deleteSchool);
 

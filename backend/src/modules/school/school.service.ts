@@ -78,6 +78,9 @@ const getSchools = async () => {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return schools;
 };
@@ -89,7 +92,25 @@ const getSchoolById = async (id: string) => {
     },
     include: {
       teachers: true,
-      surveys: true,
+      surveys: {
+        include: {
+          participantDetails: true,
+          subjectDetails: {
+            include: {
+              ratings: true,
+            },
+          },
+          teacherDetails: {
+            include: {
+              ratings: true,
+            },
+          },
+          optional: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
   return school;
@@ -102,7 +123,22 @@ const deleteSchool = async (id: string) => {
     },
     include: {
       teachers: true,
-      surveys: true,
+      surveys: {
+        include: {
+          participantDetails: true,
+          subjectDetails: {
+            include: {
+              ratings: true,
+            },
+          },
+          teacherDetails: {
+            include: {
+              ratings: true,
+            },
+          },
+          optional: true,
+        },
+      },
     },
   });
   return school;

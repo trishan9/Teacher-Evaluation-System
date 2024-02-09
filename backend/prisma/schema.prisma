@@ -21,6 +21,9 @@ model School {
   subjects String[]
   teachers Teacher[]
   surveys  Survey[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Teacher {
