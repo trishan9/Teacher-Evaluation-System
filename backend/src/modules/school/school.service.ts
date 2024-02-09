@@ -78,9 +78,6 @@ const getSchools = async () => {
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
   return schools;
 };
@@ -108,9 +105,6 @@ const getSchoolById = async (id: string) => {
           optional: true,
         },
       },
-    },
-    orderBy: {
-      createdAt: "desc",
     },
   });
   return school;
