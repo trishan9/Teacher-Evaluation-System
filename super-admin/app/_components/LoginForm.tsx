@@ -18,7 +18,7 @@ const formSchema = z.object({
   password: z.string().min(8).max(16)
 })
 
-export default function LoginForm({admin}:{admin:object}) {
+export default function LoginForm({admin}:{admin:any}) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -28,8 +28,12 @@ export default function LoginForm({admin}:{admin:object}) {
       })
 
       function onSubmit(values: z.infer<typeof formSchema>){
-        sessionStorage.setItem('adminData', JSON.stringify(values))
-        form.reset()
+        if(values.username === admin.username && values.password === admin.password){
+          form.reset()
+          console.log('login success')
+        } else {
+          console.log('login failed')
+        }
         }
   return (
     <>
