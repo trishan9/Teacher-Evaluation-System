@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import axios from "axios";
+import EditForm from "./_components/editForm";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -19,6 +20,7 @@ const EditSchoolPage = async ({
   params: { schoolId: string };
 }) => {
   const school = await getSchoolById(schoolId);
+
   return (
     <div className="p-6 font-primary">
       <Link href="/manage-school">
@@ -26,6 +28,7 @@ const EditSchoolPage = async ({
       </Link>
 
       <h1>Edit School: {school.name}</h1>
+      <EditForm schoolData={school} />
     </div>
   );
 };

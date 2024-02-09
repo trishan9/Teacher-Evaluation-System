@@ -20,10 +20,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function List({ school }: { school: any }) {
-  const deleteData = (id: string) => {
-    console.log(id);
+  const router = useRouter();
+  const deleteData = async (id: string) => {
+    await axios
+      .delete(`${BASE_URL}/school/${id}`)
+      .then((response) => {
+        router.refresh();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (

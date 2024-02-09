@@ -55,9 +55,25 @@ const HistoryPage = () => {
 
         <div className="flex gap-4 mt-4 lg:mt-0">
           <button
+            onClick={() =>
+              setFilteredSurveys(
+                rawExpiredSurveys,
+                setActiveFilterOption("All")
+              )
+            }
+            className={cn(
+              "flex items-center justify-center h-8 gap-2 px-6 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.ALL
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "bg-white  hover:bg-gray-100"
+            )}
+          >
+            {FILTER_OPTIONS.ALL}
+          </button>
+          <button
             onClick={() => onFilterChange(7 + 1)}
             className={cn(
-              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              "flex items-center justify-center h-8 gap-2 px-4 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
               activeFilterOption == FILTER_OPTIONS.LAST_7_DAYS
                 ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
                 : "bg-white  hover:bg-gray-100"
@@ -69,30 +85,13 @@ const HistoryPage = () => {
           <button
             onClick={() => onFilterChange(30 + 1)}
             className={cn(
-              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              "flex items-center justify-center h-8 gap-2 px-4 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
               activeFilterOption == FILTER_OPTIONS.LAST_30_DAYS
                 ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
                 : "bg-white  hover:bg-gray-100"
             )}
           >
             {FILTER_OPTIONS.LAST_30_DAYS}
-          </button>
-
-          <button
-            onClick={() =>
-              setFilteredSurveys(
-                rawExpiredSurveys,
-                setActiveFilterOption("All")
-              )
-            }
-            className={cn(
-              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
-              activeFilterOption == FILTER_OPTIONS.ALL
-                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
-                : "bg-white  hover:bg-gray-100"
-            )}
-          >
-            {FILTER_OPTIONS.ALL}
           </button>
         </div>
       </div>
