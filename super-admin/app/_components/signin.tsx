@@ -5,12 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -74,13 +76,19 @@ const SignIn = () => {
         JSON.stringify(values.sections.map((section: any) => section.name)) ||
         [],
     };
+
     try {
       await axios.post(`${BASE_URL}/school`, payload, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      toast("Your account has been created");
+      await createUserWithEmailAndPassword(
+        auth,
+        payload.email,
+        values.password
+      );
+      toast.success("Your account has been created!");
       form.reset();
     } catch (error: any) {
       toast.error(error.response.data.error);
@@ -88,8 +96,8 @@ const SignIn = () => {
   }
 
   return (
-    <div className="flex mt-2 flex-col md:px-6 w-full">
-      <p className="md:mb-10 mb-6 text-2xl md:text-3xl font-bold">
+    <div className="flex flex-col w-full mt-2 md:px-6">
+      <p className="mb-6 text-2xl font-bold md:mb-10 md:text-3xl">
         Create School / College Account
       </p>
 
@@ -106,7 +114,12 @@ const SignIn = () => {
                 <FormLabel>School / College logo</FormLabel>
 
                 <FormControl>
-                  <Input type="file" {...field} className="cursor-pointer" />
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    {...field}
+                    className="cursor-pointer"
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -120,6 +133,7 @@ const SignIn = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>School / College name</FormLabel>
+
                 <FormControl>
                   <Input placeholder="eg: Softwarica College  " {...field} />
                 </FormControl>
@@ -135,9 +149,11 @@ const SignIn = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
+
                 <FormControl>
                   <Input placeholder="eg: softwarica12" {...field} />
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -149,10 +165,11 @@ const SignIn = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
+
                 <FormControl>
                   <Input type="password" {...field} />
                 </FormControl>
-                <FormDescription></FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -164,10 +181,11 @@ const SignIn = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
+
                 <FormControl>
                   <Input type="password" {...field} />
                 </FormControl>
-                <FormDescription></FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -181,6 +199,9 @@ const SignIn = () => {
 
           <Button type="submit" size="lg" className="w-full mt-6">
             Create School / College
+            {form.formState.isSubmitting && (
+              <Loader2 className="w-5 h-5 ml-2 animate-spin" />
+            )}
           </Button>
         </form>
       </Form>

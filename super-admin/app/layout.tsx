@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import Navbar from "./_components/navbar";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-primary" });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-primary" });
 
 export const metadata: Metadata = {
   title: "Admin Panel | Scool",
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={(inter.className, inter.variable)}>
+      <body className={dmSans.variable}>
         <Navbar />
         {children}
         <Toaster />

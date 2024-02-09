@@ -1,6 +1,9 @@
-"use client"
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,59 +11,96 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { FilePenLine } from 'lucide-react'
-import { Trash } from 'lucide-react'
-
-
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function List({ school }: { school: any }) {
+  const deleteData = (id: string) => {
+    console.log(id);
+  };
 
-  const editData = (e:any) => {
-    console.log(e.target.id)
-  }
-
-  const deleteData = () => {
-    console.log('delete')
-  }
-  
   return (
-    <div className='flex justify-between p-6 md:p-[2rem] rounded-md border m-3' id={school.id} onClick={editData}>
-      <Table >
+    <div className="flex justify-between p-6 md:p-[2rem] rounded-md border m-3">
+      <Table className="min-w-full max-w-full">
         <TableHeader>
-          <TableRow className='grid grid-flow-col grid-cols-9 text-center'>
-            <TableHead className='col-span-2 m-2'>Logo</TableHead>
-            <TableHead className='col-span-2 m-2'>Name</TableHead>
-            <TableHead className='col-span-1 m-2'>Subject</TableHead>
-            <TableHead className='col-span-1 m-2'>Teachers</TableHead>
-            <TableHead className='col-span-1 m-2' >Section</TableHead>
-            <TableHead className='col-span-2 m-2'>Actions</TableHead>
+          <TableRow className="grid grid-flow-col grid-cols-6 text-center justify-center items-center">
+            <TableHead className="col-span-1 m-2">Institution Logo</TableHead>
+            <TableHead className="col-span-1 m-2">Institution Name</TableHead>
+            <TableHead className="col-span-1 m-2">Total Subjects</TableHead>
+            <TableHead className="col-span-1 m-2">Total Teachers</TableHead>
+            <TableHead className="col-span-1 m-2">Total Sections</TableHead>
+            <TableHead className="m-2 col-span-1">Actions</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
-          <TableRow className='grid grid-flow-col grid-cols-9 text-left'>
-            <TableCell className='col-span-2 m-2' >
+          <TableRow className="grid grid-flow-col grid-cols-6 text-left justify-center items-center">
+            <TableCell className="col-span-1 m-2">
               <Image
                 src={school.logo}
-                alt='school logo'
-                className='w-16 h-16 rounded-full object-cover border'
+                alt="school logo"
+                className="w-14 h-14 rounded-full object-cover border"
                 width={1080}
                 height={1080}
               />
             </TableCell>
-            <TableCell className='col-span-2 m-2'>{school.name}</TableCell>
-            <TableCell className='col-span-1 m-2'>{school.subjects.length}</TableCell>
-            <TableCell className='col-span-1 m-2'>{school.teachers.length}</TableCell>
-            <TableCell className='col-span-1 m-2'>
+
+            <TableCell className="col-span-1 m-2">{school.name}</TableCell>
+
+            <TableCell className="col-span-1 m-2">
+              {school.subjects.length}
+            </TableCell>
+
+            <TableCell className="col-span-1 m-2">
+              {school.teachers.length}
+            </TableCell>
+
+            <TableCell className="col-span-1 m-2">
               {school.sections.length}
             </TableCell>
-            <TableCell className='col-span-2 m-2'>
-              <Button size='icon' className='mr-1' onClick={editData}><FilePenLine /></Button>
-              <Button size='icon' onClick={deleteData}><Trash /></Button>
+
+            <TableCell className="col-span-1 m-2 flex gap-2 items-center justify-start">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="w-8 h-4 p-0">
+                    <span className="sr-only">Open menu</span>
+
+                    <MoreHorizontal className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end" className="font-primary">
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                  <DropdownMenuSeparator />
+
+                  <Link href={`/manage-school/${school.id}`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Pencil className="w-4 h-4 mr-2" />
+                      Edit
+                    </DropdownMenuItem>
+                  </Link>
+
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => deleteData(school.id)}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
