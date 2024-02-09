@@ -92,7 +92,6 @@ export default function List({ school }: { school: any }) {
                       Edit
                     </DropdownMenuItem>
                   </Link>
-
                   <DropdownMenuItem
                     className="cursor-pointer"
                     onClick={() => deleteData(school.id)}
