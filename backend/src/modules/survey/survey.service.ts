@@ -3,6 +3,20 @@ import { db } from "@/db";
 const getSurveyBySurveyId = async (id: string) => {
   const survey = await db.survey.findFirst({
     where: { surveyId: id },
+    include: {
+      participantDetails: true,
+      subjectDetails: {
+        include: {
+          ratings: true,
+        },
+      },
+      teacherDetails: {
+        include: {
+          ratings: true,
+        },
+      },
+      optional: true,
+    },
   });
   return survey;
 };
