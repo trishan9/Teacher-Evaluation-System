@@ -18,7 +18,7 @@ export default function Contact() {
         "sLtYsD57se_LlwFsI"
       )
       .then(() => {
-        toast.success("your message has been sent");
+        toast.success("Your message has been sent");
       });
     const formValue = document.querySelector("form");
 
