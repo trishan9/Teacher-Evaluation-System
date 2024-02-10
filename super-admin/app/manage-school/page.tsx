@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import List from "../_components/List";
 
@@ -10,6 +11,8 @@ const getSchools = async () => {
   } catch (error) {
     console.log(error);
   }
+  const router = useRouter();
+  router.refresh();
 };
 
 export default async function ManageSchool() {
