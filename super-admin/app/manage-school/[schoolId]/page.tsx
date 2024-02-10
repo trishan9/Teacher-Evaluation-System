@@ -31,3 +31,4 @@ const EditSchoolPage = async ({
 };
 
 export default EditSchoolPage;
+
