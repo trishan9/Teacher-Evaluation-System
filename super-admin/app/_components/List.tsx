@@ -28,26 +28,25 @@ export default function List({ school }: { school: any }) {
 
   return (
     <div className="flex justify-between p-6 md:p-[2rem] rounded-md border m-3">
-      <Table className="min-w-full max-w-full">
+      <Table className="max-w-full min-w-full">
         <TableHeader>
-          <TableRow className="grid grid-flow-col grid-cols-6 text-center justify-center items-center">
+          <TableRow className="grid items-center justify-center grid-flow-col grid-cols-6 text-center">
             <TableHead className="col-span-1 m-2">Institution Logo</TableHead>
             <TableHead className="col-span-1 m-2">Institution Name</TableHead>
             <TableHead className="col-span-1 m-2">Total Subjects</TableHead>
-            <TableHead className="col-span-1 m-2">Total Teachers</TableHead>
             <TableHead className="col-span-1 m-2">Total Classes</TableHead>
             <TableHead className="col-span-1 m-2">Total Sections</TableHead>
-            <TableHead className="m-2 col-span-1">Actions</TableHead>
+            <TableHead className="col-span-1 m-2">Actions</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          <TableRow className="grid grid-flow-col grid-cols-6 text-left justify-center items-center">
+          <TableRow className="grid items-center justify-center grid-flow-col grid-cols-6 text-left">
             <TableCell className="col-span-1 m-2">
               <Image
                 src={school.logo}
                 alt="school logo"
-                className="w-14 h-14 rounded-full object-cover border"
+                className="object-cover border rounded-full w-14 h-14"
                 width={1080}
                 height={1080}
               />
@@ -60,10 +59,6 @@ export default function List({ school }: { school: any }) {
             </TableCell>
 
             <TableCell className="col-span-1 m-2">
-              {school.teachers.length}
-            </TableCell>
-
-            <TableCell className="col-span-1 m-2">
               {school.classes.length}
             </TableCell>
 
@@ -71,7 +66,7 @@ export default function List({ school }: { school: any }) {
               {school.sections.length}
             </TableCell>
 
-            <TableCell className="col-span-1 m-2 flex gap-2 items-center justify-start">
+            <TableCell className="flex items-center justify-start col-span-1 gap-2 m-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="w-8 h-4 p-0">
