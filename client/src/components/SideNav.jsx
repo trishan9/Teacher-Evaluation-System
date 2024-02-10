@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { LogOut } from "lucide-react";
+import { useRecoilState } from "recoil";
 import { cn } from "@/lib/utils";
 import { useSchoolData, useLogin } from "@/hooks";
 import { menus, PATHS } from "@/constants";
@@ -16,6 +17,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
+import { schoolState } from "@/states";
 
 const SideNav = ({ active }) => {
   const [activeMenu, setActiveMenu] = useState(active);
@@ -30,7 +32,8 @@ const SideNav = ({ active }) => {
     }
   }, [location]);
 
-  const { schoolData, isLoading } = useSchoolData();
+  const { isLoading } = useSchoolData();
+  const [schoolData] = useRecoilState(schoolState)
   const { logout } = useLogin();
 
   return (

@@ -11,11 +11,9 @@ import {
   Ban,
   BadgeInfo,
   Download,
-  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSingleSurveyData, useBaseUrl } from "@/hooks";
-import { Input } from "@/components/ui/input";
 
 ChartJS.register(ArcElement, Tooltip);
 
@@ -30,8 +28,8 @@ const SingleSurvey = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (survey && survey.participants) {
-      setParticipants(survey.participants);
+    if (survey && survey.participantDetails) {
+      setParticipants(survey.participantDetails);
     }
   }, [survey]);
 
@@ -47,28 +45,11 @@ const SingleSurvey = () => {
   };
 
   const handleDownload = (name, data) => {
-    const payload = data.map(({ studentDetails }) => studentDetails);
+    const payload = data.map((studentDetail) => studentDetail);
     const worksheet = utils.json_to_sheet(payload);
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, "Data");
     writeFile(workbook, `${name}.xlsx`);
-  };
-
-  const handleSearch = (query) => {
-    const filteredParticipants = survey.participants.filter(
-      ({ studentDetails }) => {
-        return studentDetails.studentName
-          .toLowerCase()
-          .startsWith(query.toLowerCase());
-      },
-    );
-    if (filteredParticipants.length > 0) {
-      setIsSearchNotFound(false);
-      setParticipants(filteredParticipants);
-    } else {
-      setParticipants(filteredParticipants);
-      setIsSearchNotFound(true);
-    }
   };
 
   return (
@@ -126,8 +107,8 @@ const SingleSurvey = () => {
             <div className="grid items-center w-full grid-cols-1 gap-6 sm:grid-cols-3">
               <div className="bg-brand-white py-[24px] flex flex-col gap-2 justify-center items-center border border-light-border rounded-lg">
                 <p className="text-4xl font-medium">
-                  {survey && survey.participants
-                    ? survey.participants.length
+                  {survey && survey.participantDetails
+                    ? survey.participantDetails.length
                     : 0}
                 </p>
 
@@ -200,11 +181,11 @@ const SingleSurvey = () => {
                     datasets: [
                       {
                         data: [
-                          survey && survey.participants
-                            ? survey.participants.length
+                          survey && survey.participantDetails
+                            ? survey.participantDetails.length
                             : 0,
-                          survey && survey.totalStudents
-                            ? survey.totalStudents
+                          survey && survey.totalExpectedStudents
+                            ? survey.totalExpectedStudents
                             : 0,
                         ],
                         backgroundColor: ["#6577F3", "#0FADCF"],
@@ -241,7 +222,7 @@ const SingleSurvey = () => {
                 </div>
 
                 <div className="flex flex-col items-end gap-6 text-base font-light">
-                  {survey && survey.subjects && survey.participants && (
+                  {survey && (
                     <Fragment>
                       <p>{survey.name}</p>
 
@@ -261,7 +242,7 @@ const SingleSurvey = () => {
                       </p>
 
                       <div className="flex items-center gap-3">
-                        <p>{survey.subjects.length}</p>
+                        <p>{survey.subjects?.length ?? 0}</p>
 
                         <BadgeInfo
                           id="subjectsInfo"
@@ -285,9 +266,9 @@ const SingleSurvey = () => {
                         </ReactTooltip>
                       </div>
 
-                      <p>{survey.participants.length}</p>
+                      <p>{survey?.participantDetails?.length ?? 0}</p>
 
-                      <p>{survey.totalStudents}</p>
+                      <p>{survey?.totalExpectedStudents ?? 0}</p>
                     </Fragment>
                   )}
                 </div>
@@ -300,31 +281,18 @@ const SingleSurvey = () => {
               <p className="text-lg font-semibold">Participants</p>
 
               {survey &&
-                survey.participants &&
-                survey.participants.length > 0 && (
+                survey.participantDetails &&
+                survey.participantDetails.length && (
                   <div className="flex flex-col items-stretch w-full gap-4 lg:w-fit lg:flex-row">
                     <button
                       onClick={() =>
-                        handleDownload(survey.name, survey.participants)
+                        handleDownload(survey.name, survey.participantDetails)
                       }
                       className="flex items-center justify-center gap-2 px-4 py-2 text-sm transition-all ease-in-out bg-white border border-gray-300 rounded-md lg:justify-normal hover:bg-gray-100 disabled:bg-gray-200 disabled:cursor-not-allowed "
                     >
                       Download
                       <Download className="w-4 h-4 ml-1.5" />
                     </button>
-
-                    <div className="relative flex items-center justify-center w-full lg:w-fit">
-                      <Input
-                        onChange={(e) => handleSearch(e.target.value)}
-                        type="text"
-                        className="border-gray-300 bg-[white] border w-full lg:w-[20rem] rounded-md pr-[2.8rem]"
-                        placeholder="Search by participant name"
-                      />
-
-                      <div className="absolute right-0 p-1 mr-2 bg-white border-2 border-gray-300 rounded-md">
-                        <Search className="w-4 h-4 " />
-                      </div>
-                    </div>
                   </div>
                 )}
             </div>
@@ -362,16 +330,16 @@ const SingleSurvey = () => {
 
                       <tbody className="divide-y divide-gray-200">
                         {survey &&
-                          survey.participants &&
+                          survey.participantDetails &&
                           participants &&
-                          participants.map(({ studentDetails }) => (
-                            <tr key={studentDetails.studentName}>
+                          participants.map((studentDetail) => (
+                            <tr key={studentDetail.studentName}>
                               <td className="py-4 text-sm lg:text-base pl-7 lg:pl-16 whitespace-nowrap w-[25%]">
-                                {studentDetails.studentName}
+                                {studentDetail.studentName}
                               </td>
 
                               <td className="py-4 text-sm lg:text-base text-center whitespace-nowrap w-[25%]">
-                                {studentDetails.class} '{studentDetails.section}
+                                {studentDetail.class} '{studentDetail.section}
                                 '
                               </td>
 
@@ -379,12 +347,12 @@ const SingleSurvey = () => {
                                 align="center"
                                 className="py-4 pr-8 text-sm lg:pr-0 lg:text-base whitespace-nowrap"
                               >
-                                {studentDetails.guardianName}
+                                {studentDetail.guardianName}
                               </td>
                             </tr>
                           ))}
                         {survey &&
-                          survey.participants &&
+                          survey.participantDetails &&
                           participants.length == 0 &&
                           !isSearchNotFound && (
                             <tr className="w-full">

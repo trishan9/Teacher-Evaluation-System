@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useRecoilState } from "recoil"
 import { signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { auth } from "@/config/firebase"
-import { authState, schoolState } from "@/states"
+import { authState, schoolState, teacherState } from "@/states"
 
 const useLogin = () => {
     const navigate = useNavigate()
@@ -11,6 +11,7 @@ const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [, setAuthUser] = useRecoilState(authState)
     const [, setSchoolData] = useRecoilState(schoolState)
+    const [, setTeachers] = useRecoilState(teacherState)
 
     const login = async (userName, password) => {
         try {
@@ -38,6 +39,7 @@ const useLogin = () => {
             localStorage.clear()
             navigate("/")
             setSchoolData(null)
+            setTeachers(null)
         })
     }
 

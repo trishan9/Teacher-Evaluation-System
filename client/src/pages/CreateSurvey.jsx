@@ -7,6 +7,8 @@ import { useRecoilState } from "recoil";
 import { FilePlus2, Loader2 } from "lucide-react";
 import { v4 as uuidv4 } from 'uuid';
 import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react";
+import axios from "axios";
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -32,8 +34,6 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon } from "lucide-react";
-import axios from "axios";
 import { useSchoolData } from "@/hooks";
 
 
@@ -126,7 +126,7 @@ const CreateSurvey = () => {
       }
       data.neverExpires == true
         ? payload.expiry = "NEVER"
-        : payload.expiry = format(data.expiryDate, "PPP")
+        : payload.expiry = format(data.expiryDate, "yyyy-MM-dd")
 
       await axios.post(`${BASE_URL}/survey`, payload, {
         headers: {
@@ -141,7 +141,7 @@ const CreateSurvey = () => {
       reset()
       setIsSurveyExpiring(false)
     } catch (error) {
-      toast.error({
+      toast({
         title: "Survey failed to be created!",
       })
     } finally {

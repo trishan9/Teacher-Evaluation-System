@@ -1,16 +1,14 @@
 import { Fragment } from 'react'
-import { doc, updateDoc } from 'firebase/firestore'
+import axios from 'axios';
 import { useRecoilState } from 'recoil'
-import { v4 as uuidv4 } from 'uuid';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, ChevronsUpDown } from "lucide-react"
 import { Dialog, Transition } from '@headlessui/react'
 import { X } from 'lucide-react';
+import { v4 } from 'uuid';
 import { addTeacherFormSchema } from './formSchema'
-import { schoolState } from '@/states'
-import { db } from '@/config/firebase';
-import { addTeacherModal } from '@/states'
+import { addTeacherModal, authState, schoolState, teacherState } from '@/states'
 import { Input } from '@/components/ui/input';
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -28,31 +26,61 @@ import {
 } from "@/components/ui/popover"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { useToast } from '@/components/ui/use-toast';
+import { useSchoolData } from '@/hooks';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 export default function AddTeacherModal() {
     const [isAddTeacherModalOpen, setIsAddTeacherModalOpen] = useRecoilState(addTeacherModal)
-    const [schoolData, setSchoolData] = useRecoilState(schoolState)
+    const [, setSchoolData] = useRecoilState(schoolState)
+    const [teachers, setTeachers] = useRecoilState(teacherState)
+    const { schoolData: rawSchoolData } = useSchoolData();
+    const [authUser] = useRecoilState(authState)
+    const { toast } = useToast()
+    const [isLoading, setIsLoading] = useState(false)
+
     const form = useForm({
         resolver: zodResolver(addTeacherFormSchema)
     })
 
-    const { toast } = useToast()
-
     const handleAddNewTeacher = async (values) => {
-        setIsAddTeacherModalOpen(false)
         try {
-            const teachers = schoolData.teachers ? [...schoolData.teachers] : []
-            teachers.push({
-                id: uuidv4(),
+            setIsLoading(true)
+
+            const teacher = {
+                id: v4(),
                 name: values.name,
                 subject: values.subject
-            })
-            setSchoolData(prevData => { return { ...prevData, teachers: teachers } })
+            }
 
-            const docRef = doc(db, "schools", schoolData.id)
-            await updateDoc(docRef, {
-                teachers: teachers
+            const newTeachers = [...teachers]
+            newTeachers.push(teacher)
+            setTeachers(newTeachers)
+
+            setSchoolData(prevData => {
+                return {
+                    ...prevData,
+                    data: {
+                        ...prevData.data,
+                        data: {
+                            ...prevData.data.data,
+                            teachers: newTeachers
+                        }
+                    }
+                }
             })
+
+            setIsAddTeacherModalOpen(false)
+            form.reset()
+
+            await axios.post(`${BASE_URL}/teacher`, teacher, {
+                headers: {
+                    Authorization: `Bearer ${authUser.email}`
+                }
+            })
+
             toast({
                 title: "Teacher Added!",
                 description: "Teacher has been added successfully!"
@@ -63,6 +91,22 @@ export default function AddTeacherModal() {
                 title: "Uh oh! Something went wrong.",
                 description: "There was a problem with your request.",
             })
+
+            setTeachers(rawSchoolData?.data?.data?.teachers)
+            setSchoolData(prevData => {
+                return {
+                    ...prevData,
+                    data: {
+                        ...prevData.data,
+                        data: {
+                            ...prevData.data.data,
+                            teachers: rawSchoolData?.data?.data?.teachers
+                        }
+                    }
+                }
+            })
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -125,7 +169,7 @@ export default function AddTeacherModal() {
                                                     />
 
                                                     <div className='flex flex-col gap-1'>
-                                                        {schoolData &&
+                                                        {rawSchoolData?.data?.data &&
                                                             <FormField
                                                                 control={form.control}
                                                                 name="subject"
@@ -146,7 +190,7 @@ export default function AddTeacherModal() {
                                                                                         )}
                                                                                     >
                                                                                         {field.value
-                                                                                            ? schoolData && schoolData.subjects.includes(field.value)
+                                                                                            ? rawSchoolData?.data?.data && rawSchoolData?.data?.data?.subjects.includes(field.value)
                                                                                                 ? field.value
                                                                                                 : "Select subject"
                                                                                             : "Select subject"}
@@ -162,7 +206,7 @@ export default function AddTeacherModal() {
                                                                                     <CommandEmpty>No subject found.</CommandEmpty>
 
                                                                                     <CommandGroup>
-                                                                                        {schoolData && schoolData.subjects.map((subject) => (
+                                                                                        {rawSchoolData?.data?.data && rawSchoolData?.data?.data?.subjects.map((subject) => (
                                                                                             <CommandItem
                                                                                                 value={subject}
                                                                                                 key={subject}
@@ -198,9 +242,12 @@ export default function AddTeacherModal() {
                                         <div className="mt-8">
                                             <button
                                                 type="submit"
-                                                className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
+                                                className="inline-flex justify-center items-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
                                             >
                                                 Add Teacher
+
+                                                {isLoading && <Loader2 className='w-5 h-5 ml-2 animate-spin' />}
+
                                             </button>
                                         </div>
                                     </form>

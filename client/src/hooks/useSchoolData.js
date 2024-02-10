@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
-import { useRecoilState } from "recoil";
 import axios from "axios";
-import { authState, schoolState } from "@/states";
+import { useRecoilState } from "recoil";
+import { authState, schoolState, teacherState } from "@/states";
 
 const BASE_URL = import.meta.env.VITE_API_URL
 
 const useSchoolData = () => {
     const [authUser] = useRecoilState(authState)
     const [schoolData, setSchoolData] = useRecoilState(schoolState)
+    const [, setTeachers] = useRecoilState(teacherState)
     const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
 
@@ -23,6 +24,7 @@ const useSchoolData = () => {
                     }
                 })
                 setSchoolData(schoolData)
+                setTeachers(schoolData?.data?.data?.teachers || [])
             } catch {
                 setIsError(true)
             } finally {

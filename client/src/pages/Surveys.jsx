@@ -1,43 +1,74 @@
 import { useState, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import axios from "axios";
+import moment from "moment";
 import { Link } from "react-router-dom";
-import { deleteDoc, doc } from "firebase/firestore";
 import { Trash2 } from "lucide-react";
-import { db } from "@/config/firebase";
-import { useSchoolData } from "@/hooks";
 import { Tooltip as ReactTooltip } from "react-tooltip"
+import { useSchoolData } from "@/hooks";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { authState } from "@/states";
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 const Surveys = () => {
   const { schoolData, isLoading } = useSchoolData();
+  const [authUser] = useRecoilState(authState)
   const [activeSurveys, setActiveSurveys] = useState([]);
-
-  useEffect(() => {
-    setActiveSurveys(schoolData?.data?.data.surveys);
-  }, [schoolData]);
-
   const { toast } = useToast()
 
-  const handleDeleteSurvey = (id) => {
-    const filteredSurveys = activeSurveys.filter((survey) => survey.id != id);
-    setActiveSurveys(filteredSurveys);
-    const docRef = doc(db, "surveys", id);
-    deleteDoc(docRef)
-      .then(() => {
-        toast({
-          title: "Survey Deleted!",
-          description: "Survey has been deleted successfully!"
+  useEffect(() => {
+    const filteredActiveSurveys = schoolData?.data?.data.surveys?.filter((survey) => survey.status === "ACTIVE")
+    setActiveSurveys(filteredActiveSurveys);
+
+    const expiredSurveys = filteredActiveSurveys?.filter((survey) => {
+      const expiryDate = survey.expiry
+      if (expiryDate && expiryDate != "NEVER") {
+        const today = new Date(moment().format("YYYY-MM-DD"))
+        const expiry = new Date(expiryDate)
+        console.log(today, expiryDate)
+        const diff = expiry - today
+        return diff <= 0
+      }
+    })
+
+    if (expiredSurveys?.length) {
+      expiredSurveys.map((survey) => {
+        axios.patch(`${BASE_URL}/survey/${survey.id}`, {
+          status: "EXPIRED",
+        }, {
+          headers: {
+            Authorization: `Bearer ${authUser.email}`
+          }
+        }).then(() => {
+          navigate(0)
+        }).catch(err => {
+          console.log(err)
         })
       })
-      .catch(() => {
-        setActiveSurveys(surveys);
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
-        })
-      });
+    }
+  }, [schoolData]);
+
+  const handleDeleteSurvey = async (id) => {
+    const filteredSurveys = activeSurveys.filter((survey) => survey.id != id);
+    setActiveSurveys(filteredSurveys);
+
+    try {
+      await axios.delete(`${BASE_URL}/survey/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authUser.email}`,
+        }
+      })
+    } catch {
+      setActiveSurveys(activeSurveys);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+    }
   };
 
   return (
@@ -75,7 +106,7 @@ const Surveys = () => {
                             </p>
 
                             <p className="text-base font-semibold">
-                              {data.participants?.length ?? 0}
+                              {data.participantDetails?.length ?? 0}
                             </p>
                           </td>
 

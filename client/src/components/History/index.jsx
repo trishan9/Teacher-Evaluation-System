@@ -5,15 +5,16 @@ const History = ({ surveys }) => {
     <div className="mt-0">
       <div>
         <div className="grid w-full grid-cols-1 mt-1 text-base">
-          {surveys.length == 0 && (
+          {surveys?.length == 0 && (
             <p className="pt-3 text-sm">No any Surveys</p>
           )}
 
-          {surveys.map((data) => (
+          {surveys?.map((data) => (
             <div key={data.id} className="mt-4">
               <p className="text-xs pb-[2px] font-semibold">
                 Expired {data.days}
               </p>
+
               <div
                 key={data.id}
                 className="px-2 pt-2 pb-4 mt-2 mb-2 bg-white rounded-md"
@@ -33,7 +34,7 @@ const History = ({ surveys }) => {
                             <p>Participants</p>
 
                             <p className="pl-8 text-base font-bold">
-                              {data.participants.length}
+                              {data.participantDetails.length}
                             </p>
                           </td>
 

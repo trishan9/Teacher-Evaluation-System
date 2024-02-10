@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { History } from "@/components";
-import { useHistory } from "@/hooks";
+import { useSchoolData } from "@/hooks";
 import getTimeAgo from "@/utils/getTimeAgo";
 import getExpiredDaysAgo from "@/utils/getExpiredDaysAgo";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ const FILTER_OPTIONS = {
 };
 
 const HistoryPage = () => {
-  const { surveys } = useHistory();
+  const { schoolData } = useSchoolData();
   const [allSurveys, setAllSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [rawExpiredSurveys, setRawExpiredSurveys] = useState([]);
@@ -21,15 +21,15 @@ const HistoryPage = () => {
   );
 
   useEffect(() => {
-    setAllSurveys(surveys);
-  }, [surveys]);
+    setAllSurveys(schoolData?.data?.data.surveys);
+  }, [schoolData]);
 
   useEffect(() => {
-    const expiredSurveys = allSurveys.filter((data) => {
+    const expiredSurveys = allSurveys?.filter((data) => {
       return data.status == "EXPIRED";
     });
 
-    const expiredSurveysWithDaysAgo = expiredSurveys.map((data) => {
+    const expiredSurveysWithDaysAgo = expiredSurveys?.map((data) => {
       const daysAgo = getTimeAgo(data.expiry);
       return { ...data, days: daysAgo };
     });

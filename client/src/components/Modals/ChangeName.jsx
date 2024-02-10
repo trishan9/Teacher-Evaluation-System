@@ -1,16 +1,17 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
+import axios from 'axios'
 import { useRecoilState } from 'recoil'
-import { doc, updateDoc } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog, Transition } from '@headlessui/react'
-import { X } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { changeNameModal } from '@/states'
 import { changeNameFormSchema } from './formSchema'
 import { schoolState } from '@/states'
-import { db } from '@/config/firebase';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 export default function ChangeNameModal() {
     const [isChangeNameModalOpen, setIsChangeNameModalOpen] = useRecoilState(changeNameModal)
@@ -18,31 +19,57 @@ export default function ChangeNameModal() {
     const { register, formState: { errors }, handleSubmit } = useForm({
         resolver: zodResolver(changeNameFormSchema)
     })
-
+    const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
 
     const handleChangeName = async (values) => {
         setIsChangeNameModalOpen(false)
 
-        const currentName = schoolData.name
-        setSchoolData(prevData => { return { ...prevData, name: values.newName } })
+        const currentName = schoolData?.data?.data?.name
+        setSchoolData(prevData => {
+            return {
+                ...prevData,
+                data: {
+                    ...prevData.data,
+                    data: {
+                        ...prevData.data.data,
+                        name: values.newName
+                    }
+                }
+            }
+        })
 
-        const docRef = doc(db, "schools", schoolData.id)
-        updateDoc(docRef, {
-            name: values.newName
-        }).then(() => {
+        try {
+            setIsLoading(true)
+            await axios.patch(`${BASE_URL}/school/${schoolData?.data?.data?.id}`, {
+                name: values.newName
+            })
+
             toast({
                 title: "Name Changed!",
                 description: "Institution's Name has been changed successfully!"
             })
-        }).catch(() => {
-            setSchoolData(prevData => { return { ...prevData, name: currentName } })
+        } catch {
+            setSchoolData(prevData => {
+                return {
+                    ...prevData,
+                    data: {
+                        ...prevData.data,
+                        data: {
+                            ...prevData.data.data,
+                            name: currentName
+                        }
+                    }
+                }
+            })
             toast({
                 variant: "destructive",
                 title: "Uh oh! Something went wrong.",
                 description: "There was a problem with your request.",
             })
-        })
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -118,9 +145,11 @@ export default function ChangeNameModal() {
                                     <div className="mt-8">
                                         <button
                                             type="submit"
-                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
+                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition items-center"
                                         >
                                             Save Changes
+
+                                            {isLoading && <Loader2 className='w-5 h-5 ml-2 animate-spin' />}
                                         </button>
                                     </div>
                                 </form>

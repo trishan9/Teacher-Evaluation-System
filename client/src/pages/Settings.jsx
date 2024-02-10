@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { doc, updateDoc } from "firebase/firestore";
 import { Trash2Icon, Search, UserRoundPlus } from "lucide-react";
+import axios from "axios";
+import { useSchoolData } from "@/hooks";
 import ChangeNameModal from "@/components/Modals/ChangeName";
 import ChangePasswordModal from "@/components/Modals/ChangePassword";
 import {
@@ -9,8 +10,9 @@ import {
   changePasswordModal,
   addTeacherModal,
   schoolState,
+  teacherState,
+  authState,
 } from "@/states";
-import { db } from "@/config/firebase";
 import { Input } from "@/components/ui/input";
 import {
   AlertDialog,
@@ -26,61 +28,66 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import AddTeacherModal from "@/components/Modals/AddTeacher";
 
+const BASE_URL = import.meta.env.VITE_API_URL
+
 const Settings = () => {
+  const { schoolData: rawSchoolData } = useSchoolData();
   const [, setIsChangeNameModalOpen] = useRecoilState(changeNameModal);
   const [, setIsChangePasswordModalOpen] = useRecoilState(changePasswordModal);
   const [, setIsAddTeacherModalOpen] = useRecoilState(addTeacherModal);
-  const [schoolData, setSchoolData] = useRecoilState(schoolState);
   const [isSearchNotFound, setIsSearchNotFound] = useState(false);
-  const [teachers, setTeachers] = useState([]);
-
+  const [schoolData, setSchoolData] = useRecoilState(schoolState);
+  const [teachers, setTeachers] = useRecoilState(teacherState)
+  const [authUser] = useRecoilState(authState)
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (schoolData && schoolData.teachers) {
-      setTeachers(schoolData.teachers);
-    }
-  }, [schoolData]);
-
-  const handleDeleteTeacher = (id) => {
-    const teachers = schoolData.teachers;
-
+  const handleDeleteTeacher = async (id) => {
     const filteredTeachers = teachers.filter((teacher) => teacher.id != id);
-    setSchoolData((prevData) => {
-      return { ...prevData, teachers: filteredTeachers };
-    });
+    setTeachers(filteredTeachers)
 
-    const docRef = doc(db, "schools", schoolData.id);
-    updateDoc(docRef, {
-      teachers: filteredTeachers,
-    })
-      .then(() => {
-        toast({
-          title: "Teacher Deleted!",
-          description: "Teacher has been deleted successfully!",
-        });
+    try {
+      await axios.delete(`${BASE_URL}/teacher/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authUser.email}`
+        }
       })
-      .catch(() => {
-        setSchoolData((prevData) => {
-          return { ...prevData, teachers: teachers };
-        });
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
-        });
+
+      setSchoolData((prevData) => {
+        return {
+          ...prevData,
+          data: {
+            ...prevData.data,
+            data: {
+              ...prevData.data.data,
+              teachers: filteredTeachers
+            }
+          }
+        }
+      })
+
+      toast({
+        title: "Teacher Deleted!",
+        description: "Teacher has been deleted successfully!",
       });
+    } catch {
+      setTeachers(rawSchoolData?.data?.data?.teachers)
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
+    }
   };
 
   const handleSearch = (query) => {
-    const filteredTeachers = schoolData.teachers.filter((teacher) => {
+    const filteredTeachers = schoolData?.data?.data?.teachers.filter((teacher) => {
       return teacher.name.toLowerCase().startsWith(query.toLowerCase());
     });
-    if (filteredTeachers.length > 0) {
+    if (filteredTeachers.length) {
       setIsSearchNotFound(false);
       setTeachers(filteredTeachers);
     } else {
-      setTeachers(filteredTeachers);
+      setTeachers(filteredTeachers)
       setIsSearchNotFound(true);
     }
   };
@@ -204,18 +211,19 @@ const Settings = () => {
                             </td>
                           </tr>
                         ))}
-                      {schoolData &&
-                        schoolData.teachers &&
+                      {schoolData?.data?.data &&
+                        schoolData?.data?.data?.teachers &&
                         teachers.length == 0 &&
                         !isSearchNotFound && (
                           <tr className="w-full">
                             <td colSpan={4}>
                               <p className="py-6 text-center text-red-700">
-                                No any Participants to show!
+                                No any Teachers to show!
                               </p>
                             </td>
                           </tr>
                         )}
+
                       {isSearchNotFound && (
                         <tr className="w-full">
                           <td colSpan={4}>
