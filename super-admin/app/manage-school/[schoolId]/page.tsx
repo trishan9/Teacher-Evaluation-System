@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import axios from "axios";
+import { ArrowLeft } from "lucide-react";
 import EditForm from "./_components/editForm";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -34,4 +34,3 @@ const EditSchoolPage = async ({
 };
 
 export default EditSchoolPage;
-

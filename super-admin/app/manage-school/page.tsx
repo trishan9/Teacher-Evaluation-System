@@ -1,6 +1,6 @@
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import List from "../_components/List";
-import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

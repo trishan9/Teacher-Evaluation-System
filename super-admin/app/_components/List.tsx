@@ -1,8 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -20,8 +23,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -31,10 +32,11 @@ export default function List({ school }: { school: any }) {
     await axios
       .delete(`${BASE_URL}/school/${id}`)
       .then((response) => {
+        toast.success("Deleted successfully");
         router.refresh();
       })
       .catch((error) => {
-        console.error(error);
+        toast.error(error.message);
       });
   };
 

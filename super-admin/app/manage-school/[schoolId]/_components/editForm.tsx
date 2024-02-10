@@ -54,7 +54,7 @@ const EditForm = ({ schoolData }: { schoolData: any }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>, event: any) {
-    const updatedPayload = {
+    const payload = {
       name: values.collegeName,
       classes: values.classes.map((classes: any) => classes.name) || [],
       subjects: values.subjects.map((subject: any) => subject.name) || [],
@@ -62,13 +62,9 @@ const EditForm = ({ schoolData }: { schoolData: any }) => {
     };
 
     if (logoInput) {
-      updatedPayload.logo = event.target.logo.files[0];
+      // @ts-ignore
+      payload.logo = event.target.logo.files[0];
     }
-
-    console.log(updatedPayload);
-
-    const payload = updatedPayload;
-    console.log(payload);
 
     try {
       await axios
@@ -89,10 +85,6 @@ const EditForm = ({ schoolData }: { schoolData: any }) => {
 
   return (
     <div className="flex flex-col w-full mt-2 md:px-6">
-      {/* <p className="mb-6 text-2xl font-bold md:mb-10 md:text-3xl">
-        Create School / College Account
-      </p> */}
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
