@@ -133,14 +133,15 @@ const CreateSurvey = () => {
           Authorization: `Bearer ${authUser.email}`
         }
       })
+      form.reset()
+      setIsSurveyExpiring(false)
       toast({
         title: "Survey Created!",
         description: `${payload.name} has been created succesfully!`
       })
       navigate("/dashboard/surveys")
-      reset()
-      setIsSurveyExpiring(false)
     } catch (error) {
+      console.log(error)
       toast({
         title: "Survey failed to be created!",
       })

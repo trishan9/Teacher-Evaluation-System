@@ -28,7 +28,6 @@ const Surveys = () => {
       if (expiryDate && expiryDate != "NEVER") {
         const today = new Date(moment().format("YYYY-MM-DD"))
         const expiry = new Date(expiryDate)
-        console.log(today, expiryDate)
         const diff = expiry - today
         return diff <= 0
       }
