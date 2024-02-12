@@ -4,7 +4,6 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLogin } from "@/hooks";
 import formSchema from "./formSchema";
-import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 
 const LoginForm = () => {
@@ -15,9 +14,6 @@ const LoginForm = () => {
   } = useForm({
     resolver: zodResolver(formSchema),
   });
-
-  const { toast } = useToast()
-
   const { login, isLoading, isError } = useLogin();
 
   const handleLogin = async (value) => {
@@ -27,14 +23,6 @@ const LoginForm = () => {
     };
 
     await login(userDetails.userName, userDetails.password)
-
-    isError ? toast({
-      title: "Login Failed!",
-      description: "Internal Server Error!"
-    })
-      : toast({
-        title: "Login Successful!",
-      })
   };
 
   return (
