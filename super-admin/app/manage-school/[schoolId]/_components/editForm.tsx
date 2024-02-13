@@ -2,14 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
-import { getSchoolById } from "@/server/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import DynamicFormField from "@/components/shared/dynamic-form-field";
+import Image from "next/image";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -34,28 +33,22 @@ const formSchema = z.object({
   sections: z.any(),
 });
 
-const EditForm = ({ schoolData: initialSchoolData }: { schoolData: any }) => {
+const EditForm = ({ schoolData }: { schoolData: any }) => {
   const [logoInput, setLogoInput] = useState(false);
   const router = useRouter();
-
-  const { data }: { data: any } = useQuery({
-    queryKey: ["school"],
-    queryFn: () => getSchoolById(initialSchoolData.id),
-    initialData: initialSchoolData,
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      collegeName: data.name,
+      collegeName: schoolData.name,
 
-      subjects: data.subjects.map((subject: any) => {
+      subjects: schoolData.subjects.map((subject: any) => {
         return { name: subject };
       }),
-      classes: data.classes.map((classes: any) => {
+      classes: schoolData.classes.map((classes: any) => {
         return { name: classes };
       }),
-      sections: data.sections.map((section: any) => {
+      sections: schoolData.sections.map((section: any) => {
         return { name: section };
       }),
     },
@@ -76,7 +69,7 @@ const EditForm = ({ schoolData: initialSchoolData }: { schoolData: any }) => {
 
     try {
       await axios
-        .patch(`${BASE_URL}/school/${data.id}`, payload, {
+        .patch(`${BASE_URL}/school/${schoolData.id}`, payload, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -130,14 +123,19 @@ const EditForm = ({ schoolData: initialSchoolData }: { schoolData: any }) => {
               </Button>
             </>
           )}
+
           {!logoInput && (
             <div>
               <p>School / College logo</p>
               <div className="flex flex-col items-center">
-                <img
-                  src={data.logo}
-                  className="w-36 h-36, rounded-full object-cover"
+                <Image
+                  src={schoolData.logo}
+                  alt={schoolData.name}
+                  width={1080}
+                  height={1080}
+                  className="w-36 h-36 rounded-full border mb-6 object-cover"
                 />
+
                 <Button
                   variant={"outline"}
                   className=" px-4 py-2 rounded-md  ml-4 w-[30%]"
