@@ -63,22 +63,22 @@ const SubjectAnalytics = ({ survey }) => {
             {
                 label: 'Highly Agree',
                 data: subjectData.highlyAgree,
-                backgroundColor: "#4bc0c0"
+                backgroundColor: "#36AE7C"
             },
             {
                 label: 'Agree',
                 data: subjectData.agree,
-                backgroundColor: "#36a2eb"
+                backgroundColor: "#187498"
             },
             {
                 label: 'Disagree',
                 data: subjectData.disagree,
-                backgroundColor: "#ffcd56"
+                backgroundColor: "#F9D923"
             },
             {
                 label: 'Highly Disagree',
                 data: subjectData.highlyDisagree,
-                backgroundColor: "#ff6384"
+                backgroundColor: "#EB5353"
             },
         ],
     };

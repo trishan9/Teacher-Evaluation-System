@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection } from "firebase/firestore";
 
 const app = initializeApp({
     apiKey: import.meta.env.VITE_API_KEY,
@@ -13,6 +12,3 @@ const app = initializeApp({
 
 export default app;
 export const auth = getAuth(app)
-export const db = getFirestore(app);
-export const surveysRef = collection(db, "surveys");
-export const schoolsRef = collection(db, "schools");

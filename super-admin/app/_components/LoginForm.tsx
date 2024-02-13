@@ -39,8 +39,8 @@ export default function LoginForm({ admin }: { admin: any }) {
       Cookies.set("login", "true", { expires: 1, path: "/" });
       router.refresh();
       form.reset();
-      toast.success("Logged in successfully!");
       router.push("/");
+      toast.success("Logged in successfully!");
     } else {
       toast.error("Invalid credentials!");
     }

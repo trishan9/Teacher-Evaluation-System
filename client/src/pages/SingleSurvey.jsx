@@ -19,6 +19,7 @@ import { useRecoilState } from "recoil";
 import { Loader2 } from "lucide-react";
 import SubjectAnalytics from "@/components/Dashboard/SubjectAnalytics";
 import TeacherAnalytics from "@/components/Dashboard/TeacherAnalytics";
+import AnonymousMessages from "@/components/Dashboard/Anonymous";
 
 const BASE_URL = import.meta.env.VITE_API_URL
 
@@ -180,6 +181,8 @@ const SingleSurvey = () => {
           <SubjectAnalytics survey={survey} />
 
           <TeacherAnalytics survey={survey} />
+
+          {survey?.optional?.some((data) => data.anonymous != "") && <AnonymousMessages survey={survey} />}
 
           <Participants survey={survey} participants={participants} />
         </div>

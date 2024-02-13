@@ -68,17 +68,17 @@ const TeacherAnalytics = ({ survey }) => {
             {
                 label: 'Agree',
                 data: teacherData.agree,
-                backgroundColor: "#36a2eb"
+                backgroundColor: "#6895D2"
             },
             {
                 label: 'Disagree',
                 data: teacherData.disagree,
-                backgroundColor: "#ffcd56"
+                backgroundColor: "#F3B95F"
             },
             {
                 label: 'Highly Disagree',
                 data: teacherData.highlyDisagree,
-                backgroundColor: "#ff6384"
+                backgroundColor: "#D04848"
             },
         ],
     };

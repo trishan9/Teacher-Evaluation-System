@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import _ from "lodash"
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '@/config/firebase';
 import loader from "@/assets/loading.gif";
+import { Textarea } from '@/components/ui/textarea';
+
+const BASE_URL = import.meta.env.VITE_API_URL
 
 const StepFour = ({ handlePreviousStep, survey, id }) => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const defaultValues = localStorage.getItem("step4") ? JSON.parse(localStorage.getItem("step4")) : {}
-    const subjects = survey.subjects
 
     const {
         register,
@@ -27,30 +28,40 @@ const StepFour = ({ handlePreviousStep, survey, id }) => {
         const teacherDetails = JSON.parse(localStorage.getItem("step2"));
         const rawRatings = JSON.parse(localStorage.getItem("step3"));
 
-        const ratings = _.transform(subjects, (result, subject) => {
-            const subjectRatings = _.mapKeys(
-                _.pickBy(rawRatings, (value, key) => key.includes(`rating-${subject}-question`)),
-                (value, key) => key.replace(`rating-${subject}-`, '')
-            );
-            result[subject] = subjectRatings;
-        }, {});
+        const groupedRatings = _.groupBy(Object.keys(rawRatings), key => key.split('-')[1]);
+        const subjectWiseRatings = _.map(groupedRatings, (questions, subject) => {
+            const ratings = _.map(questions, question => {
+                const questionId = `${question.split('-')[2]}-${question.split('-')[3]}`;
+                return {
+                    questionId,
+                    rate: rawRatings[question]
+                };
+            });
 
-        const participantId = `${id}-${studentDetails.studentName.split(" ")[0].toLowerCase()}`
+            return {
+                name: subject,
+                ratings
+            };
+        });
+
+        const teacherWiseRatings = subjectWiseRatings.map(rating => {
+            const newName = teacherDetails[rating.name];
+            return {
+                ...rating,
+                name: newName
+            };
+        });
+
         const payload = {
-            id: participantId,
-            studentDetails,
-            teacherDetails,
-            ratings,
+            participant: studentDetails,
+            subjects: subjectWiseRatings,
+            teachers: teacherWiseRatings,
             optional: values
         }
 
-        const participants = survey.participants
-        participants.push(payload)
-
-        const docRef = doc(db, "surveys", survey.id)
         try {
             setIsLoading(true)
-            await updateDoc(docRef, { participants })
+            await axios.patch(`${BASE_URL}/survey/participate/${survey.id}`, payload)
             localStorage.clear()
             navigate(`/participate/${id}?step=5`)
         } catch (err) {
@@ -61,29 +72,28 @@ const StepFour = ({ handlePreviousStep, survey, id }) => {
     }
 
     return (
-        <div className='lg:w-1/2 w-full min-h-[60vh] p-6 bg-neutral_white rounded-lg'>
+        <div className='lg:w-1/2 w-full min-h-[60vh] px-6 py-4 bg-slate-100 rounded-lg'>
             <p className='w-full my-2 text-xl text-center'>Step <span className='font-semibold'>4</span> of <span className='font-semibold'>4</span></p>
 
-            <form onSubmit={handleSubmit(handleParticipate)} className='flex flex-col items-end gap-8 mt-6'>
-
-                <div className="flex flex-col w-full gap-2">
+            <form onSubmit={handleSubmit(handleParticipate)} className='flex flex-col items-end gap-4 mt-6'>
+                <div className="flex flex-col w-full gap-1">
                     <label htmlFor="" className="font-semibold">
                         Anonymous Messages (optional)
                     </label>
 
-                    <p className="text-gray-600">Share some feedbacks, suggestions, complaints or any anonymous messages. Your personal information won't be disclosed with anyone.</p>
+                    <p className="text-sm text-gray-600">Share some feedbacks, suggestions, complaints or any anonymous messages. Your personal information won't be disclosed with anyone.</p>
 
-                    <textarea className='h-32 border border-gray-400 rounded-sm resize-none' {...register("anonymous")}></textarea>
+                    <Textarea className="h-32 resize-none" {...register("anonymous")}></Textarea>
                 </div>
 
-                <div className="flex flex-col w-full gap-2">
+                <div className="flex flex-col w-full gap-1">
                     <label htmlFor="" className="font-semibold">
                         Report of Verbal, Physical or Emotional Abuse (optional)
                     </label>
 
-                    <p className="text-gray-600">We encourage you to report any abuse if you or your friends have faced. Your personal information won't be disclosed with anyone.</p>
+                    <p className="text-sm text-gray-600">We encourage you to report any abuse if you or your friends have faced. Your personal information won't be disclosed with anyone.</p>
 
-                    <textarea className='h-32 border border-gray-400 rounded-sm resize-none' {...register("report")}></textarea>
+                    <Textarea className='h-32 resize-none' {...register("abuseReport")}></Textarea>
                 </div>
 
                 <div className='flex items-center justify-between w-full'>

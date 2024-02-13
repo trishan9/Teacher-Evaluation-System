@@ -25,20 +25,6 @@ export default function ChangeNameModal() {
     const handleChangeName = async (values) => {
         setIsChangeNameModalOpen(false)
 
-        const currentName = schoolData?.data?.data?.name
-        setSchoolData(prevData => {
-            return {
-                ...prevData,
-                data: {
-                    ...prevData.data,
-                    data: {
-                        ...prevData.data.data,
-                        name: values.newName
-                    }
-                }
-            }
-        })
-
         try {
             setIsLoading(true)
             await axios.patch(`${BASE_URL}/school/${schoolData?.data?.data?.id}`, {
@@ -49,7 +35,6 @@ export default function ChangeNameModal() {
                 title: "Name Changed!",
                 description: "Institution's Name has been changed successfully!"
             })
-        } catch {
             setSchoolData(prevData => {
                 return {
                     ...prevData,
@@ -57,11 +42,12 @@ export default function ChangeNameModal() {
                         ...prevData.data,
                         data: {
                             ...prevData.data.data,
-                            name: currentName
+                            name: values.newName
                         }
                     }
                 }
             })
+        } catch {
             toast({
                 variant: "destructive",
                 title: "Uh oh! Something went wrong.",

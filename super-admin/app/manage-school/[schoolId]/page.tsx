@@ -24,10 +24,9 @@ const EditSchoolPage = async ({
   return (
     <div className="p-6 font-primary">
       <Link href="/manage-school">
-        <ArrowLeft className="mb-4" />
+        <ArrowLeft className="mb-4 ml-4" />
       </Link>
 
-      <h1>Edit School: {school.name}</h1>
       <EditForm schoolData={school} />
     </div>
   );

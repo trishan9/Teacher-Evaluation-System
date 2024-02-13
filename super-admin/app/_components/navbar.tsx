@@ -35,7 +35,6 @@ const Navbar = () => {
             Manage Schools
           </Button>
         </Link>
-        c
       </div>
     </nav>
   );

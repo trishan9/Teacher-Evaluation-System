@@ -1,5 +1,8 @@
 import { useForm } from 'react-hook-form';
 import questions from '@/constants/questions';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 const StepThree = ({ handlePreviousStep, handleNextStep, survey }) => {
     const subjects = survey.subjects
@@ -15,28 +18,44 @@ const StepThree = ({ handlePreviousStep, handleNextStep, survey }) => {
     });
 
     return (
-        <div className='lg:w-1/2 w-full min-h-[60vh] p-6 bg-neutral_white rounded-lg'>
+        <div className='lg:w-1/2 w-full min-h-[60vh] py-4 px-6 bg-slate-100 rounded-lg'>
             <p className='w-full my-2 text-xl text-center'>Step <span className='font-semibold'>3</span> of <span className='font-semibold'>4</span></p>
 
             <p className='mb-4 text-sm italic text-center'>(Your teachers won't have access to your feedback, so please give honest feedback for the betterment of your education.)</p>
 
-            <form onSubmit={handleSubmit(handleNextStep)} className='flex flex-col items-end gap-8 mt-6'>
+            <form onSubmit={handleSubmit(handleNextStep)} className='flex flex-col items-end gap-12 mt-6'>
                 {questions.map((question, index) => (
-                    <div key={question.id} className='flex flex-col w-full gap-2'>
+                    <div key={question.id} className='flex flex-col w-full gap-4'>
                         <p className='text-lg font-semibold'>{index + 1}. {question.en}.</p>
 
-                        <p className='mb-2 text-lg font-semibold'>{question.np}</p>
+                        <p className='mb-2 -mt-4 text-lg'>{question.np}</p>
 
                         {subjects.map((subject) => (
-                            <div key={subject} className='flex items-center gap-6 mb-2'>
-                                <p className='font-medium'>{subject} Teacher</p>
+                            <div key={subject} className='flex flex-col items-center gap-2 mb-2'>
+                                <p className='font-semibold'>{subject} Teacher</p>
 
-                                <div className="rating">
-                                    <input type="radio" value="1" {...register(`rating-${subject}-${question.id}`)} className="mask mask-star hover:bg-blue-600" />
-                                    <input type="radio" value="2" {...register(`rating-${subject}-${question.id}`)} className="mask mask-star hover:bg-blue-600 !color-black" />
-                                    <input type="radio" value="3" {...register(`rating-${subject}-${question.id}`)} className="mask mask-star hover:bg-blue-600 !color-black" defaultChecked={!defaultValues} />
-                                    <input type="radio" value="4" {...register(`rating-${subject}-${question.id}`)} className="mask mask-star hover:bg-blue-600 !color-black" />
-                                    <input type="radio" value="5" {...register(`rating-${subject}-${question.id}`)} className="mask mask-star hover:bg-blue-600 !color-black" />
+                                <div className="flex items-center justify-between w-full gap-2">
+                                    <RadioGroup defaultValue="3" className="flex items-center justify-between w-full gap-2 md:justify-evenly">
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="1" id={`rating-${subject}-${question.id}`} {...register(`rating-${subject}-${question.id}`)} />
+                                            <Label htmlFor={`rating-${subject}-${question.id}`} className="text-xs md:text-sm">Highly Disagree</Label>
+                                        </div>
+
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="2" id={`rating-${subject}-${question.id}`} {...register(`rating-${subject}-${question.id}`)} />
+                                            <Label htmlFor={`rating-${subject}-${question.id}`} className="text-xs md:text-sm">Disagree</Label>
+                                        </div>
+
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="3" id={`rating-${subject}-${question.id}`} {...register(`rating-${subject}-${question.id}`)} />
+                                            <Label htmlFor={`rating-${subject}-${question.id}`} className="text-xs md:text-sm">Agree</Label>
+                                        </div>
+
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="4" id={`rating-${subject}-${question.id}`} {...register(`rating-${subject}-${question.id}`)} />
+                                            <Label htmlFor={`rating-${subject}-${question.id}`} className="text-xs md:text-sm">Highly Agree</Label>
+                                        </div>
+                                    </RadioGroup>
                                 </div>
                             </div>
                         ))}
