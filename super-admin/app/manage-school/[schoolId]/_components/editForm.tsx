@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
+import { getSchoolById } from "@/server/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,22 +34,28 @@ const formSchema = z.object({
   sections: z.any(),
 });
 
-const EditForm = ({ schoolData }: { schoolData: any }) => {
+const EditForm = ({ schoolData: initialSchoolData }: { schoolData: any }) => {
   const [logoInput, setLogoInput] = useState(false);
   const router = useRouter();
+
+  const { data }: { data: any } = useQuery({
+    queryKey: ["school"],
+    queryFn: () => getSchoolById(initialSchoolData.id),
+    initialData: initialSchoolData,
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      collegeName: schoolData.name,
+      collegeName: data.name,
 
-      subjects: schoolData.subjects.map((subject: any) => {
+      subjects: data.subjects.map((subject: any) => {
         return { name: subject };
       }),
-      classes: schoolData.classes.map((classes: any) => {
+      classes: data.classes.map((classes: any) => {
         return { name: classes };
       }),
-      sections: schoolData.sections.map((section: any) => {
+      sections: data.sections.map((section: any) => {
         return { name: section };
       }),
     },
@@ -68,7 +76,7 @@ const EditForm = ({ schoolData }: { schoolData: any }) => {
 
     try {
       await axios
-        .patch(`${BASE_URL}/school/${schoolData.id}`, payload, {
+        .patch(`${BASE_URL}/school/${data.id}`, payload, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -125,9 +133,9 @@ const EditForm = ({ schoolData }: { schoolData: any }) => {
           {!logoInput && (
             <div>
               <p>School / College logo</p>
-              <div className="flex items-center flex-col">
+              <div className="flex flex-col items-center">
                 <img
-                  src={schoolData.logo}
+                  src={data.logo}
                   className="w-36 h-36, rounded-full object-cover"
                 />
                 <Button

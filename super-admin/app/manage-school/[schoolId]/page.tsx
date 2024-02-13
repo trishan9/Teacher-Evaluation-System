@@ -1,18 +1,7 @@
 import Link from "next/link";
-import axios from "axios";
 import { ArrowLeft } from "lucide-react";
+import { getSchoolById } from "@/server/actions";
 import EditForm from "./_components/editForm";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-const getSchoolById = async (id: string) => {
-  try {
-    const res = await axios.get(`${BASE_URL}/school/${id}`);
-    return res.data.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const EditSchoolPage = async ({
   params: { schoolId },
