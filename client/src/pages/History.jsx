@@ -30,8 +30,13 @@ const HistoryPage = () => {
     });
 
     const expiredSurveysWithDaysAgo = expiredSurveys?.map((data) => {
-      const daysAgo = getTimeAgo(data.expiry);
-      return { ...data, days: daysAgo };
+      console.log(data.expiry);
+      if (data.expiry != "NEVER") {
+        const daysAgo = getTimeAgo(data.expiry);
+        return { ...data, days: daysAgo };
+      } else {
+        return { ...data, days: "Ended" };
+      }
     });
 
     setRawExpiredSurveys(expiredSurveysWithDaysAgo);

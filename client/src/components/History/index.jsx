@@ -10,7 +10,7 @@ const History = ({ surveys }) => {
           {surveys?.map((data) => (
             <div key={data.id} className="mt-4">
               <p className="text-xs pb-[2px] font-semibold">
-                Expired {data.days}
+                {data?.days != "Ended" ? `Expired ${data.days}` : data.days}
               </p>
 
               <div
