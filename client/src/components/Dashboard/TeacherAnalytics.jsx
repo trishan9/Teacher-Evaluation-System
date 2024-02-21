@@ -122,7 +122,11 @@ const TeacherAnalytics = ({ survey }) => {
             <SelectGroup>
               <SelectLabel>Metric</SelectLabel>
               {questions.map((question) => (
-                <SelectItem key={question.id} value={question.id}>
+                <SelectItem
+                  key={question.id}
+                  value={question.id}
+                  className="capitalize"
+                >
                   {question.type}
                 </SelectItem>
               ))}
