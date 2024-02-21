@@ -52,7 +52,7 @@ const questions = [
     en: "The teacher has contributed to the development or improvement of the course curriculum",
     np: "शिक्षकले पाठ्यक्रमको विकास वा सुधार गर्न योगदान गरेको छ | ",
     type: "curriculum development",
-  }
+  },
 ];
 
 export default questions;

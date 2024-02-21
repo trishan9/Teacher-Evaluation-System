@@ -16,7 +16,6 @@ const NavBar = () => {
         <h1 className="text-lg font-bold cursor-pointer lg:text-xl">
           Teacher Evaluation System
         </h1>
-
       </Link>
 
       <Sheet>
