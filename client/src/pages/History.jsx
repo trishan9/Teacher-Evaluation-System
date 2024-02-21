@@ -9,6 +9,7 @@ const FILTER_OPTIONS = {
   ALL: "All",
   LAST_7_DAYS: "Last 7 days",
   LAST_30_DAYS: "Last 30 days",
+  LAST_365_DAYS: "Last 365 days",
 };
 
 const HistoryPage = () => {
@@ -49,6 +50,8 @@ const HistoryPage = () => {
       setActiveFilterOption(FILTER_OPTIONS.LAST_7_DAYS);
     } else if (days == 31) {
       setActiveFilterOption(FILTER_OPTIONS.LAST_30_DAYS);
+    } else if (days == 366) {
+      setActiveFilterOption(FILTER_OPTIONS.LAST_365_DAYS);
     }
     setFilteredSurveys(filterValue);
   };
@@ -97,6 +100,17 @@ const HistoryPage = () => {
             )}
           >
             {FILTER_OPTIONS.LAST_30_DAYS}
+          </button>
+          <button
+            onClick={() => onFilterChange(365 + 1)}
+            className={cn(
+              "flex items-center justify-center h-8 gap-2 px-4 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.LAST_365_DAYS
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "bg-white  hover:bg-gray-100"
+            )}
+          >
+            {FILTER_OPTIONS.LAST_365_DAYS}
           </button>
         </div>
       </div>

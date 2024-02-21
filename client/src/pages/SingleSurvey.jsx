@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import {
-  ArrowLeft,
-  Copy,
-  CheckCircle2,
-  Ban,
-  BadgeInfo,
-} from "lucide-react";
+import { ArrowLeft, Copy, CheckCircle2, Ban, BadgeInfo } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSingleSurveyData, useBaseUrl } from "@/hooks";
 import SurveyAnalytics from "@/components/Dashboard/SurveyAnalytics";
@@ -21,7 +15,7 @@ import SubjectAnalytics from "@/components/Dashboard/SubjectAnalytics";
 import TeacherAnalytics from "@/components/Dashboard/TeacherAnalytics";
 import AnonymousMessages from "@/components/Dashboard/Anonymous";
 
-const BASE_URL = import.meta.env.VITE_API_URL
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const SingleSurvey = () => {
   const { slug: id } = useParams();
@@ -31,8 +25,8 @@ const SingleSurvey = () => {
   const { survey, isLoading, isError } = useSingleSurveyData(id);
   const baseUrl = useBaseUrl();
   const navigate = useNavigate();
-  const [authUser] = useRecoilState(authState)
-  const [isExpiredLoading, setIsExpiredLoading] = useState(false)
+  const [authUser] = useRecoilState(authState);
+  const [isExpiredLoading, setIsExpiredLoading] = useState(false);
 
   useEffect(() => {
     if (survey && survey.participantDetails) {
@@ -53,21 +47,25 @@ const SingleSurvey = () => {
 
   const handleEndSurvey = async () => {
     try {
-      setIsExpiredLoading(true)
-      await axios.patch(`${BASE_URL}/survey/${survey.id}`, {
-        status: "EXPIRED",
-      }, {
-        headers: {
-          Authorization: `Bearer ${authUser.email}`
+      setIsExpiredLoading(true);
+      await axios.patch(
+        `${BASE_URL}/survey/${survey.id}`,
+        {
+          status: "EXPIRED",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authUser.email}`,
+          },
         }
-      })
-      navigate("/dashboard/surveys")
+      );
+      navigate("/dashboard/surveys");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setIsExpiredLoading(false)
+      setIsExpiredLoading(false);
     }
-  }
+  };
 
   return (
     <div className="w-full max-w-full min-w-full text-accent_primary">
@@ -95,7 +93,7 @@ const SingleSurvey = () => {
                 "flex items-center gap-3 px-4 py-2 transition-all ease-in-out disabled:bg-gray-200 disabled:cursor-not-allowed border-2 rounded-md ",
                 copied && copiedId == survey.id
                   ? "bg-gray-100"
-                  : "bg-white hover:bg-gray-100",
+                  : "bg-white hover:bg-gray-100"
               )}
             >
               {copied && copiedId == survey.id
@@ -116,9 +114,7 @@ const SingleSurvey = () => {
             >
               End Survey
               <Ban className="w-5 h-5" />
-
               {isExpiredLoading && <Loader2 className="animate-spin" />}
-
             </button>
           </div>
 
@@ -182,7 +178,9 @@ const SingleSurvey = () => {
 
           <TeacherAnalytics survey={survey} />
 
-          {survey?.optional?.some((data) => data.anonymous != "") && <AnonymousMessages survey={survey} />}
+          {survey?.optional?.some((data) => data.anonymous != "") && (
+            <AnonymousMessages survey={survey} />
+          )}
 
           <Participants survey={survey} participants={participants} />
         </div>
