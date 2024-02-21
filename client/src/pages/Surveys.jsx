@@ -4,49 +4,67 @@ import axios from "axios";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
-import { Tooltip as ReactTooltip } from "react-tooltip"
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSchoolData } from "@/hooks";
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { authState } from "@/states";
 
-const BASE_URL = import.meta.env.VITE_API_URL
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Surveys = () => {
   const { schoolData, isLoading } = useSchoolData();
-  const [authUser] = useRecoilState(authState)
+  const [authUser] = useRecoilState(authState);
   const [activeSurveys, setActiveSurveys] = useState([]);
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   useEffect(() => {
-    const filteredActiveSurveys = schoolData?.data?.data.surveys?.filter((survey) => survey.status === "ACTIVE")
+    const filteredActiveSurveys = schoolData?.data?.data.surveys?.filter(
+      (survey) => survey.status === "ACTIVE"
+    );
     setActiveSurveys(filteredActiveSurveys);
 
     const expiredSurveys = filteredActiveSurveys?.filter((survey) => {
-      const expiryDate = survey.expiry
+      const expiryDate = survey.expiry;
       if (expiryDate && expiryDate != "NEVER") {
-        const today = new Date(moment().format("YYYY-MM-DD"))
-        const expiry = new Date(expiryDate)
-        const diff = expiry - today
-        return diff <= 0
+        const today = new Date(moment().format("YYYY-MM-DD"));
+        const expiry = new Date(expiryDate);
+        const diff = expiry - today;
+        return diff <= 0;
       }
-    })
+    });
 
     if (expiredSurveys?.length) {
       expiredSurveys.map((survey) => {
-        axios.patch(`${BASE_URL}/survey/${survey.id}`, {
-          status: "EXPIRED",
-        }, {
-          headers: {
-            Authorization: `Bearer ${authUser.email}`
-          }
-        }).then(() => {
-          navigate(0)
-        }).catch(err => {
-          console.log(err)
-        })
-      })
+        axios
+          .patch(
+            `${BASE_URL}/survey/${survey.id}`,
+            {
+              status: "EXPIRED",
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${authUser.email}`,
+              },
+            }
+          )
+          .then(() => {
+            navigate(0);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
     }
   }, [schoolData]);
 
@@ -58,15 +76,15 @@ const Surveys = () => {
       await axios.delete(`${BASE_URL}/survey/${id}`, {
         headers: {
           Authorization: `Bearer ${authUser.email}`,
-        }
-      })
+        },
+      });
     } catch {
       setActiveSurveys(activeSurveys);
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: "There was a problem with your request.",
-      })
+      });
     }
   };
 
@@ -120,33 +138,41 @@ const Surveys = () => {
                           </td>
 
                           <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
-                            <Link id={data.surveyId} to={`/dashboard/survey/${data.surveyId}`}>
+                            <Link
+                              id={data.surveyId}
+                              to={`/dashboard/survey/${data.surveyId}`}
+                            >
                               <button className="flex items-center justify-center h-10 gap-2 px-4 font-semibold bg-white border rounded-md hover:bg-gray-100 btn-filled-white bg-brand-white text-light-text-primary border-light-border disabled:opacity-50">
                                 Dashboard
                               </button>
                             </Link>
 
-                            <ReactTooltip className='!max-w-[22rem] !bg-black !py-2 !px-3' anchorSelect={`#${data.surveyId}`} place="bottom">
-                              <p className='text-xs'>
+                            <ReactTooltip
+                              className="!max-w-[22rem] !bg-black !py-2 !px-3"
+                              anchorSelect={`#${data.surveyId}`}
+                              place="bottom"
+                            >
+                              <p className="text-xs">
                                 {data && data.name && `${data.name} Dashboard`}
                               </p>
                             </ReactTooltip>
 
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <button
-                                  className="bg-white w-10 h-10 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
-                                >
+                                <button className="bg-white w-10 h-10 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border">
                                   <Trash2 className="w-5 text-error" />
                                 </button>
                               </AlertDialogTrigger>
 
                               <AlertDialogContent className="font-primary">
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                  <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                  </AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    This action cannot be undone. This will permanently delete your
-                                    survey and remove your data from our servers.
+                                    This action cannot be undone. This will
+                                    permanently delete your survey and remove
+                                    your data from our servers.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
 
