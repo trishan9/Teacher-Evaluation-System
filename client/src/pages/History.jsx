@@ -4,6 +4,7 @@ import { useSchoolData } from "@/hooks";
 import getTimeAgo from "@/utils/getTimeAgo";
 import getExpiredDaysAgo from "@/utils/getExpiredDaysAgo";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 const FILTER_OPTIONS = {
   ALL: "All",
@@ -21,6 +22,8 @@ const HistoryPage = () => {
     FILTER_OPTIONS.ALL
   );
 
+  const todayDate = format(new Date(), "yyyy-MM-dd");
+
   useEffect(() => {
     setAllSurveys(schoolData?.data?.data.surveys);
   }, [schoolData]);
@@ -31,8 +34,7 @@ const HistoryPage = () => {
     });
 
     const expiredSurveysWithDaysAgo = expiredSurveys?.map((data) => {
-      console.log(data.expiry);
-      if (data.expiry != "NEVER") {
+      if (data.expiry != "NEVER" && data.expiry < todayDate) {
         const daysAgo = getTimeAgo(data.expiry);
         return { ...data, days: daysAgo };
       } else {
