@@ -1,7 +1,8 @@
-import { AlignJustify } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { AlignJustify } from "lucide-react";
+import isJwtValid from "@/utils/isJwtValid";
 import SideNav from "./SideNav";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const NavBar = () => {
   return (
@@ -12,13 +13,25 @@ const NavBar = () => {
       >
         <img src="/scool.png" alt="" className="w-9" />
 
-        <h1 className="text-lg font-bold cursor-pointer lg:text-xl">SCOOL</h1>
+        <h1 className="text-lg font-bold cursor-pointer lg:text-xl">
+          Teacher Evaluation System
+        </h1>
+
       </Link>
 
       <Sheet>
-        <SheetTrigger asChild>
-          <AlignJustify className="block w-6 h-6 text-white cursor-pointer lg:hidden" />
-        </SheetTrigger>
+        {!localStorage.getItem("accessToken") ? null : (
+          <SheetTrigger asChild>
+            <AlignJustify className="block w-6 h-6 text-white cursor-pointer lg:hidden" />
+          </SheetTrigger>
+        )}
+
+        {/* {localStorage.getItem("accessToken") &&
+        !isJwtValid(localStorage.getItem("accessToken")) ? null : (
+          <SheetTrigger asChild>
+            <AlignJustify className="block w-6 h-6 text-white cursor-pointer lg:hidden" />
+          </SheetTrigger>
+        )} */}
 
         <SheetContent className="block font-primary bg-neutral_white lg:hidden">
           <div className="my-2">
