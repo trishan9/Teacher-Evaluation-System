@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/", "/manage-school"];
+const protectedRoutes = ["/", "/manage-school", "/login"];
 
 // This function can be marked `async` if using `await` inside
 

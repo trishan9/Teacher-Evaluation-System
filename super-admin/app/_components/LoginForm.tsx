@@ -1,9 +1,10 @@
-"use client";
-import Cookies from "js-cookie";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+"use client"
+
+import Cookies from 'js-cookie'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -11,40 +12,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+ 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   password: z.string().min(8).max(16),
 });
 
-export default function LoginForm({ admin }: { admin: any }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
-  const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (
-      values.username === admin.username &&
-      values.password === admin.password
-    ) {
-      Cookies.set("login", "true", { expires: 1, path: "/" });
-      router.refresh();
-      form.reset();
-      router.push("/");
-      toast.success("Logged in successfully!");
-    } else {
-      toast.error("Invalid credentials!");
-    }
-  }
+
+export default function LoginForm({admin}:{admin:any}) {
+  const cookie = Cookies
+  
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+          username: "",
+          password:""
+        },
+      })
+
+        function onSubmit(values: z.infer<typeof formSchema>){
+        if(values.username === admin.username && values.password === admin.password){
+          cookie.set('login', 'true', { expires: 1, path: '/'})
+          window.location.reload()
+          window.location.href = '/'
+          form.reset()
+          console.log('login success')
+        } else {
+          console.log('login failed')
+        }
+        }
   return (
     <>
       <Form {...form}>
