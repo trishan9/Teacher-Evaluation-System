@@ -1,6 +1,7 @@
 import { useState, useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { LogOut } from "lucide-react";
+import { useRecoilState } from "recoil";
 import { cn } from "@/lib/utils";
 import { useSchoolData, useLogin } from "@/hooks";
 import { menus, PATHS } from "@/constants";
@@ -16,6 +17,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
+import { schoolState } from "@/states";
 
 const SideNav = ({ active }) => {
   const [activeMenu, setActiveMenu] = useState(active);
@@ -30,7 +32,8 @@ const SideNav = ({ active }) => {
     }
   }, [location]);
 
-  const { schoolData, isLoading } = useSchoolData();
+  const { isLoading } = useSchoolData();
+  const [schoolData] = useRecoilState(schoolState);
   const { logout } = useLogin();
 
   return (
@@ -49,7 +52,9 @@ const SideNav = ({ active }) => {
 
           <p className="pt-2 text-sm text-gray-500">Admin</p>
 
-          <p className="font-semibold text-accent_primary">{schoolData?.data?.data.name}</p>
+          <p className="font-semibold text-accent_primary">
+            {schoolData?.data?.data.name}
+          </p>
         </div>
       )}
 
@@ -65,7 +70,7 @@ const SideNav = ({ active }) => {
               "flex w-full items-center gap-2 p-2 rounded-md",
               index == activeMenu
                 ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
-                : "hover:bg-neutral_white",
+                : "hover:bg-neutral_white"
             )}
           >
             {index == activeMenu ? (
@@ -78,7 +83,7 @@ const SideNav = ({ active }) => {
               className={cn(
                 index == activeMenu
                   ? "text-accent_secondary"
-                  : "text-accent_primary",
+                  : "text-accent_primary"
               )}
             >
               {menu.name}
@@ -132,4 +137,3 @@ const SideNavSkeleton = () => {
     </div>
   );
 };
-

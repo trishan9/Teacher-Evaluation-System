@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog, Transition } from '@headlessui/react'
-import { X } from 'lucide-react';
+import { X, Loader2 } from 'lucide-react';
 import { changePasswordModal } from '@/states'
 import { changePasswordFormSchema } from './formSchema'
 import { auth as firebaseAuth } from "@/config/firebase"
@@ -19,11 +19,12 @@ export default function ChangePasswordModal() {
     const { register, formState: { errors }, handleSubmit } = useForm({
         resolver: zodResolver(changePasswordFormSchema)
     })
-
+    const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
 
     const handleChangePassword = async (values) => {
         const user = auth.currentUser
+        setIsLoading(true)
         updatePassword(user, values.newPassword).then(() => {
             toast({
                 title: "Password Changed!",
@@ -31,6 +32,7 @@ export default function ChangePasswordModal() {
             })
             setIsChangePasswordModalOpen(false)
         }).catch(async () => {
+            setIsLoading(true)
             setShouldNeedCurrentPassword(true)
             await signInWithEmailAndPassword(firebaseAuth, user.email, currentPasswordRef.current.value)
             const newPassword = values.newPassword
@@ -43,13 +45,17 @@ export default function ChangePasswordModal() {
                 })
                 setIsChangePasswordModalOpen(false)
                 setShouldNeedCurrentPassword(false)
-            }).catch((error) => {
+            }).catch(() => {
                 toast({
                     variant: "destructive",
                     title: "Uh oh! Something went wrong.",
                     description: "There was a problem with your request.",
                 })
+            }).finally(() => {
+                setIsLoading(false)
             });
+        }).finally(() => {
+            setIsLoading(false)
         });
     }
 
@@ -142,9 +148,11 @@ export default function ChangePasswordModal() {
                                     <div className="mt-8">
                                         <button
                                             type="submit"
-                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
+                                            className="inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition items-center"
                                         >
                                             Save Changes
+
+                                            {isLoading && <Loader2 className='w-5 h-5 ml-2 animate-spin' />}
                                         </button>
                                     </div>
                                 </form>

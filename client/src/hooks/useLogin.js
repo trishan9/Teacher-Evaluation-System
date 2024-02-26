@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { useRecoilState } from "recoil"
 import { signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { auth } from "@/config/firebase"
-import { authState, schoolState } from "@/states"
+import { authState, schoolState, teacherState } from "@/states"
+import { useToast } from "@/components/ui/use-toast"
 
 const useLogin = () => {
     const navigate = useNavigate()
@@ -11,6 +12,8 @@ const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [, setAuthUser] = useRecoilState(authState)
     const [, setSchoolData] = useRecoilState(schoolState)
+    const [, setTeachers] = useRecoilState(teacherState)
+    const { toast } = useToast()
 
     const login = async (userName, password) => {
         try {
@@ -19,15 +22,20 @@ const useLogin = () => {
 
             const userCredentials = await signInWithEmailAndPassword(auth, userName, password)
             localStorage.setItem("accessToken", userCredentials.user.accessToken)
-            console.log(userCredentials)
             const currentUser = {
                 id: userCredentials.user.uid,
                 email: userCredentials.user.email
             }
             setAuthUser(currentUser)
             navigate("/dashboard/surveys")
-        } catch {
+            toast({
+                title: "Logged in successfully!"
+            })
+        } catch (error) {
             setIsLoginError(true)
+            toast({
+                title: "Login failed!"
+            })
         } finally {
             setIsLoading(false)
         }
@@ -38,6 +46,7 @@ const useLogin = () => {
             localStorage.clear()
             navigate("/")
             setSchoolData(null)
+            setTeachers(null)
         })
     }
 

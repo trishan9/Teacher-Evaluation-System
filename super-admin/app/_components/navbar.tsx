@@ -8,8 +8,8 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="p-6 sticky top-0 left-0 w-full bg-slate-200 z-50 flex justify-between font-primary items-center">
-      <h1 className="font-semibold text-lg">
+    <nav className="sticky top-0 left-0 z-50 flex items-center justify-between w-full p-6 bg-slate-200 font-primary">
+      <h1 className="text-lg font-semibold">
         <Link href="/">Admin Panel</Link>
       </h1>
 
@@ -22,7 +22,6 @@ const Navbar = () => {
             Create School
           </Button>
         </Link>
-
         <Link href="/manage-school">
           <Button
             variant={

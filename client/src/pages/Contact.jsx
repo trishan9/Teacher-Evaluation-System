@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import { ArrowLeft, Building, Phone, Mail } from "lucide-react";
+import { toast, Toaster } from "sonner";
 
 export default function Contact() {
   const form = useRef();
@@ -14,18 +15,13 @@ export default function Contact() {
         "service_j9mtmh3",
         "template_ysb7w35",
         form.current,
-        "eHS5mvFX1r50CHDP1"
+        "sLtYsD57se_LlwFsI"
       )
-      .then(
-        (result) => {
-          console.log(result.text);
-          console.log("message sent");
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+      .then(() => {
+        toast.success("Your message has been sent");
+      });
     const formValue = document.querySelector("form");
+
     formValue.reset();
   };
 
@@ -262,6 +258,7 @@ export default function Contact() {
             </div>
 
             <div className="flex justify-end mt-8">
+              <Toaster />
               <button
                 type="submit"
                 className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { History } from "@/components";
-import { useHistory } from "@/hooks";
+import { useSchoolData } from "@/hooks";
 import getTimeAgo from "@/utils/getTimeAgo";
 import getExpiredDaysAgo from "@/utils/getExpiredDaysAgo";
 import { cn } from "@/lib/utils";
@@ -9,10 +9,11 @@ const FILTER_OPTIONS = {
   ALL: "All",
   LAST_7_DAYS: "Last 7 days",
   LAST_30_DAYS: "Last 30 days",
+  LAST_365_DAYS: "Last 365 days",
 };
 
 const HistoryPage = () => {
-  const { surveys } = useHistory();
+  const { schoolData } = useSchoolData();
   const [allSurveys, setAllSurveys] = useState([]);
   const [filteredSurveys, setFilteredSurveys] = useState([]);
   const [rawExpiredSurveys, setRawExpiredSurveys] = useState([]);
@@ -21,17 +22,22 @@ const HistoryPage = () => {
   );
 
   useEffect(() => {
-    setAllSurveys(surveys);
-  }, [surveys]);
+    setAllSurveys(schoolData?.data?.data.surveys);
+  }, [schoolData]);
 
   useEffect(() => {
-    const expiredSurveys = allSurveys.filter((data) => {
+    const expiredSurveys = allSurveys?.filter((data) => {
       return data.status == "EXPIRED";
     });
 
-    const expiredSurveysWithDaysAgo = expiredSurveys.map((data) => {
-      const daysAgo = getTimeAgo(data.expiry);
-      return { ...data, days: daysAgo };
+    const expiredSurveysWithDaysAgo = expiredSurveys?.map((data) => {
+      console.log(data.expiry);
+      if (data.expiry != "NEVER") {
+        const daysAgo = getTimeAgo(data.expiry);
+        return { ...data, days: daysAgo };
+      } else {
+        return { ...data, days: "Ended" };
+      }
     });
 
     setRawExpiredSurveys(expiredSurveysWithDaysAgo);
@@ -44,6 +50,8 @@ const HistoryPage = () => {
       setActiveFilterOption(FILTER_OPTIONS.LAST_7_DAYS);
     } else if (days == 31) {
       setActiveFilterOption(FILTER_OPTIONS.LAST_30_DAYS);
+    } else if (days == 366) {
+      setActiveFilterOption(FILTER_OPTIONS.LAST_365_DAYS);
     }
     setFilteredSurveys(filterValue);
   };
@@ -55,9 +63,25 @@ const HistoryPage = () => {
 
         <div className="flex gap-4 mt-4 lg:mt-0">
           <button
+            onClick={() =>
+              setFilteredSurveys(
+                rawExpiredSurveys,
+                setActiveFilterOption("All")
+              )
+            }
+            className={cn(
+              "flex items-center justify-center h-8 gap-2 px-6 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.ALL
+                ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
+                : "bg-white  hover:bg-gray-100"
+            )}
+          >
+            {FILTER_OPTIONS.ALL}
+          </button>
+          <button
             onClick={() => onFilterChange(7 + 1)}
             className={cn(
-              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              "flex items-center justify-center h-8 gap-2 px-4 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
               activeFilterOption == FILTER_OPTIONS.LAST_7_DAYS
                 ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
                 : "bg-white  hover:bg-gray-100"
@@ -69,7 +93,7 @@ const HistoryPage = () => {
           <button
             onClick={() => onFilterChange(30 + 1)}
             className={cn(
-              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
+              "flex items-center justify-center h-8 gap-2 px-4 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
               activeFilterOption == FILTER_OPTIONS.LAST_30_DAYS
                 ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
                 : "bg-white  hover:bg-gray-100"
@@ -77,22 +101,16 @@ const HistoryPage = () => {
           >
             {FILTER_OPTIONS.LAST_30_DAYS}
           </button>
-
           <button
-            onClick={() =>
-              setFilteredSurveys(
-                rawExpiredSurveys,
-                setActiveFilterOption("All")
-              )
-            }
+            onClick={() => onFilterChange(365 + 1)}
             className={cn(
-              "flex items-center justify-center h-8 gap-2 px-4 text-sm font-medium border rounded-md disabled:opacity-50",
-              activeFilterOption == FILTER_OPTIONS.ALL
+              "flex items-center justify-center h-8 gap-2 px-4 sm:text-sm text-xs font-medium border rounded-md disabled:opacity-50",
+              activeFilterOption == FILTER_OPTIONS.LAST_365_DAYS
                 ? "cursor-pointer font-bold bg-accent_primary text-accent_secondary transition-all ease-in-out"
                 : "bg-white  hover:bg-gray-100"
             )}
           >
-            {FILTER_OPTIONS.ALL}
+            {FILTER_OPTIONS.LAST_365_DAYS}
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "./_components/navbar";
+import TanstackProvider from "@/components/providers/TanstackProvider";
 
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-primary" });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={dmSans.variable}>
         <Navbar />
-        {children}
+        <TanstackProvider>{children}</TanstackProvider>
         <Toaster />
       </body>
     </html>
