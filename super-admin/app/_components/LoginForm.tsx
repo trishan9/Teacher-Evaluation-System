@@ -1,5 +1,5 @@
 "use client"
-import { useRouter } from 'next/navigation'
+
 import Cookies from 'js-cookie'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -23,7 +23,7 @@ const formSchema = z.object({
 
 
 export default function LoginForm({admin}:{admin:any}) {
-  const router = useRouter()
+  const cookie = Cookies
   
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -33,10 +33,11 @@ export default function LoginForm({admin}:{admin:any}) {
         },
       })
 
-       function onSubmit(values: z.infer<typeof formSchema>){
+        function onSubmit(values: z.infer<typeof formSchema>){
         if(values.username === admin.username && values.password === admin.password){
-          Cookies.set('login', 'true', { expires: 1, path: '/'})
-          router.push('/')
+          cookie.set('login', 'true', { expires: 1, path: '/'})
+          window.location.reload()
+          window.location.href = '/'
           form.reset()
           console.log('login success')
         } else {
