@@ -83,7 +83,7 @@ const StepOne = ({ handleNextStep, schoolData }) => {
                                             <SelectGroup>
                                                 <SelectLabel>Class</SelectLabel>
                                                 {
-                                                    schoolData?.data?.data.classes?.map((class_) => {
+                                                    schoolData?.classes?.map((class_) => {
                                                         return (
                                                             <SelectItem key={class_} value={class_}>{class_}</SelectItem>
                                                         )
@@ -124,7 +124,7 @@ const StepOne = ({ handleNextStep, schoolData }) => {
                                             <SelectGroup>
                                                 <SelectLabel>Section</SelectLabel>
                                                 {
-                                                    schoolData?.data?.data.sections?.map((section_) => {
+                                                    schoolData?.sections?.map((section_) => {
                                                         return (
                                                             <SelectItem key={section_} value={section_}>{section_}</SelectItem>
                                                         )

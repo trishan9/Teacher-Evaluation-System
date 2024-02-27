@@ -2,9 +2,7 @@ import { useForm } from 'react-hook-form';
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
@@ -51,7 +49,7 @@ const StepTwo = ({ handlePreviousStep, handleNextStep, survey, schoolData }) => 
 
                                             <SelectContent className="font-primary">
                                                 {
-                                                    schoolData?.data?.data?.teachers?.filter((teacher) => teacher.subject === subject).map((subjectTeacher) => {
+                                                    schoolData?.teachers?.filter((teacher) => teacher.subject === subject).map((subjectTeacher) => {
                                                         return (
                                                             <SelectItem key={subjectTeacher.id} value={subjectTeacher.name}>{subjectTeacher.name}</SelectItem>
                                                         )

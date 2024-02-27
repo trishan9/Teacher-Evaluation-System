@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import Cookies from 'js-cookie'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
+import Cookies from "js-cookie";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,38 +12,40 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
- 
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   password: z.string().min(8).max(16),
 });
 
+export default function LoginForm({ admin }: { admin: any }) {
+  const cookie = Cookies;
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-export default function LoginForm({admin}:{admin:any}) {
-  const cookie = Cookies
-  
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          username: "",
-          password:""
-        },
-      })
-
-        function onSubmit(values: z.infer<typeof formSchema>){
-        if(values.username === admin.username && values.password === admin.password){
-          cookie.set('login', 'true', { expires: 1, path: '/'})
-          window.location.reload()
-          window.location.href = '/'
-          form.reset()
-          console.log('login success')
-        } else {
-          console.log('login failed')
-        }
-        }
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    if (
+      values.username === admin.username &&
+      values.password === admin.password
+    ) {
+      cookie.set("login", "true", { expires: 1, path: "/" });
+      form.reset();
+      window.location.reload();
+      window.location.href = "/";
+      toast.success("Logged in successfully!");
+    } else {
+      toast.error("Invalid username or password!");
+    }
+  }
   return (
     <>
       <Form {...form}>
@@ -67,6 +69,7 @@ export default function LoginForm({admin}:{admin:any}) {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -74,7 +77,7 @@ export default function LoginForm({admin}:{admin:any}) {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" {...field} />
+                  <Input placeholder="Password" {...field} type="password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
