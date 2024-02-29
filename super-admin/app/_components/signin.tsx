@@ -91,7 +91,7 @@ const SignIn = () => {
       toast.success("Your account has been created!");
       form.reset();
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(error?.response?.data?.error);
     }
   }
 

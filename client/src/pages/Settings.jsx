@@ -27,30 +27,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import AddTeacherModal from "@/components/Modals/AddTeacher";
+import { Pencil } from "lucide-react";
+import { editTeacherModal } from "@/states/modalState";
+import EditTeacherModal from "@/components/Modals/EditTeacher";
 
-const BASE_URL = import.meta.env.VITE_API_URL
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Settings = () => {
   const { schoolData: rawSchoolData } = useSchoolData();
   const [, setIsChangeNameModalOpen] = useRecoilState(changeNameModal);
+  const [, setIsEditTeacherModalOpen] = useRecoilState(editTeacherModal);
   const [, setIsChangePasswordModalOpen] = useRecoilState(changePasswordModal);
   const [, setIsAddTeacherModalOpen] = useRecoilState(addTeacherModal);
   const [isSearchNotFound, setIsSearchNotFound] = useState(false);
   const [schoolData, setSchoolData] = useRecoilState(schoolState);
-  const [teachers, setTeachers] = useRecoilState(teacherState)
-  const [authUser] = useRecoilState(authState)
+  const [teachers, setTeachers] = useRecoilState(teacherState);
+  const [authUser] = useRecoilState(authState);
   const { toast } = useToast();
 
   const handleDeleteTeacher = async (id) => {
     const filteredTeachers = teachers.filter((teacher) => teacher.id != id);
-    setTeachers(filteredTeachers)
+    setTeachers(filteredTeachers);
 
     try {
       await axios.delete(`${BASE_URL}/teacher/${id}`, {
         headers: {
-          Authorization: `Bearer ${authUser.email}`
-        }
-      })
+          Authorization: `Bearer ${authUser.email}`,
+        },
+      });
 
       setSchoolData((prevData) => {
         return {
@@ -59,18 +63,18 @@ const Settings = () => {
             ...prevData.data,
             data: {
               ...prevData.data.data,
-              teachers: filteredTeachers
-            }
-          }
-        }
-      })
+              teachers: filteredTeachers,
+            },
+          },
+        };
+      });
 
       toast({
         title: "Teacher Deleted!",
         description: "Teacher has been deleted successfully!",
       });
     } catch {
-      setTeachers(rawSchoolData?.data?.data?.teachers)
+      setTeachers(rawSchoolData?.data?.data?.teachers);
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
@@ -80,14 +84,16 @@ const Settings = () => {
   };
 
   const handleSearch = (query) => {
-    const filteredTeachers = schoolData?.data?.data?.teachers.filter((teacher) => {
-      return teacher.name.toLowerCase().startsWith(query.toLowerCase());
-    });
+    const filteredTeachers = schoolData?.data?.data?.teachers.filter(
+      (teacher) => {
+        return teacher.name.toLowerCase().startsWith(query.toLowerCase());
+      }
+    );
     if (filteredTeachers.length) {
       setIsSearchNotFound(false);
       setTeachers(filteredTeachers);
     } else {
-      setTeachers(filteredTeachers)
+      setTeachers(filteredTeachers);
       setIsSearchNotFound(true);
     }
   };
@@ -173,6 +179,14 @@ const Settings = () => {
                             </td>
 
                             <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
+                              <button
+                                disabled={!schoolData}
+                                onClick={() => setIsEditTeacherModalOpen(true)}
+                                className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-info !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
+                              >
+                                <Pencil className="w-5" />
+                              </button>
+
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                   <button className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-error !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border">
@@ -247,6 +261,8 @@ const Settings = () => {
       <ChangePasswordModal />
 
       <AddTeacherModal />
+
+      <EditTeacherModal />
     </div>
   );
 };
