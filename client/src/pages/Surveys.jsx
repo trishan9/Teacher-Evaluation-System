@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import moment from "moment";
-import { Link } from "react-router-dom";
-import { Trash2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Pencil, Trash2, Loader2 } from "lucide-react";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useSchoolData } from "@/hooks";
+import { authState } from "@/states";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,15 +19,23 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { authState } from "@/states";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Surveys = () => {
   const { schoolData, isLoading } = useSchoolData();
+
   const [authUser] = useRecoilState(authState);
   const [activeSurveys, setActiveSurveys] = useState([]);
+  const [isEditing, setIsEditing] = useState(false)
+  const [isEditLoading, setIsEditLoading] = useState(false)
+  const [editingId, setEditingId] = useState(null)
+  const [newName, setNewName] = useState("")
+
   const { toast } = useToast();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const filteredActiveSurveys = schoolData?.data?.data.surveys?.filter(
@@ -68,6 +77,36 @@ const Surveys = () => {
     }
   }, [schoolData]);
 
+  const onNameUpdate = async (id) => {
+    try {
+      setIsEditLoading(true)
+      await axios.patch(`${BASE_URL}/survey/${id}`,
+        {
+          name: newName
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authUser.email}`,
+          },
+        });
+      setIsEditing(false)
+      setEditingId(null)
+      toast({
+        title: "Survey Updated!",
+        description: `Survey name has been changed succesfully!`
+      })
+      navigate(0)
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
+    } finally {
+      setIsEditLoading(false)
+    }
+  }
+
   const handleDeleteSurvey = async (id) => {
     const filteredSurveys = activeSurveys.filter((survey) => survey.id != id);
     setActiveSurveys(filteredSurveys);
@@ -106,15 +145,51 @@ const Surveys = () => {
                     {!isLoading &&
                       activeSurveys &&
                       activeSurveys.map((data) => (
-                        <tr key={data.id} className="flex justify-between">
-                          <td className="flex flex-col gap-2 py-[22px] pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-0 w-[25%]">
-                            <p className="text-light-text-secondary">
-                              Survey Name
-                            </p>
+                        <tr key={data.id} className="flex items-start justify-between">
+                          <td className={cn("flex flex-col gap-2 py-[22px] pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-0",
+                            isEditing && editingId === data.id ? "w-[45%]" : "w-[25%]")
+                          } >
+                            <div className="flex items-center gap-2">
+                              <p className="text-light-text-secondary">
+                                Survey Name
+                              </p>
 
-                            <p className="text-base font-semibold">
+                              {editingId !== data.id &&
+                                <Pencil className="w-3 cursor-pointer"
+                                  onClick={() => {
+                                    setEditingId(data.id)
+                                    setIsEditing(true)
+                                  }}
+                                />
+                              }
+                            </div>
+
+                            {editingId !== data.id && <p className="text-base font-semibold">
                               {data.name}
-                            </p>
+                            </p>}
+
+                            {isEditing && editingId === data.id &&
+                              <div className="flex flex-col items-start gap-2">
+                                <Input className="w-44 sm:w-80" defaultValue={data.name} onChange={(e) => setNewName(e.target.value)} />
+
+                                <div className="flex items-stretch gap-2">
+                                  <Button size="sm" className="py-1" onClick={() => onNameUpdate(data.id)}>
+                                    Save
+
+                                    {isEditLoading && <Loader2 className="w-4 ml-2 animate-spin" />}
+                                  </Button>
+
+                                  <Button size="sm" variant="outline" className="py-1" onClick={() => {
+                                    setIsEditing(false)
+                                    setEditingId(null)
+                                  }
+                                  }>
+                                    Cancel
+                                  </Button>
+                                </div>
+
+                              </div>}
+
                           </td>
 
                           <td className=" font-semibold flex flex-col items-center justify-center gap-2 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap w-[25%]">
