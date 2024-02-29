@@ -42,10 +42,12 @@ import { useSchoolData } from "@/hooks";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { editTeacherModal } from "@/states/modalState";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export default function EditTeacherModal() {
+export default function EditTeacherModal({ id }) {
   const [isEditTeacherModalOpen, setIsEditTeacherModalOpen] =
     useRecoilState(editTeacherModal);
   const [, setSchoolData] = useRecoilState(schoolState);
@@ -54,49 +56,28 @@ export default function EditTeacherModal() {
   const [authUser] = useRecoilState(authState);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [teacherData, setTeacherData] = useState([]);
+  const [isEditLoading, setIsEditLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(addTeacherFormSchema),
   });
 
-  const handleAddNewTeacher = async (values) => {
+  const handleUpdateTeacher = async (values) => {
     try {
-      setIsLoading(true);
-
-      const teacher = {
-        id: v4(),
-        name: values.name,
-        subject: values.subject,
-      };
-
-      const newTeachers = [...teachers];
-      newTeachers.push(teacher);
-      setTeachers(newTeachers);
-
-      setSchoolData((prevData) => {
-        return {
-          ...prevData,
-          data: {
-            ...prevData.data,
-            data: {
-              ...prevData.data.data,
-              teachers: newTeachers,
-            },
-          },
-        };
-      });
-
-      setIsEditTeacherModalOpen(false);
-      form.reset();
-
-      await axios.post(`${BASE_URL}/teacher`, teacher, {
+      await axios.patch(`${BASE_URL}/teacher/${id}`, values, {
         headers: {
           Authorization: `Bearer ${authUser.email}`,
         },
       });
+      navigate(0);
+      setIsEditLoading(true);
 
       toast({
-        title: "Teacher Added!",
+        title: "Teacher Edited!",
         description: "Teacher has been added successfully!",
       });
     } catch {
@@ -105,24 +86,32 @@ export default function EditTeacherModal() {
         title: "Uh oh! Something went wrong.",
         description: "There was a problem with your request.",
       });
-
-      setTeachers(rawSchoolData?.data?.data?.teachers);
-      setSchoolData((prevData) => {
-        return {
-          ...prevData,
-          data: {
-            ...prevData.data,
-            data: {
-              ...prevData.data.data,
-              teachers: rawSchoolData?.data?.data?.teachers,
-            },
-          },
-        };
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setIsError(true);
+        setIsLoading(true);
+        form.setValue("name", "");
+        form.setValue("subject", "");
+        const { data } = await axios.get(`${BASE_URL}/teacher/${id}`, {
+          headers: {
+            Authorization: `Bearer ${authUser.email}`,
+          },
+        });
+
+        form.setValue("name", data.data.name);
+        form.setValue("subject", data.data.subject);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsEditLoading(false);
+      }
+    };
+    getData();
+  }, [isEditTeacherModalOpen]);
 
   return (
     <Transition.Root show={isEditTeacherModalOpen} as={Fragment}>
@@ -156,7 +145,7 @@ export default function EditTeacherModal() {
             >
               <Dialog.Panel className="relative w-full max-w-sm p-6 px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform rounded-lg shadow-xl bg-neutral_white sm:my-8">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(handleAddNewTeacher)}>
+                  <form onSubmit={form.handleSubmit(handleUpdateTeacher)}>
                     <div>
                       <div>
                         <Dialog.Title
@@ -184,6 +173,10 @@ export default function EditTeacherModal() {
                                 <FormControl>
                                   <Input
                                     type="text"
+                                    defaultValue={
+                                      teacherData.length > 0 &&
+                                      teacherData?.name
+                                    }
                                     className="w-full bg-white border border-gray-300 rounded-md outline-none"
                                     {...field}
                                   />
@@ -284,7 +277,7 @@ export default function EditTeacherModal() {
                         className="inline-flex justify-center items-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-accent_primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:bg-[#1e2f49] transition"
                       >
                         Save
-                        {isLoading && (
+                        {isEditLoading && (
                           <Loader2 className="w-5 h-5 ml-2 animate-spin" />
                         )}
                       </button>

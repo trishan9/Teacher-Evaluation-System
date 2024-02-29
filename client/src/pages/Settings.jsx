@@ -44,6 +44,7 @@ const Settings = () => {
   const [teachers, setTeachers] = useRecoilState(teacherState);
   const [authUser] = useRecoilState(authState);
   const { toast } = useToast();
+  const [teacherEditId, setTeacherEditId] = useState(0);
 
   const handleDeleteTeacher = async (id) => {
     const filteredTeachers = teachers.filter((teacher) => teacher.id != id);
@@ -181,7 +182,10 @@ const Settings = () => {
                             <td className="flex items-center gap-3 px-3 py-[22px] text-sm text-gray-500 whitespace-nowrap">
                               <button
                                 disabled={!schoolData}
-                                onClick={() => setIsEditTeacherModalOpen(true)}
+                                onClick={() => {
+                                  setIsEditTeacherModalOpen(true);
+                                  setTeacherEditId(data.id);
+                                }}
                                 className="bg-white w-12 h-12 flex items-center justify-center hover:bg-gray-100 hover:border-info !font-normal bg-brand-white text-light-text-primary rounded-md border border-light-border"
                               >
                                 <Pencil className="w-5" />
@@ -262,7 +266,7 @@ const Settings = () => {
 
       <AddTeacherModal />
 
-      <EditTeacherModal />
+      <EditTeacherModal id={teacherEditId} />
     </div>
   );
 };
