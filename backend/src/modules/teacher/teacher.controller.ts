@@ -1,6 +1,23 @@
 import { Request, Response } from "express";
 import TeacherService from "./teacher.service";
 
+const getTeacherById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const teacher = await TeacherService.getTeacherById(id);
+    res.json({
+      success: true,
+      data: teacher,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
 const addTeacher = async (req, res: Response) => {
   const schoolId = res.locals.school.id;
   const payload = req.body;
@@ -59,4 +76,5 @@ export default {
   addTeacher,
   updateTeacher,
   deleteTeacher,
+  getTeacherById,
 };

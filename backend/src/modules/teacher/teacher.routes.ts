@@ -6,6 +6,7 @@ const teacherRouter = Router();
 
 teacherRouter.post("/", TeacherController.addTeacher);
 teacherRouter.patch("/:id", TeacherController.updateTeacher);
+teacherRouter.get("/:id", TeacherController.updateTeacher);
 teacherRouter.delete("/:id", TeacherController.deleteTeacher);
 
 export default teacherRouter;

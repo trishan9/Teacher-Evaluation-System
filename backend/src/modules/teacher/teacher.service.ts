@@ -1,5 +1,12 @@
 import { db } from "@/db";
 
+const getTeacherById = async (id: string) => {
+  const teacher = await db.teacher.findFirst({
+    where: { id: id },
+  });
+  return teacher;
+};
+
 const addTeacher = async (schoolId: string, payload: any) => {
   const teacher = await db.teacher.create({
     data: {
@@ -31,4 +38,5 @@ export default {
   addTeacher,
   updateTeacher,
   deleteTeacher,
+  getTeacherById,
 };
