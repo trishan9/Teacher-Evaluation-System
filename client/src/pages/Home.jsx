@@ -247,7 +247,7 @@ const Home = () => {
 
               <ul
                 role="list"
-                className="grid max-w-2xl grid-cols-1 mx-auto mt-20 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4 items-center justify-center"
+                className="grid max-w-2xl grid-cols-1 mx-auto mt-20 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-3 items-center justify-center"
               >
                 {team.map((person) => (
                   <li key={person.name}>
